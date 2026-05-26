@@ -245,7 +245,7 @@ public class ItemReg {
                     new GunProperties().rangedDamage(25F).fireRate(6).recoil(3F)
                             .shootSound(SoundReg.ITEM_SHOTGUN_SHOOT, null));
 
-            FLARE_GUN = registerGunItem("flare_gun", FlareGunItem::new,
+            FLARE_GUN = registerGunItem("flare_gun", s -> new FlareGunItem(s, TagReg.SHORT_MAGAZINES),
                     new GunProperties().rangedDamage(REVOLVER_DAMAGE).fireRate(6).recoil(REVOLVER_RECOIL)
                             .shootSound(SoundReg.ITEM_REVOLVER_SHOOT, null)
             );

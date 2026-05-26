@@ -83,44 +83,42 @@ public class GunUtils {
                 float x = (user.getRandom().nextFloat() - .5f) * 2 * gunItem.spread();
                 float y = (user.getRandom().nextFloat() - .5f) * 2 * gunItem.spread();
 
-                // 修复：使用正确的参数调用spawnBullet方法
-                GunUtils.spawnBullet(user, origin, front, stack, new Vec2(x,y), 0, gunItem.bulletSpeed(stack), gunItem.bulletLifespan());
-                    // 检查是否为霰弹枪
-                    if (gunItem instanceof ShotgunItem) {
-                        GunUtils.spawnBullet(user, origin, front, stack, new Vec2(x,y), 0, gunItem.bulletSpeed(stack), gunItem.bulletLifespan());
-                        GunUtils.spawnBullet(user, origin, front, stack, new Vec2(x,y), 0, gunItem.bulletSpeed(stack), gunItem.bulletLifespan());
-                        GunUtils.spawnBullet(user, origin, front, stack, new Vec2(x,y), 0, gunItem.bulletSpeed(stack), gunItem.bulletLifespan());
-                        GunUtils.spawnBullet(user, origin, front, stack, new Vec2(x,y), 0, gunItem.bulletSpeed(stack), gunItem.bulletLifespan());
-                    }
-                if (gunItem instanceof FlareGunItem) {
-                    // 为信号枪创建特殊效果
-                    Vec3 eyePos = new Vec3(user.getX(), user.getEyeY(), user.getZ());
+                if (gunItem instanceof ShotgunItem) {
+                    GunUtils.spawnBullet(user, origin, front, stack, new Vec2(x,y), 0, gunItem.bulletSpeed(stack), gunItem.bulletLifespan());
+                    GunUtils.spawnBullet(user, origin, front, stack, new Vec2(x,y), 0, gunItem.bulletSpeed(stack), gunItem.bulletLifespan());
+                    GunUtils.spawnBullet(user, origin, front, stack, new Vec2(x,y), 0, gunItem.bulletSpeed(stack), gunItem.bulletLifespan());
+                    GunUtils.spawnBullet(user, origin, front, stack, new Vec2(x,y), 0, gunItem.bulletSpeed(stack), gunItem.bulletLifespan());
+                } else {
+                    GunUtils.spawnBullet(user, origin, front, stack, new Vec2(x,y), 0, gunItem.bulletSpeed(stack), gunItem.bulletLifespan());
+                }
+            }
 
-                    // 在服务器端给半径40格内的所有生物添加发光效果
-                    net.minecraft.world.phys.AABB searchBox = new net.minecraft.world.phys.AABB(
-                            eyePos.x - 40, eyePos.y - 40, eyePos.z - 40,
-                            eyePos.x + 40, eyePos.y + 40, eyePos.z + 40
-                    );
+            if (gunItem instanceof FlareGunItem) {
+                Vec3 eyePos = new Vec3(user.getX(), user.getEyeY(), user.getZ());
 
-                    java.util.List<net.minecraft.world.entity.LivingEntity> entities = world.getEntitiesOfClass(
-                            net.minecraft.world.entity.LivingEntity.class, searchBox,
-                            entity -> entity != null && entity.isAlive()
-                    );
-                    for (i = 0; i < 20; ++i) {
-                        double t = Math.pow(world.getRandom().nextFloat(), 1.5);
-                        Vec3 p = origin.add(front.scale(0.8 + t));
-                        Vec3 v = front.scale(0.1 * (1 - t)).add(0, 0.1, 0); // 稍微向上的速度
-                        world.addParticle(ParticleTypes.SMOKE, p.x, p.y, p.z, v.x, v.y, v.z);
-                    }
-                    for (net.minecraft.world.entity.LivingEntity entity : entities) {
-                        // 添加发光效果，持续10秒（200刻）
-                        entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(
-                                net.minecraft.world.effect.MobEffects.GLOWING, 200, 0));
-                        entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(
-                                MobEffects.NIGHT_VISION, 200, 0));
-                    }
+                net.minecraft.world.phys.AABB searchBox = new net.minecraft.world.phys.AABB(
+                        eyePos.x - 40, eyePos.y - 40, eyePos.z - 40,
+                        eyePos.x + 40, eyePos.y + 40, eyePos.z + 40
+                );
+
+                java.util.List<net.minecraft.world.entity.LivingEntity> entities = world.getEntitiesOfClass(
+                        net.minecraft.world.entity.LivingEntity.class, searchBox,
+                        entity -> entity != null && entity.isAlive()
+                );
+
+                for (int j = 0; j < 20; ++j) {
+                    double t = Math.pow(world.getRandom().nextFloat(), 1.5);
+                    Vec3 p = origin.add(front.scale(0.8 + t));
+                    Vec3 v = front.scale(0.1 * (1 - t)).add(0, 0.1, 0);
+                    world.addParticle(ParticleTypes.SMOKE, p.x, p.y, p.z, v.x, v.y, v.z);
                 }
 
+                for (net.minecraft.world.entity.LivingEntity entity : entities) {
+                    entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                            net.minecraft.world.effect.MobEffects.GLOWING, 200, 0));
+                    entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                            MobEffects.NIGHT_VISION, 200, 0));
+                }
             }
         }
 

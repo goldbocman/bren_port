@@ -104,14 +104,14 @@ public abstract class FirstPersonItemRendererMixin {
         float zOffset = reloading ? 0 : (sin / 2 + sin2 / 4) * 0.5F;
         float yOffset = -0.1F; // 向下偏移，降低模型位置
         float zRotation = (float) (leftHanded ? -15 + d : 15 + d);
-        float xRotation = (sin3 * 10) * 0.5F;
+        float xRotation = (sin3 * 10) * -0.5F;
         
         // 新增：向前且向外侧偏移
         float forwardOffset = -0.4F; // 向前偏移量
         float sideOffset = leftHanded ? 0.05F : -0.05F; // 向外侧偏移（左手向左，右手向右）
         
         poseStack.translate(sideOffset, yOffset, zOffset + forwardOffset);
-     poseStack.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(zRotation));
+//     poseStack.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(zRotation));
         poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(xRotation));
         
         System.out.println("[Bren Debug] First person animation applied successfully");

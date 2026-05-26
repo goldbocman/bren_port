@@ -64,7 +64,7 @@ damageTiltStrength:1.0
 highContrast:false
 highContrastBlockOutline:false
 narratorHotkey:true
-resourcePacks:["vanilla"]
+resourcePacks:["vanilla","bren:bren_3d_resources_2"]
 incompatibleResourcePacks:[]
 lastServer:
 lang:zh_cn

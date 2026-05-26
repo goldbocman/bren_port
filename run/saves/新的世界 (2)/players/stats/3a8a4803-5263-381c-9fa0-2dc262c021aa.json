@@ -1,0 +1,26 @@
+{
+  "stats": {
+    "minecraft:dropped": {
+      "bren:flare_gun": 2
+    },
+    "minecraft:custom": {
+      "minecraft:sprint_one_cm": 6022,
+      "minecraft:time_since_rest": 1160,
+      "minecraft:walk_one_cm": 3297,
+      "minecraft:total_world_time": 2332,
+      "minecraft:leave_game": 1,
+      "minecraft:mob_kills": 3,
+      "minecraft:play_time": 1160,
+      "minecraft:time_since_death": 1160,
+      "minecraft:drop": 2
+    },
+    "minecraft:killed": {
+      "minecraft:zombie": 2,
+      "minecraft:skeleton": 1
+    },
+    "minecraft:picked_up": {
+      "bren:flare_gun": 2
+    }
+  },
+  "DataVersion": 4786
+}
