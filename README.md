@@ -2,7 +2,7 @@
 
 # _Smash the zombie invasion with a machine gun! Crush the skeletons' bones with an assault rifle! Send your enemies to a fiery grave with a shotgun and dragon's breath rounds!_
 
-# You're watching the 26.1/26.1.1/26.2 mod source code
+# You're watching the 26.1.x/26.2 mod source code
 
 This mod is a fork for [_Bren_](https://modrinth.com/mod/bren) and I make some weird but maybe interesting changes.
 
