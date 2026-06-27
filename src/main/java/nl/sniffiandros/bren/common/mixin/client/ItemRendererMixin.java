@@ -29,8 +29,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(SpecialModelWrapper.class)
 public abstract class ItemRendererMixin {
 
-    // 基于 Minecraft 26.1-alpha 新渲染系统的注入点
-    // 注入到 SpecialModelWrapper.update 方法，这是新的渲染系统核心方法
+    // Injection point for the new rendering system based on Minecraft 26.1-alpha
+
+    // Injected into the SpecialModelWrapper.update method, which is a core method of the new rendering system
     @Inject(at = @At("HEAD"), method = "update")
     private void bren$renderGunAnimation(
             ItemStackRenderState output, 
@@ -44,30 +45,33 @@ public abstract class ItemRendererMixin {
         
         Minecraft client = Minecraft.getInstance();
 
-        // 只在客户端且玩家存在时处理
-        if (client.player != null && client.getCameraEntity() instanceof LivingEntity livingEntity) {
+        // Only process items owned by the local player to prevent player1's animation from bleeding onto player2
+        if (client.player == null || owner != client.player) return;
+
+        // Only processed when the client is active and the player exists
+        if (client.getCameraEntity() instanceof LivingEntity livingEntity) {
             ItemStack mainHandItem = client.player.getMainHandItem();
             ItemStack offHandItem = client.player.getOffhandItem();
 
-            // 检查是否为枪械物品（主手或副手）
+            // Check if it is a firearm (primary or secondary hand).
             boolean isMainHandGun = !mainHandItem.isEmpty() && mainHandItem.getItem() instanceof GunItem;
             boolean isOffHandGun = !offHandItem.isEmpty() && offHandItem.getItem() instanceof GunItem;
 
-            // 调试信息：显示当前渲染状态
+            // Debugging information: Displays the current rendering status
             if (isMainHandGun || isOffHandGun) {
                 System.out.println("[Bren Debug] Gun animation triggered for display context: " + displayContext);
             }
 
-            // 检查是否为第一人称渲染模式
+            // Check if it is in first-person rendering mode
             boolean isFirstPerson = isFirstPersonRender(displayContext);
-            
-            // 调试信息：显示当前渲染模式
+
+            // Debugging information: Displays the current rendering mode
             if (isMainHandGun || isOffHandGun) {
                 System.out.println("[Bren Debug] Display context: " + displayContext + ", isFirstPerson: " + isFirstPerson);
             }
             
             if (isFirstPerson) {
-                // 应用第一人称枪械动画变换到渲染状态
+                // Apply first-person gun animation transition to rendering state
                 if (isMainHandGun) {
                     System.out.println("[Bren Debug] Applying first person animation to main hand");
                     applyFirstPersonAnimationTransform(output, livingEntity, mainHandItem);
@@ -76,7 +80,7 @@ public abstract class ItemRendererMixin {
                     applyFirstPersonAnimationTransform(output, livingEntity, offHandItem);
                 }
             } else {
-                // 应用第三人称枪械动画变换到渲染状态
+                // Apply third-person gun animation transition to rendering state
                 if (isMainHandGun) {
                     applyThirdPersonAnimationTransform(output, livingEntity, mainHandItem);
                 } else if (isOffHandGun) {
@@ -88,16 +92,16 @@ public abstract class ItemRendererMixin {
 
     @Unique
     private void applyFirstPersonAnimationTransform(ItemStackRenderState output, LivingEntity livingEntity, ItemStack itemStack) {
-        // 第一人称动画逻辑 - 通过 ItemStackRenderState 应用变换
-        // 这里可以添加第一人称特有的动画效果
+        // First-person animation logic - applying transformations via ItemStackRenderState
+        // Here you can add animation effects specific to first-person perspective.
         if (livingEntity instanceof Player player && livingEntity instanceof IGunUser gunUser) {
             if (!itemStack.isEmpty() && itemStack.getItem() instanceof GunItem gunItem) {
                 float cooldownProgress = player.getCooldowns().getCooldownPercent(itemStack, 0.0F);
                 GunHelper.GunStates gunState = gunUser.bren_1_21_1$getGunState();
                 boolean reloading = gunState.equals(GunHelper.GunStates.RELOADING);
                 boolean leftHanded = livingEntity.getMainArm().equals(HumanoidArm.LEFT);
-                
-                // 应用第一人称动画逻辑
+
+                // Apply first-person animation logic
                 applyFirstPersonAnimationLogic(output, livingEntity, itemStack, cooldownProgress, reloading, leftHanded);
             }
         }
@@ -105,16 +109,16 @@ public abstract class ItemRendererMixin {
     
     @Unique
     private void applyThirdPersonAnimationTransform(ItemStackRenderState output, LivingEntity livingEntity, ItemStack itemStack) {
-        // 第三人称动画逻辑 - 通过 ItemStackRenderState 应用变换
-        // 这里可以添加第三人称特有的动画效果
+        // Third-person animation logic - applying transformations via ItemStackRenderState
+        // Here you can add animation effects specific to third-person perspective.
         if (livingEntity instanceof Player player && livingEntity instanceof IGunUser gunUser) {
             if (!itemStack.isEmpty() && itemStack.getItem() instanceof GunItem gunItem) {
                 float cooldownProgress = player.getCooldowns().getCooldownPercent(itemStack, 0.0F);
                 GunHelper.GunStates gunState = gunUser.bren_1_21_1$getGunState();
                 boolean reloading = gunState.equals(GunHelper.GunStates.RELOADING);
                 boolean leftHanded = livingEntity.getMainArm().equals(HumanoidArm.LEFT);
-                
-                // 应用第三人称动画逻辑
+
+                // Apply third-person animation logic
                 applyThirdPersonAnimationLogic(output, livingEntity, itemStack, cooldownProgress, reloading, leftHanded);
             }
         }
@@ -122,61 +126,61 @@ public abstract class ItemRendererMixin {
     
     @Unique
     private void applyFirstPersonAnimationLogic(ItemStackRenderState output, LivingEntity entity, ItemStack itemStack, float cooldownProgress, boolean reloading, boolean leftHanded) {
-        // 第一人称动画逻辑 - 精细的近距离动画效果
-        // 获取时间参数
+        // First-person animation logic - refined close-up animation effects
+        // Get time parameters
         float f = cooldownProgress;
         float f1 = cooldownProgress;
 
-        // 如果物品是GunItem且实现了applyCustomMatrix方法，则调用自定义矩阵变换
+        // If the item is a GunItem and implements the applyCustomMatrix method, then call the custom matrix transformation.
         if (!itemStack.isEmpty() && itemStack.getItem() instanceof GunItem gunItem) {
             GunHelper.GunStates gunState = reloading ? GunHelper.GunStates.RELOADING : GunHelper.GunStates.NORMAL;
 
-            // 注意：在新的渲染系统中，我们不使用PoseStack，而是通过ItemStackRenderState应用变换
-            // 因此这里不再调用applyCustomMatrix，因为它期望一个非null的PoseStack
-            // 所有动画变换都通过ItemStackRenderState API处理
+            // Note: In the new rendering system, we do not use PoseStack, but instead apply transformations through ItemStackRenderState
+            // Therefore, applyCustomMatrix is no longer called here, as it expects a non-null PoseStack
+            // All animation transformations are handled through the ItemStackRenderState API
         }
 
 
-        // 使用正确的1.21.6方法获取tickDelta
+        // Use the correct 1.21.6 method to get tickDelta
         Minecraft client = Minecraft.getInstance();
         float delta = client.getDeltaTracker().getGameTimeDeltaPartialTick(true);
 
-        // 第一人称动画逻辑（基于1.21.6版本）
+        // First-person animation logic (based on version 1.21.6)
         float sin = (float) Math.sin((f * 2 - 0.5) * Math.PI) * 0.5F + 0.5F;
         float sin2 = (float) Math.sin((f1 * 2 - 0.5) * Math.PI) * 0.5F + 0.5F;
         float sin3 = reloading ? sin2 : (float) Math.sin(1 - f);
         
         double d = (Math.sin(((float) entity.tickCount + delta) / 2) * (reloading ? sin2 : f1)) * 30;
-        
-        // 在新的渲染系统中，通过修改渲染状态来应用变换
-        // 这里需要根据 ItemStackRenderState API 来应用动画变换
-        // 暂时使用占位符，稍后根据具体API实现
+
+        // In the new rendering system, transformations are applied by modifying the rendering state.
+        // Here, we need to apply animation transformations based on the ItemStackRenderState API.
+        // This is a placeholder for now; implementation will follow based on the specific API.
         applyFirstPersonTransformViaRenderState(output, sin, sin2, sin3, d, leftHanded, reloading);
     }
     
     @Unique
     private void applyThirdPersonAnimationLogic(ItemStackRenderState output, LivingEntity entity, ItemStack itemStack, float cooldownProgress, boolean reloading, boolean leftHanded) {
-        // 第三人称动画逻辑 - 简化的远距离动画效果
-        // 获取时间参数
+        // Third-person animation logic - Simplified long-distance animation effects
+        // Get time parameters
         float f = cooldownProgress;
         float f1 = cooldownProgress;
 
-        // 如果物品是GunItem且实现了applyCustomMatrix方法，则调用自定义矩阵变换
+        // If the item is a GunItem and implements the applyCustomMatrix method, then call the custom matrix transformation.
         if (!itemStack.isEmpty() && itemStack.getItem() instanceof GunItem gunItem) {
             GunHelper.GunStates gunState = reloading ? GunHelper.GunStates.RELOADING : GunHelper.GunStates.NORMAL;
 
-            // 注意：在新的渲染系统中，我们不使用PoseStack，而是通过ItemStackRenderState应用变换
-            // 因此这里不再调用applyCustomMatrix，因为它期望一个非null的PoseStack
-            // 所有动画变换都通过ItemStackRenderState API处理
+            // Note: In the new rendering system, we do not use PoseStack, but instead apply transformations through ItemStackRenderState
+            // Therefore, applyCustomMatrix is ​​no longer called here, as it expects a non-null PoseStack
+            // All animation transformations are handled through the ItemStackRenderState API
         }
 
-        // 第三人称动画逻辑（基于1.21.6版本）
+        // Third-person animation logic (based on version 1.21.6)
         float z = Math.max((1 - f + f1) / 2, 0);
         float f2 = reloading ? ((float) Math.sin((f1 * 2 - 0.5) * Math.PI) * 0.5F + 0.5F) / 3 : z;
-        
-        // 在新的渲染系统中，通过修改渲染状态来应用变换
-        // 这里需要根据 ItemStackRenderState API 来应用动画变换
-        // 暂时使用占位符，稍后根据具体API实现
+
+        // In the new rendering system, transformations are applied by modifying the rendering state.
+        // Here, we need to apply animation transformations based on the ItemStackRenderState API.
+        // This is a placeholder for now; implementation will follow based on the specific API.
         applyThirdPersonTransformViaRenderState(output, f2, leftHanded);
     }
     

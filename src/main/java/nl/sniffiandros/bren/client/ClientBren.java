@@ -59,17 +59,23 @@ public class ClientBren implements ClientModInitializer {
             LOGGER.info("Ammo GUI is disabled in config");
         }
 
+        // TODO there is only:
+        //  auto_gun, bullet, machine_gun, magazine, metal_tube, netherite auto_gun + machine + rifle + revolver + shotgun,
+        //  shell, short_magazine, revolver, rifle, shotgun,
+
+        // TODO отображается анимается на другом игроке (дублируется с себя)
         LivingEntityRenderLayerRegistrationCallback.EVENT.register((t, r, e, c) -> {
-            // 只为人形生物注册枪械相关渲染器，避免类型转换错误
-            // t 参数是 EntityType，我们需要检查是否为人形生物类型
+            // Only register weapon-related renderers for humanoid creatures to avoid type conversion errors
+
+            // The t parameter is EntityType; we need to check if it's a humanoid creature type.
             if (isHumanoidEntityType(t)) {
                 if (MConfig.renderGunOnBack.get()) {
-                    // GunBackFeatureRenderer 需要的是 LivingEntityRenderer 而不是 ItemRenderer
+                    // GunBackFeatureRenderer requires LivingEntityRenderer, not ItemRenderer.
                     e.register(new GunBackFeatureRenderer(r, (net.minecraft.client.renderer.entity.LivingEntityRenderer) r));
                 }
-                
-                // 只为人形生物注册枪械持有姿势特性渲染器
-                // 使用原始类型避免泛型类型检查问题
+
+                // Only register weapon-holding pose renderers for humanoid creatures
+                // Use primitive types to avoid generic type checking issues
                 e.register(new GunHoldingFeatureRenderer(r));
             }
         });
@@ -84,10 +90,10 @@ public class ClientBren implements ClientModInitializer {
     public static void registerAllModels() {
         // 这里可以添加额外的模型注册逻辑
     }
-    
-    // 检查实体类型是否为人形生物
+
+    // Check if the entity type is a humanoid creature
     private static boolean isHumanoidEntityType(net.minecraft.world.entity.EntityType<?> entityType) {
-        // 人形生物包括玩家、村民、僵尸、骷髅等
-        return entityType == net.minecraft.world.entity.EntityType.PLAYER;
+        var key = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
+        return key != null && "minecraft".equals(key.getNamespace()) && "player".equals(key.getPath());
     }
 }

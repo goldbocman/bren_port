@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -22,25 +21,29 @@ public class GunBackFeatureRenderer<T extends net.minecraft.client.renderer.enti
         this.itemRenderer = itemRenderer;
     }
 
-    // 添加一个静态方法，供外部调用渲染背上的枪械
-    public static <T extends LivingEntity> void renderGunOnBack(T entity, PoseStack matrices, MultiBufferSource vertexConsumers, int light, LivingEntityRenderer itemRenderer, HumanoidModel<?> model) {
+    // Add a static method for external calls to render the gun on the back.
+    public static <T extends LivingEntity> void renderGunOnBack(T entity, PoseStack matrices,
+//                                                                MultiBufferSource vertexConsumers,
+                                                                int light, LivingEntityRenderer itemRenderer, HumanoidModel<?> model) {
         if (entity instanceof IGunUser gunUser) {
             ItemStack lastGun = gunUser.bren_1_21_1$getLastGun();
             if (!lastGun.isEmpty()) {
-                renderGunItem(entity, lastGun, matrices, vertexConsumers, light, itemRenderer, model);
+                renderGunItem(entity, lastGun, matrices, light, itemRenderer, model);
             }
         }
     }
 
-    // 渲染枪械物品的辅助方法
-    private static <T extends LivingEntity> void renderGunItem(T entity, ItemStack stack, PoseStack matrices, MultiBufferSource vertexConsumers, int light, LivingEntityRenderer itemRenderer, HumanoidModel<?> model) {
+    // Auxiliary methods for rendering firearms and other items
+    private static <T extends LivingEntity> void renderGunItem(T entity, ItemStack stack, PoseStack matrices,
+//                                                               MultiBufferSource vertexConsumers,
+                                                               int light, LivingEntityRenderer itemRenderer, HumanoidModel<?> model) {
         if (stack.isEmpty()) return;
 
         matrices.pushPose();
 
         ModelPart modelPart = model.body;
 
-        // 方案4：使用反射获取字段值（最后手段）
+        // Option 4: Use reflection to retrieve field values ​​(last resort)
         try {
             java.lang.reflect.Field pivotXField = ModelPart.class.getDeclaredField("pivotX");
             pivotXField.setAccessible(true);
@@ -72,7 +75,7 @@ public class GunBackFeatureRenderer<T extends net.minecraft.client.renderer.enti
             matrices.mulPose(Axis.YP.rotation(yaw));
             matrices.mulPose(Axis.ZP.rotation(roll));
         } catch (Exception e) {
-            // 如果反射失败，使用默认值
+            // If reflection fails, use the default value.
             matrices.translate(0, 0, 0);
         }
 
@@ -81,8 +84,8 @@ public class GunBackFeatureRenderer<T extends net.minecraft.client.renderer.enti
         matrices.mulPose(Axis.ZP.rotationDegrees(60 + 180));
         matrices.mulPose(Axis.YP.rotationDegrees(-180));
 
-        // 使用Minecraft 1.21.6中正确的ItemRenderer.renderItem方法签名
-        // 回退到不使用TransformationMode参数的版本，避免类找不到的问题
+        // Use the correct ItemRenderer.renderItem method signature from Minecraft 1.21.6
+        // Revert to a version that does not use the TransformationMode parameter to avoid class not found issues
         //itemRenderer.renderItem(stack, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, (World) entity.getWorld(), 0);
         matrices.popPose();
     }

@@ -256,11 +256,11 @@ public class ItemReg {
                             );
 
             // Register grenade
-            LOGGER.info("Registering grenade");
-            GRENADE = registerCustomItem("grenade",
-                    s -> new GrenadeItem(GRENADE_POWER, GRENADE_FUSE_TIME, s),
-                    new Item.Properties().stacksTo(16)
-            );
+//            LOGGER.info("Registering grenade");
+//            GRENADE = registerCustomItem("grenade",
+//                    s -> new GrenadeItem(GRENADE_POWER, GRENADE_FUSE_TIME, s),
+//                    new Item.Properties().stacksTo(16)
+//            );
 
             LOGGER.info("Item registration process completed successfully");
         } catch (Exception e) {

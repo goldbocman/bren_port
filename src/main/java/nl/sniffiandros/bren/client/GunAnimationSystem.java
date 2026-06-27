@@ -12,12 +12,16 @@ import nl.sniffiandros.bren.common.registry.custom.types.GunItem;
 import nl.sniffiandros.bren.common.utils.GunHelper;
 
 /**
- * 适配Minecraft 1.21.6新渲染系统的枪械动画系统
+
+ * Gun animation system adapted for the new rendering system in Minecraft 1.21.6
+
  */
 public class GunAnimationSystem {
 
     /**
-     * 应用枪械动画到模型部件 - 适配1.21.6渲染系统
+
+     * Apply weapon animation to model parts - compatible with rendering system 1.21.6
+
      */
     public static void applyGunAnimation(ModelPart leftArm, ModelPart rightArm, ModelPart head,
                                          HumanoidRenderState state, LivingEntity entity) {
@@ -88,7 +92,7 @@ public class GunAnimationSystem {
 
         float l = isLeftHanded ? -1 : 1;
 
-        // 获取实体角度（转换为弧度）
+        // Get entity angle (convert to radians)
         float p = entity.getXRot() * 0.01745329F;
         float y = entity.getYHeadRot() * 0.01745329F;
         float bodyYaw = entity.getVisualRotationYInDegrees() * 0.01745329F;
@@ -99,20 +103,20 @@ public class GunAnimationSystem {
         float f3 = reloading ? fr/4 : f2 ;
         float f4 = reloading ? (isLeftHanded ? -fr/4 : fr/4) : f2 * l;
 
-        // 主手臂动画 - 相对于躯干
+        // Main arm animation - relative to torso
         mainArm.yRot = isLeftHanded ? (y - bodyYaw) + 0.7853982F : (y - bodyYaw) - 0.7853982F;
         mainArm.xRot = 0.2181662F + p + f3/2;
         mainArm.zRot += f4;
 
-        // 副手臂动画 - 相对于躯干
+        // Off-arm animation - relative to torso
         secondaryArm.xRot = -0.6981317F + p/3 - f3/2 - (reloading ? fr:0);
         secondaryArm.yRot = (isLeftHanded ? -1.090831F - (y - bodyYaw) : 1.090831F + (y - bodyYaw)) + (p/2) * l + f3/3;
 
-        // 头部动画 - 相对于躯干
+        // Head animation - relative to torso
         head.yRot = (y - bodyYaw);
         head.xRot = p - f3/2;
-        
-        // 帽子层动画 - 与头部同步
+
+        // Hat layer animation - synchronized with the head
         if (hat != null) {
             hat.yRot = (y - bodyYaw);
             hat.xRot = p - f3/2;
@@ -138,8 +142,8 @@ public class GunAnimationSystem {
 
         head.yRot = 0;
         head.xRot = p;
-        
-        // 帽子层动画 - 与头部同步
+
+        // Hat layer animation - synchronized with the head
         if (hat != null) {
             hat.yRot = 0;
             hat.xRot = p;
@@ -180,8 +184,8 @@ public class GunAnimationSystem {
 
         head.yRot = (y - bodyYaw);
         head.xRot = p - sin;
-        
-        // 帽子层动画 - 与头部同步
+
+        // Hat layer animation - synchronized with the head
         if (hat != null) {
             hat.yRot = (y - bodyYaw);
             hat.xRot = p - sin;

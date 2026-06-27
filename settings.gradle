@@ -9,7 +9,7 @@ pluginManagement {
 	}
 	
 	// Specify compatible versions for Fabric Loom plugin
-	plugins {
-		id 'net.fabricmc.fabric-loom' version '1.15-SNAPSHOT'
-	}
+//	plugins {
+//		id 'net.fabricmc.fabric-loom' version '1.17-SNAPSHOT'
+//	}
 }

@@ -28,7 +28,7 @@ public class NetworkReg {
     public static final CustomPacketPayload.Type<ItemComponentSyncPayload> ITEM_COMPONENT_SYNC_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "item_component_sync"));
     // 添加新的射击粒子效果数据包（S2C）
     public static final CustomPacketPayload.Type<ShootParticlePayload> SHOOT_PARTICLE_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "shoot_particle"));
-    public static final CustomPacketPayload.Type<GrenadeLeftClickPayload> GRENADE_LEFT_CLICK_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "grenade_left_click"));
+//    public static final CustomPacketPayload.Type<GrenadeLeftClickPayload> GRENADE_LEFT_CLICK_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "grenade_left_click"));
 
     public static void registerAllPackets() {
         LOGGER.info("Registering all network packets");
@@ -43,7 +43,7 @@ public class NetworkReg {
         // 服务器端接收的数据包（C2S - Client to Server）
         PayloadTypeRegistry.serverboundPlay().register(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.serverboundPlay().register(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC);
-        PayloadTypeRegistry.serverboundPlay().register(GRENADE_LEFT_CLICK_PACKET_ID, GrenadeLeftClickPayload.PACKET_CODEC);
+//        PayloadTypeRegistry.serverboundPlay().register(GRENADE_LEFT_CLICK_PACKET_ID, GrenadeLeftClickPayload.PACKET_CODEC);
     
         ServerPlayNetworking.registerGlobalReceiver(RELOAD_PACKET_ID, (payload, context) -> {
             ServerPlayer player = context.player();
@@ -86,17 +86,17 @@ public class NetworkReg {
             // 触发射击事件
         });
         
-        ServerPlayNetworking.registerGlobalReceiver(GRENADE_LEFT_CLICK_PACKET_ID, (payload, context) -> {
-            ServerPlayer player = context.player();
-            MinecraftServer server = player.level().getServer();
-            
-            if (server != null) {
-                server.execute(() -> {
-                    ItemStack stack = player.getMainHandItem();
-                    nl.sniffiandros.bren.common.registry.custom.types.GrenadeItem.onLeftClick(player, stack);
-                });
-            }
-        });
+//        ServerPlayNetworking.registerGlobalReceiver(GRENADE_LEFT_CLICK_PACKET_ID, (payload, context) -> {
+//            ServerPlayer player = context.player();
+//            MinecraftServer server = player.level().getServer();
+//
+//            if (server != null) {
+//                server.execute(() -> {
+//                    ItemStack stack = player.getMainHandItem();
+//                    nl.sniffiandros.bren.common.registry.custom.types.GrenadeItem.onLeftClick(player, stack);
+//                });
+//            }
+//        });
         
         LOGGER.info("All network packets registered successfully");
     }
@@ -251,18 +251,18 @@ public class NetworkReg {
         }
     }
 
-    public record GrenadeLeftClickPayload() implements CustomPacketPayload, nl.sniffiandros.bren.common.registry.GrenadeLeftClickPayload {
-        public static final StreamCodec<RegistryFriendlyByteBuf, GrenadeLeftClickPayload> PACKET_CODEC = StreamCodec.unit(new GrenadeLeftClickPayload());
-
-        @Override
-        public void write(RegistryFriendlyByteBuf buf) {
-        }
-
-        @Override
-        public @NotNull Type<? extends CustomPacketPayload> type() {
-            return GRENADE_LEFT_CLICK_PACKET_ID;
-        }
-    }
+//    public record GrenadeLeftClickPayload() implements CustomPacketPayload, nl.sniffiandros.bren.common.registry.GrenadeLeftClickPayload {
+//        public static final StreamCodec<RegistryFriendlyByteBuf, GrenadeLeftClickPayload> PACKET_CODEC = StreamCodec.unit(new GrenadeLeftClickPayload());
+//
+//        @Override
+//        public void write(RegistryFriendlyByteBuf buf) {
+//        }
+//
+//        @Override
+//        public @NotNull Type<? extends CustomPacketPayload> type() {
+//            return GRENADE_LEFT_CLICK_PACKET_ID;
+//        }
+//    }
 
 
 }

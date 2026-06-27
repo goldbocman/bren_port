@@ -13,7 +13,9 @@ import net.minecraft.world.entity.LivingEntity;
 import nl.sniffiandros.bren.client.GunAnimationSystem;
 
 /**
- * 在新的渲染系统中实现枪械动画的FeatureRenderer
+
+ * Implement the FeatureRenderer for gun animation in the new rendering system
+
  */
 @Environment(EnvType.CLIENT)
 public class GunAnimationFeatureRenderer<T extends HumanoidRenderState, M extends HumanoidModel<T>> 
@@ -33,22 +35,24 @@ public class GunAnimationFeatureRenderer<T extends HumanoidRenderState, M extend
 
     public void render(PoseStack matrices, SubmitNodeCollector commandQueue, int light,
                       T state, float limbAngle, float limbDistance) {
-        // 在新的渲染系统中，我们需要通过其他方式获取实体信息
-        // 通过客户端获取当前渲染的实体
+        // In the new rendering system, we need to obtain entity information through other means
+
+        // Obtain the currently rendered entity through the client
         if (client.getCameraEntity() instanceof LivingEntity livingEntity) {
-            // 应用枪械动画
-            // 注意：这里可能需要根据具体的state类型进行调整
+            // Apply weapon animation
+
+            // Note: This may need to be adjusted depending on the specific state type.
         }
     }
-    
+
     /**
-     * 静态方法，供外部调用应用枪械动画
+     * Static method, for external calls to apply gun animations
      */
     public static <T extends LivingEntity> void applyGunAnimationToModel(HumanoidModel<?> model, T entity) {
         if (entity != null && model != null) {
             GunAnimationSystem.applyGunAnimation(
                 model.leftArm, model.rightArm, model.head, 
-                null, entity // 暂时传递null作为state，因为需要重构动画系统
+                null, entity // Temporarily pass null as state, because the animation system needs to be refactored.
             );
         }
     }

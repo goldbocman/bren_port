@@ -27,51 +27,51 @@ public class GunHoldingFeatureRenderer<S extends HumanoidRenderState, M extends 
     }
 
     public void render(PoseStack matrices, SubmitNodeCollector queue, int light, S state, float limbAngle, float limbDistance) {
-        // 现在我们可以访问BipedEntityRenderState中的mainArm字段了
+        // Now we can access the mainArm field in BipedEntityRenderState
         double target_degree = state.mainArm == HumanoidArm.LEFT ? 135D : 45D;
 
-        // 使用反射来安全地访问可能的mainHandItem字段
+        // Use reflection to safely access possible mainHandItem fields
         ItemStack s = getMainHandItem(state);
 
         if (s != null && !s.isEmpty()) {
             if (s.getItem() instanceof GunItem gunItem) {
                 if (gunItem.holdingPose() == PoseType.TWO_ARMS) {
-                    // 应用变换之前保存矩阵状态
+                    // Save matrix state before applying transformation
                     matrices.pushPose();
                     matrices.mulPose(Axis.YN.rotation((float) Math.toRadians(target_degree - 90)));
-                    // 恢复矩阵状态
+                    // Restore matrix state
                     matrices.popPose();
                 }
             }
         }
     }
     /**
-     * 通过反射安全地获取主手物品
+     * Securely obtain main hand items via reflection.
      */
     private ItemStack getMainHandItem(HumanoidRenderState state) {
         try {
-            // 尝试访问不同的可能字段名
+            // Try accessing different possible field names
             Class<?> clazz = state.getClass();
             while (clazz != null) {
                 try {
-                    // 尝试mainHandItem字段
+                    // Try the mainHandItem field
                     java.lang.reflect.Field mainHandItemField = clazz.getDeclaredField("mainHandItem");
                     mainHandItemField.setAccessible(true);
                     return (ItemStack) mainHandItemField.get(state);
                 } catch (NoSuchFieldException e1) {
                     try {
-                        // 尝试mainHandItemState字段
+                        // Try the mainHandItemState field
                         java.lang.reflect.Field mainHandItemStateField = clazz.getDeclaredField("mainHandItemState");
                         mainHandItemStateField.setAccessible(true);
                         return (ItemStack) mainHandItemStateField.get(state);
                     } catch (NoSuchFieldException e2) {
-                        // 继续检查父类
+                        // Continue checking the parent class
                         clazz = clazz.getSuperclass();
                     }
                 }
             }
         } catch (Exception ignored) {
-            // 如果所有尝试都失败，返回空的ItemStack
+            // If all attempts fail, return an empty ItemStack.
         }
         return ItemStack.EMPTY;
     }

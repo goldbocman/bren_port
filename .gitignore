@@ -26,3 +26,6 @@ replay_pid*
 # 项目排除路径
 /.gradle/
 /build/
+
+.idea
+./run
