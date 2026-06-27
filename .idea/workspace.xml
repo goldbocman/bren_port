@@ -7,11 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba47fd9e-a010-41b8-bb01-8ef9aadea2bd" name="更改" comment="ported to 26.2">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
+    <list default="true" id="ba47fd9e-a010-41b8-bb01-8ef9aadea2bd" name="更改" comment="update license">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,6 +96,13 @@
       </RecentBranches>
     </option>
   </component>
+  <component name="GithubProjectSettings">
+    <option name="branchProtectionPatterns">
+      <list>
+        <option value="master" />
+      </list>
+    </option>
+  </component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/goldbocman/bren_port",
@@ -177,7 +182,7 @@
       <recent name="nl.sniffiandros.bren.common.entity" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Minecraft Client">
+  <component name="RunManager" selected="Gradle.Bren - 26.1 [build]">
     <configuration name="Bren - 26.1 [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -423,7 +428,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782567714715</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="update license">
+      <option name="closed" value="true" />
+      <created>1782569365519</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1782569365519</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -447,7 +460,8 @@
     <MESSAGE value="new gun" />
     <MESSAGE value="ported to 26.2 and fixed duplication current player state to other players" />
     <MESSAGE value="removed run folder from git, and all edits with disabled weapons. also returned legacy balance" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed run folder from git, and all edits with disabled weapons. also returned legacy balance" />
+    <MESSAGE value="update license" />
+    <option name="LAST_COMMIT_MESSAGE" value="update license" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
