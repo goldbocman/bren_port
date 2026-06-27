@@ -2,10 +2,10 @@
 	"schemaVersion": 1,
 	"id": "bren",
 	"version": "${version}",
-	"name": "Bren Refabriced",
-	"description": "EVER WANTED TO START A WAR!! Or just kill mobs better... ANYWAY THIS IS THE MOD FOR YOU!",
+	"name": "Bren [Legacy Port]",
+	"description": "Vanilla-like minecraft weapons",
 	"authors": [
-		"Sniffiandros!","Bin!"
+		"Sniffiandros!", "Bin!", "goldbocman"
 	],
 	"contact": {
 		"homepage": ""
@@ -24,24 +24,6 @@
 	"mixins": [
 		"bren.mixins.json"
 	],
-	"custom": {
-		"fabric-resource-loader-v0": {
-			"includes": [
-				{
-					"id": "bren_3d_resources",
-					"name": "Bren 3D Resources",
-					"description": "3D resources for Bren guns",
-					"path": "resourcepacks/bren_3d_resources"
-				},
-				{
-					"id": "bren_3d_resources_2",
-					"name": "Bren 3D Resources 2",
-					"description": "3D resources for Bren guns",
-					"path": "resourcepacks/bren_3d_resources_2"
-				}
-			]
-		}
-	},
 	"depends": {
 		"fabricloader": ">=0.18.04",
 		"minecraft": ">=26.2- <26.3-",
