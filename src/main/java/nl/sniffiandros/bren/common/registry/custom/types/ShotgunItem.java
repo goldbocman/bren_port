@@ -2,7 +2,9 @@ package nl.sniffiandros.bren.common.registry.custom.types;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -24,6 +26,11 @@ public class ShotgunItem extends BulletOnlyGun {
     // 修改为接收Item.Settings参数的构造函数
     public ShotgunItem(Item.Properties settings) {
         super(settings);
+    }
+
+    @Override
+    protected Component getAmmoDescription() {
+        return Component.literal("Uses: Shell").withStyle(ChatFormatting.YELLOW);
     }
 
     // 获取当前使用的子弹类型
@@ -90,7 +97,9 @@ public class ShotgunItem extends BulletOnlyGun {
 
             // 检查玩家是否有兼容的弹药（SHELL 或 DRAGONBREATH_SHELL）
             ItemStack shellBullets = Bren.getItemFromPlayer(player, ItemReg.SHELL);
-            ItemStack dragonBreathBullets = Bren.getItemFromPlayer(player, ItemReg.DRAGONBREATH_SHELL);
+            ItemStack dragonBreathBullets = ItemReg.DRAGONBREATH_SHELL != null
+                    ? Bren.getItemFromPlayer(player, ItemReg.DRAGONBREATH_SHELL)
+                    : ItemStack.EMPTY;
 
             // 优先使用龙息弹，如果没有则使用普通霰弹
             ItemStack bullets = dragonBreathBullets.isEmpty() ? shellBullets : dragonBreathBullets;
@@ -170,21 +179,18 @@ public class ShotgunItem extends BulletOnlyGun {
     }
 
 
-    // 修复后：
     @Override
     public Item compatibleBullet(Player Player) {
-        // 检查玩家背包内的弹药情况
         ItemStack shellBullets = Bren.getItemFromPlayer(Player, ItemReg.SHELL);
-        ItemStack dragonBreathBullets = Bren.getItemFromPlayer(Player, ItemReg.DRAGONBREATH_SHELL);
+        ItemStack dragonBreathBullets = ItemReg.DRAGONBREATH_SHELL != null
+                ? Bren.getItemFromPlayer(Player, ItemReg.DRAGONBREATH_SHELL)
+                : ItemStack.EMPTY;
 
-        // 优先使用龙息弹，如果没有则使用普通霰弹
         if (!dragonBreathBullets.isEmpty()) {
             return ItemReg.DRAGONBREATH_SHELL;
         } else if (!shellBullets.isEmpty()) {
             return ItemReg.SHELL;
         }
-
-        // 如果玩家没有任何兼容的弹药，返回默认的普通霰弹
         return ItemReg.SHELL;
     }
 

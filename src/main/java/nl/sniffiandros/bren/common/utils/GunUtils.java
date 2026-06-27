@@ -146,8 +146,11 @@ public class GunUtils {
         return fireRate;
     }
 
-    public static double CalculateRecoil(Player ignoredPlayer, ItemStack ignoredStack, double baseRecoil) {
+    public static double CalculateRecoil(Player player, ItemStack ignoredStack, double baseRecoil) {
         baseRecoil *= MConfig.recoilMultiplier.get();
+        if (player.isCrouching()) {
+            baseRecoil *= 0.5;
+        }
         return Math.round(baseRecoil * 2) / 2.0;
     }
 

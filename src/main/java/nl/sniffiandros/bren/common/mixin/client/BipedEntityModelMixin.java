@@ -8,6 +8,7 @@ import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import nl.sniffiandros.bren.client.GunAnimationSystem;
@@ -36,20 +37,25 @@ public abstract class BipedEntityModelMixin implements ArmedModel, HeadedModel {
     @Inject(at = @At("RETURN"), method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/HumanoidRenderState;)V")
     private void angles(HumanoidRenderState state, CallbackInfo info) {
         Minecraft client = Minecraft.getInstance();
-        if (client.player == null) return;
+        if (client.player == null || client.level == null) return;
 
-        // Only animate the local player's own model — not other players' models.
-        // We store the entity ID in the render state during extractRenderState so we can identify it here.
-        if (((IEntityRenderState) state).bren$getEntityId() != client.player.getId()) return;
+        int entityId = ((IEntityRenderState) state).bren$getEntityId();
+        if (entityId == -1) return;
 
-        Player player = client.player;
+        // Look up the actual entity that owns this render state.
+        // For the local player, full gun state is available.
+        // For remote players, rotation and inventory are vanilla-synced, so the holding
+        // pose and cooldown-based firing animation work correctly out of the box.
+        // gunState stays NORMAL for remote players until reload networking is added.
+        Entity entity = client.level.getEntity(entityId);
+        if (!(entity instanceof Player player) || !(player instanceof IGunUser)) return;
+
         ItemStack mainHandItem = player.getMainHandItem();
+        if (mainHandItem.isEmpty() || !(mainHandItem.getItem() instanceof GunItem)) return;
 
-        if (!mainHandItem.isEmpty() && mainHandItem.getItem() instanceof GunItem && player instanceof IGunUser) {
-            GunAnimationSystem.applyGunAnimation(
-                this.leftArm, this.rightArm, this.getHead(), this.hat,
-                state, player
-            );
-        }
+        GunAnimationSystem.applyGunAnimation(
+            this.leftArm, this.rightArm, this.getHead(), this.hat,
+            state, player
+        );
     }
 }

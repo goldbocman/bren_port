@@ -1,14 +1,61 @@
-# _Bren [Guns of Bin fork]_
+# Bren — Vanilla Gun Mod (Fabric 26.2)
 
-# _Smash the zombie invasion with a machine gun! Crush the skeletons' bones with an assault rifle! Send your enemies to a fiery grave with a shotgun and dragon's breath rounds!_
+A Minecraft Fabric mod that adds four guns and their supporting crafting items, designed to feel at home in vanilla survival.
 
-# You're watching the 26.1.x/26.2 mod source code
+This is a port of **Bren** (1.20.1) and **Bren_Bin** (26.1), with all world-generation extras stripped out — no gun-trader villagers, no loot-table injections, no structures, no special spawns. Just guns you craft and use.
 
-This mod is a fork for [_Bren_](https://modrinth.com/mod/bren) and I make some weird but maybe interesting changes.
+---
 
+## Guns
 
-The target version for the ongoing migration work is: 26.1
+| Gun | Ammo | Capacity | Notes |
+|-----|------|----------|-------|
+| Auto Gun | Magazine | 20 | Full-auto, low damage per shot |
+| Rifle | Magazine | 20 | Semi-auto, high damage |
+| Revolver | Bullet | 6 | Loaded one shell at a time |
+| Shotgun | Shell | 8 | 5 pellets per shot, loaded one shell at a time |
 
-Thanks for RagingZombies with his 3D resource pack:FNP-Zo-Metric,it inspired me to make same things.
+All four guns have a **Netherite upgrade** via the smithing table.
 
-![STOP ASKING](https://cdn.modrinth.com/data/FJEfFMqn/images/abf28c1cbc650277e26d40a92d854aa1803a746f.png)
+Crouch while firing to reduce recoil by 50%.
+
+---
+
+## Ammo & Crafting Components
+
+| Item | Use |
+|------|-----|
+| Bullet | Revolver ammo |
+| Shell | Shotgun ammo |
+| Magazine | Auto Gun / Rifle ammo (20 rounds) |
+| Short Magazine | *(reserved for future weapons, 6 rounds)* |
+| Metal Tube | Intermediate crafting component for all guns |
+| Auto Loader Contraption | Intermediate crafting component for all guns |
+
+---
+
+## Recipe Unlock
+
+Recipes unlock automatically when you pick up a required ingredient — no `/recipe give` or advancements needed beyond normal play.
+
+- Pick up **Iron Ingot** → unlocks `metal_tube` and `auto_loader_contraption`
+- Pick up **Auto Loader Contraption** → unlocks all four base guns
+- Pick up **Netherite Ingot** → unlocks all four netherite upgrades
+
+---
+
+## What Was Removed vs Upstream
+
+- Gun-trader villager structures (`gunpowder_town`, `abandoned_factory`)
+- Machine gun, SMG, air gun, lever gun, double-barrel shotgun, big bore revolver, flare gun, auto pistol
+- Dragon breath shell, drum magazine, clothed magazine
+- Melee weapons (fire axe) and utility items (grappling hook, lunge mine)
+- Workbench block
+
+See [BALANCE_CHANGES.md](BALANCE_CHANGES.md) for the full list with reasons.
+
+---
+
+## Credits
+
+Original mod: [Bren by Sniffiandros](https://modrinth.com/mod/bren)

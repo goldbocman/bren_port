@@ -63,7 +63,6 @@ public class ClientBren implements ClientModInitializer {
         //  auto_gun, bullet, machine_gun, magazine, metal_tube, netherite auto_gun + machine + rifle + revolver + shotgun,
         //  shell, short_magazine, revolver, rifle, shotgun,
 
-        // TODO отображается анимается на другом игроке (дублируется с себя)
         LivingEntityRenderLayerRegistrationCallback.EVENT.register((t, r, e, c) -> {
             // Only register weapon-related renderers for humanoid creatures to avoid type conversion errors
 

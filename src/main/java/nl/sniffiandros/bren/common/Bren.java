@@ -94,37 +94,37 @@ public class Bren implements ModInitializer {
 			.icon(() -> new ItemStack(ItemReg.NETHERITE_AUTO_GUN))
 			.displayItems((context, output) -> {
 				// 添加所有武器
-				output.accept(ItemReg.MACHINE_GUN);
+				// TODO: BALANCING NEEDED — disabled items are commented out; re-enable after tuning
+				// output.accept(ItemReg.MACHINE_GUN);
 				output.accept(ItemReg.AUTO_GUN);
 				output.accept(ItemReg.SHOTGUN);
 				output.accept(ItemReg.RIFLE);
 				output.accept(ItemReg.REVOLVER);
-				output.accept(ItemReg.NETHERITE_MACHINE_GUN);
+				// output.accept(ItemReg.NETHERITE_MACHINE_GUN);
 				output.accept(ItemReg.NETHERITE_AUTO_GUN);
-				output.accept(ItemReg.NETHERITE_TACTICAL_AUTO_GUN);
+				// output.accept(ItemReg.NETHERITE_TACTICAL_AUTO_GUN);
 				output.accept(ItemReg.NETHERITE_SHOTGUN);
-				output.accept(ItemReg.NETHERITE_DOUBLE_BARRELS_SHOTGUN);
+				// output.accept(ItemReg.NETHERITE_DOUBLE_BARRELS_SHOTGUN);
 				output.accept(ItemReg.NETHERITE_RIFLE);
-				output.accept(ItemReg.NETHERITE_LEVER_GUN);
+				// output.accept(ItemReg.NETHERITE_LEVER_GUN);
 				output.accept(ItemReg.NETHERITE_REVOLVER);
-				output.accept(ItemReg.AUTO_PISTOL);
-				output.accept(ItemReg.FLARE_GUN);
-			output.accept(ItemReg.FIRE_AXE);
-			output.accept(ItemReg.EXPLOSIVE_SPEAR);
-			output.accept(ItemReg.AIR_GUN);
-			output.accept(ItemReg.SMG);
-			output.accept(ItemReg.GRAPPLING_HOOK);
+				// output.accept(ItemReg.AUTO_PISTOL);
+				// output.accept(ItemReg.FLARE_GUN);
+				// output.accept(ItemReg.FIRE_AXE);
+				// output.accept(ItemReg.EXPLOSIVE_SPEAR);
+				// output.accept(ItemReg.AIR_GUN);
+				// output.accept(ItemReg.SMG);
+				// output.accept(ItemReg.GRAPPLING_HOOK);
 
 				// 添加弹药
 				output.accept(ItemReg.BULLET);
 				output.accept(ItemReg.SHELL);
-				output.accept(ItemReg.DRAGONBREATH_SHELL);
-
+				// output.accept(ItemReg.DRAGONBREATH_SHELL);
 
 				// 添加配件
 				output.accept(ItemReg.MAGAZINE);
-				output.accept(ItemReg.DRUM_MAGAZINE);
-				output.accept(ItemReg.CLOTHED_MAGAZINE);
+				// output.accept(ItemReg.DRUM_MAGAZINE);
+				// output.accept(ItemReg.CLOTHED_MAGAZINE);
 				output.accept(ItemReg.SHORT_MAGAZINE);
 
 				// 添加材料
@@ -240,7 +240,8 @@ public class Bren implements ModInitializer {
 	// 新增辅助方法：根据标签获取兼容的弹匣物品
 	private static Item[] getCompatibleMagazineItems(TagKey<Item> magTag) {
 		if (magTag.location().getPath().equals("magazines/medium_magazines")) {
-			return new Item[]{ItemReg.MAGAZINE, ItemReg.CLOTHED_MAGAZINE, ItemReg.DRUM_MAGAZINE};
+			// TODO: BALANCING NEEDED — add CLOTHED_MAGAZINE and DRUM_MAGAZINE back when re-enabled in ItemReg
+			return new Item[]{ItemReg.MAGAZINE};
 		} else if (magTag.location().getPath().equals("magazines/short_magazines")) {
 			return new Item[]{ItemReg.SHORT_MAGAZINE};
 		} else {

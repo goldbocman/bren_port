@@ -1,6 +1,8 @@
 package nl.sniffiandros.bren.common.registry.custom.types;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -140,58 +142,37 @@ public abstract class BulletOnlyGun extends GunItem {
     @Override
     public void reloadTick(ItemStack stack, Level world, Player player, IGunUser gunUser) {
         ItemCooldowns cooldownManager = player.getCooldowns();
-        float cooldownProgress = cooldownManager.getCooldownPercent(stack, 1.0F);
-        
-        LOGGER.debug("BulletOnlyGun reloadTick called: player={}, state={}, cooling down={}, progress={}", 
-            player.getName().getString(), gunUser.bren_1_21_1$getGunState(), 
-            cooldownManager.isOnCooldown(stack), cooldownProgress);
-        
-        // 关键修复：确保只有在装弹状态下才执行装弹逻辑
-        if (!cooldownManager.isOnCooldown(stack) && 
-            gunUser.bren_1_21_1$getGunState().equals(GunHelper.GunStates.RELOADING)) {
-            
-            LOGGER.info("BulletOnlyGun reload tick processing for player {}", player.getName().getString());
-            
-            // 关键修复：使用当前枪械实例的compatibleBullet方法，确保调用子类重写的方法
+
+        if (!cooldownManager.isOnCooldown(stack) &&
+                gunUser.bren_1_21_1$getGunState().equals(GunHelper.GunStates.RELOADING)) {
+
             Item compatibleBulletItem = this.compatibleBullet(player);
-            LOGGER.info("Using compatible bullet item: {}", compatibleBulletItem.toString());
-            
-            // 检查玩家是否有弹药
             ItemStack bullets = Bren.getItemFromPlayer(player, compatibleBulletItem);
-            if (bullets.isEmpty()) {
-                LOGGER.info("Player {} has no ammunition, stopping reload", player.getName().getString());
-                // 重置状态
-                gunUser.bren_1_21_1$setGunState(GunHelper.GunStates.NORMAL);
-                gunUser.bren_1_21_1$setCanReload(true);
-                gunUser.bren_1_21_1$setReloadingGun(ItemStack.EMPTY);
+
+            if (bullets.isEmpty() || getContents(stack) >= getMaxCapacity(stack)) {
+                finishReload(gunUser, player);
                 return;
             }
-            
-            // 检查枪械是否已满
-            if (getContents(stack) >= getMaxCapacity(stack)) {
-                LOGGER.info("Gun is already full for player {}, stopping reload", player.getName().getString());
-                // 重置状态
-                gunUser.bren_1_21_1$setGunState(GunHelper.GunStates.NORMAL);
-                gunUser.bren_1_21_1$setCanReload(true);
-                gunUser.bren_1_21_1$setReloadingGun(ItemStack.EMPTY);
-                return;
-            }
-            
-            // 执行装弹逻辑
-            LOGGER.info("Adding bullet to gun for player {}", player.getName().getString());
+
             addContent(stack);
             bullets.shrink(1);
             afterInserted(stack, player);
-            
-            // 关键修改：每次只装填一发，然后重置状态，等待玩家再次按下R键
-            LOGGER.info("Single bullet loaded for player {}, resetting state to allow manual reload", player.getName().getString());
-            gunUser.bren_1_21_1$setGunState(GunHelper.GunStates.NORMAL);
-            gunUser.bren_1_21_1$setCanReload(true);
-            gunUser.bren_1_21_1$setReloadingGun(ItemStack.EMPTY);
-            
-            // 移除自动连续装填的逻辑
-            // 不再设置新的冷却时间，让玩家可以立即进行下一次装填
-            }
+            finishReload(gunUser, player);
+        }
+    }
+
+    private void finishReload(IGunUser gunUser, Player player) {
+        gunUser.bren_1_21_1$setGunState(GunHelper.GunStates.NORMAL);
+        gunUser.bren_1_21_1$setCanReload(true);
+        gunUser.bren_1_21_1$setReloadingGun(ItemStack.EMPTY);
+//        if (player instanceof ServerPlayer serverPlayer) {
+//            NetworkReg.broadcastGunState(serverPlayer, false);
+//        }
+    }
+
+    @Override
+    protected Component getAmmoDescription() {
+        return Component.literal("Uses: Bullet").withStyle(ChatFormatting.YELLOW);
     }
 
     public boolean applyCustomMatrix(LivingEntity entity, GunHelper.GunStates state, PoseStack matrices, ItemStack stack, float cooldownProgress, boolean leftHanded) {

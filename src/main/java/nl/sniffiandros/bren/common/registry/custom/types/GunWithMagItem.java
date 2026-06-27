@@ -181,7 +181,18 @@ public class GunWithMagItem extends GunItem {
     public int getMaxCapacity(ItemStack stack) {
         var nbt = stack.getOrDefault(DataComponents.CUSTOM_DATA,
                 CustomData.EMPTY).copyTag();
-        return nbt.getInt(MAGAZINE_CAPACITY_KEY).orElse(0);
+        int stored = nbt.getInt(MAGAZINE_CAPACITY_KEY).orElse(0);
+        if (stored > 0) return stored;
+        // No magazine loaded — return the capacity of this gun's compatible magazine type
+        return this.compatibleMagazines.equals(TagReg.SHORT_MAGAZINES) ? 6 : 20;
+    }
+
+    @Override
+    protected Component getAmmoDescription() {
+        if (this.compatibleMagazines.equals(TagReg.SHORT_MAGAZINES)) {
+            return Component.literal("Uses: Short Magazine").withStyle(ChatFormatting.YELLOW);
+        }
+        return Component.literal("Uses: Magazine").withStyle(ChatFormatting.YELLOW);
     }
 
     @Override

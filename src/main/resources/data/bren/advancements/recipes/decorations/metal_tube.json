@@ -21,7 +21,8 @@
   ],
   "rewards": {
     "recipes": [
-      "bren:metal_tube"
+      "bren:metal_tube",
+      "bren:auto_loader_contraption"
     ]
   },
   "sends_telemetry_event": false

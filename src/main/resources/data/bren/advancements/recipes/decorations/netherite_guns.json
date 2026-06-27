@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_auto_loader_contraption": {
+    "has_netherite_ingot": {
       "conditions": {
         "items": [
           {
             "items": [
-              "bren:auto_loader_contraption"
+              "minecraft:netherite_ingot"
             ]
           }
         ]
@@ -16,15 +16,15 @@
   },
   "requirements": [
     [
-      "has_auto_loader_contraption"
+      "has_netherite_ingot"
     ]
   ],
   "rewards": {
     "recipes": [
-      "bren:auto_gun",
-      "bren:rifle",
-      "bren:shotgun",
-      "bren:revolver"
+      "bren:netherite_auto_gun_smithing",
+      "bren:netherite_rifle_smithing",
+      "bren:netherite_revolver_smithing",
+      "bren:netherite_shotgun_smithing"
     ]
   },
   "sends_telemetry_event": false

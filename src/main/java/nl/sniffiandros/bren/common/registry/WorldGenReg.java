@@ -62,22 +62,20 @@ public class WorldGenReg {
     }
     
     public static void addBiomeModifications() {
-        LOGGER.info("Adding biome modifications for supply crate generation");
-        
-        try {
-            // 在大多数生物群系中添加补给桶生成
-            // 注意：放置特征已经在数据包JSON中定义，这里只需要添加到生物群系
-            BiomeModifications.addFeature(
-                BiomeSelectors.tag(BiomeTags.IS_OVERWORLD), // 仅在主世界生成
-                GenerationStep.Decoration.SURFACE_STRUCTURES,
-                SUPPLY_CRATE_PLACED_KEY
-            );
-            
-            LOGGER.info("§a[WorldGen] Successfully added biome modifications for supply crate generation: {}", SUPPLY_CRATE_PLACED_KEY);
-        } catch (Exception e) {
-            LOGGER.error("Failed to add biome modifications", e);
-            throw e;
-        }
+        // TODO: BALANCING NEEDED — gun-trader structures (gunpowder_town, abandoned_factory) are disabled
+        //  until loot tables, villager trades, and spawn rates are tuned. To re-enable, move
+        //  src/main/resources/data/bren/worldgen/structure_set/disabled/*.json back to structure_set/.
+        //
+        // TODO: BALANCING NEEDED — supply crate spawning is disabled until gun drop rates,
+        //  loot pool weights, and ammo quantities are tuned. To re-enable, uncomment the
+        //  BiomeModifications.addFeature call below. Loot pools are defined in
+        //  SupplyCrateFeature.initPools() and weights come from SupplyCrateConfig.
+        //
+        // BiomeModifications.addFeature(
+        //     BiomeSelectors.tag(BiomeTags.IS_OVERWORLD),
+        //     GenerationStep.Decoration.SURFACE_STRUCTURES,
+        //     SUPPLY_CRATE_PLACED_KEY
+        // );
     }
     
     // 静态初始化方法

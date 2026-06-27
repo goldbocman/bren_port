@@ -1,6 +1,7 @@
 package nl.sniffiandros.bren.common.registry;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -10,8 +11,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import nl.sniffiandros.bren.common.Bren;
+import nl.sniffiandros.bren.common.entity.IGunUser;
 import nl.sniffiandros.bren.common.registry.custom.MagazineItem;
 import nl.sniffiandros.bren.common.registry.custom.types.GunItem;
+import nl.sniffiandros.bren.common.utils.GunHelper;
 import nl.sniffiandros.bren.common.utils.GunUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -35,11 +38,11 @@ public class NetworkReg {
         
         // 注册所有数据包类型
         // 客户端接收的数据包（S2C - Server to Client）
-        PayloadTypeRegistry.clientboundPlay().register(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC); // Changed from PayloadTypeRegistry.playS2C() to PayloadTypeRegistry.playS2C()
+        PayloadTypeRegistry.clientboundPlay().register(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC);
         PayloadTypeRegistry.clientboundPlay().register(SHOOT_CLIENT_PACKET_ID, ShootClientPayload.PACKET_CODEC);
         PayloadTypeRegistry.clientboundPlay().register(SHOOT_ANIMATION_PACKET_ID, ShootAnimationPayload.PACKET_CODEC);
-        PayloadTypeRegistry.clientboundPlay().register(SHOOT_PARTICLE_PACKET_ID, ShootParticlePayload.PACKET_CODEC); // 新的S2C数据包
-        PayloadTypeRegistry.clientboundPlay().register(ITEM_COMPONENT_SYNC_PACKET_ID, ItemComponentSyncPayload.PACKET_CODEC); // 物品组件同步包
+        PayloadTypeRegistry.clientboundPlay().register(SHOOT_PARTICLE_PACKET_ID, ShootParticlePayload.PACKET_CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(ITEM_COMPONENT_SYNC_PACKET_ID, ItemComponentSyncPayload.PACKET_CODEC);
         // 服务器端接收的数据包（C2S - Client to Server）
         PayloadTypeRegistry.serverboundPlay().register(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.serverboundPlay().register(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC);
@@ -48,32 +51,22 @@ public class NetworkReg {
         ServerPlayNetworking.registerGlobalReceiver(RELOAD_PACKET_ID, (payload, context) -> {
             ServerPlayer player = context.player();
             MinecraftServer server = player.level().getServer();
-            
-            LOGGER.info("Received RELOAD packet from player: {}, server: {}", 
-                player.getName().getString(), server != null ? "available" : "null");
-            
+
             if (server != null) {
                 server.execute(() -> {
                     ItemStack stack = player.getMainHandItem();
 
-                    LOGGER.info("Processing reload for player: {}, main hand item: {}", 
-                        player.getName().getString(), stack.getItem().toString());
-
                     if (stack.getItem() instanceof GunItem gunItem) {
-                        LOGGER.info("Calling onReload for GunItem: {}", stack.getItem().toString());
-                        // 修复：移除重复设置reloadingGun的逻辑
-                        // onReload方法内部已经设置了reloadingGun
                         gunItem.onReload(player);
+                        // If onReload started a reload, tell all nearby clients
+//                        if (player instanceof IGunUser gunUser &&
+//                                gunUser.bren_1_21_1$getGunState() == GunHelper.GunStates.RELOADING) {
+//                            broadcastGunState(player, true);
+//                        }
                     } else if (stack.getItem() instanceof MagazineItem) {
-                        LOGGER.info("Calling fillMagazine for MagazineItem");
                         GunUtils.fillMagazine(stack, player);
-                    } else {
-                        LOGGER.warn("Player {} attempted to reload with non-gun/magazine item: {}", 
-                            player.getName().getString(), stack.getItem().toString());
                     }
                 });
-            } else {
-                LOGGER.error("Server is null for player {}", player.getName().getString());
             }
         });
         

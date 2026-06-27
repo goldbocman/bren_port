@@ -51,6 +51,11 @@ public class GunItem extends Item {
         tooltipAdder.accept(Component.translatable(String.format("desc.%s.item.magazine.content",Bren.MODID))
                 .append(Component.literal(" " + getContents(stack) + "/" + getMaxCapacity(stack))).withStyle(formatting));
 
+        Component ammoDesc = getAmmoDescription();
+        if (ammoDesc != null) {
+            tooltipAdder.accept(ammoDesc);
+        }
+
         GunProperties properties = getGunProperties(stack);
         if (properties != null) {
             tooltipAdder.accept(Component.literal("§cDamage: " + properties.rangedDamage).withStyle(ChatFormatting.GRAY));
@@ -58,8 +63,11 @@ public class GunItem extends Item {
             tooltipAdder.accept(Component.literal("§aRecoil: " + properties.recoil).withStyle(ChatFormatting.GRAY));
         }
 
-
         super.appendHoverText(stack, context, tooltipComponent, tooltipAdder, type);
+    }
+
+    protected Component getAmmoDescription() {
+        return null;
     }
 
     // 静态方法用于注册枪械属性
