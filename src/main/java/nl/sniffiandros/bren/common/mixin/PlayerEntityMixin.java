@@ -23,6 +23,8 @@ import nl.sniffiandros.bren.common.registry.custom.types.GunItem;
 import nl.sniffiandros.bren.common.registry.custom.types.GunProperties;
 import nl.sniffiandros.bren.common.utils.GunHelper;
 import nl.sniffiandros.bren.common.utils.GunUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -33,11 +35,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.function.Predicate;
 
-import static com.mojang.text2speech.Narrator.LOGGER;
-
 @SuppressWarnings("UnresolvedMixinReference")
 @Mixin(Player.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser {
+    @Unique
+    private static final Logger LOGGER = LoggerFactory.getLogger("Bren/PlayerEntityMixin");
     @Shadow public abstract ItemCooldowns getCooldowns();
 
     @Unique
