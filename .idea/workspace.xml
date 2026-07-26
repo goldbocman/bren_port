@@ -7,9 +7,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba47fd9e-a010-41b8-bb01-8ef9aadea2bd" name="更改" comment="0.0.4, removed com.mojang.text2speech.Narrator to prevent Error &quot;Ticking player&quot; on Server">
+    <list default="true" id="ba47fd9e-a010-41b8-bb01-8ef9aadea2bd" name="更改" comment="0.0.4, crafting ammo 32 &gt; 16">
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BALANCE_CHANGES.md" beforeDir="false" afterPath="$PROJECT_DIR$/BALANCE_CHANGES.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/config/MConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/config/MConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/entity/BulletEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/entity/BulletEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/ItemReg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/ItemReg.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/custom/types/GunItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/custom/types/GunItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/custom/types/GunProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/custom/types/GunProperties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/utils/GunUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/utils/GunUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/bren/recipe/metal_tube.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/bren/recipe/metal_tube.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,7 +190,7 @@
       <recent name="nl.sniffiandros.bren.common.entity" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Bren - 26.1 [build]">
+  <component name="RunManager" selected="Application.Minecraft Client">
     <configuration name="Bren - 26.1 [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -293,7 +301,8 @@
       <workItem from="1782549727782" duration="18143000" />
       <workItem from="1782666485954" duration="5730000" />
       <workItem from="1783169879775" duration="2075000" />
-      <workItem from="1784238985464" duration="23000" />
+      <workItem from="1784238985464" duration="548000" />
+      <workItem from="1784908261106" duration="8000" />
     </task>
     <task id="LOCAL-00001" summary="Added the open-bolt smg">
       <option name="closed" value="true" />
@@ -463,7 +472,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783176195164</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="0.0.4, crafting ammo 32 &gt; 16">
+      <option name="closed" value="true" />
+      <created>1784239115214</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1784239115214</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -491,7 +508,8 @@
     <MESSAGE value="updated version to initial 0.0.1" />
     <MESSAGE value="0.0.2, updated mod description" />
     <MESSAGE value="0.0.3, removed com.mojang.text2speech.Narrator to prevent Error &quot;Ticking player&quot; on Server" />
-    <option name="LAST_COMMIT_MESSAGE" value="0.0.3, removed com.mojang.text2speech.Narrator to prevent Error &quot;Ticking player&quot; on Server" />
+    <MESSAGE value="0.0.4, crafting ammo 32 &gt; 16" />
+    <option name="LAST_COMMIT_MESSAGE" value="0.0.4, crafting ammo 32 &gt; 16" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

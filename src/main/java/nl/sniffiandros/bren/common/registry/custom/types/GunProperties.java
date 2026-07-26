@@ -9,6 +9,7 @@ public class GunProperties {
     public float rangedDamage;
     public int fireRate;
     public float speed = 3.5F;
+    public int durability = 1;
     public SoundEvent sound;
     public SoundEvent silentSound;
 
@@ -24,6 +25,10 @@ public class GunProperties {
     }
     public GunProperties recoil(float recoil) {
         this.recoil = recoil;
+        return this;
+    }
+    public GunProperties durability(int durability) {
+        this.durability = durability;
         return this;
     }
     public GunProperties shootSound(SoundEvent sound, SoundEvent silent) {

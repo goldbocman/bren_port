@@ -2,6 +2,7 @@ package nl.sniffiandros.bren.common.utils;
 
 import net.fabricmc.fabric.api.networking.v1.FriendlyByteBufs;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -10,6 +11,8 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
@@ -66,7 +69,11 @@ public class GunUtils {
 
             if (user.isAlwaysTicking()) {
                 // 使用EquipmentSlot参数的正确damage方法
-                stack.hurtAndBreak(1, user, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
+                // Flame附魔额外消耗耐久：着火子弹对枪械本身也是负担
+                int flameLevel = EnchantmentHelper.getItemEnchantmentLevel(
+                        world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FLAME), stack);
+                int durabilityLoss = 1 + flameLevel * MConfig.flameDurabilityPenalty.get();
+                stack.hurtAndBreak(durabilityLoss, user, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
             }
 
             List<Vec3> position = GunUtils.calculatePositionBasedOnAngle(user);
@@ -244,6 +251,13 @@ public class GunUtils {
         // 修复：移除velocityModified字段的赋值，只保留velocityDirty
         bullet.needsSync = true;
         bullet.setRemainingFireTicks(ticksOnFire);
+
+        // Flame附魔：子弹自身着火，命中实体/方块时点燃目标（子弹是完全自定义实体，不会走原版projectile_spawned钩子，需要手动应用）
+        int flameLevel = EnchantmentHelper.getItemEnchantmentLevel(
+                world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FLAME), stack);
+        if (flameLevel > 0) {
+            bullet.setRemainingFireTicks(100);
+        }
 
         world.addFreshEntity(bullet);
     }

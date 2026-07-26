@@ -134,6 +134,12 @@ public class BulletEntity extends Projectile {
 
         // 重置所有实体的无敌时间
         entity.invulnerableTime = 0;
+
+        // Flame附魔：子弹着火时点燃命中的实体（与onHitBlock中已有的isOnFire()方块点燃逻辑保持一致）
+        if (this.isOnFire()) {
+            entity.igniteForSeconds(5);
+        }
+
         DamageSource damageSource = DamageTypeReg.shot(this.level(), this, this.getOwner());
         
         float finalDamage = this.damage;

@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:bow",
+    "bren:auto_gun",
+    "bren:netherite_auto_gun",
+    "bren:rifle",
+    "bren:netherite_rifle",
+    "bren:shotgun",
+    "bren:netherite_shotgun",
+    "bren:revolver",
+    "bren:netherite_revolver"
+  ]
+}

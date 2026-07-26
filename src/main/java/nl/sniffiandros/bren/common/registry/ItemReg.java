@@ -22,26 +22,36 @@ public class ItemReg {
     public static final float MACHINE_GUN_RECOIL = 9f;
     public static final float MACHINE_GUN_DAMAGE = MConfig.machineGunDamage.get();
     public static final float N_MACHINE_GUN_DAMAGE = MConfig.netheriteMachineGunDamage.get();
+    public static final int MACHINE_GUN_DURABILITY = MConfig.machineGunDurability.get();
+    public static final int N_MACHINE_GUN_DURABILITY = MConfig.netheriteMachineGunDurability.get();
 
     // Auto-Gun
     public static final float AUTO_GUN_RECOIL = 12f;
     public static final float AUTO_GUN_DAMAGE = MConfig.autoGunDamage.get();
     public static final float N_AUTO_GUN_DAMAGE = MConfig.netheriteAutoGunDamage.get();
+    public static final int AUTO_GUN_DURABILITY = MConfig.autoGunDurability.get();
+    public static final int N_AUTO_GUN_DURABILITY = MConfig.netheriteAutoGunDurability.get();
 
     // Rifle
     public static final float RIFLE_RECOIL = 22f;
     public static final float RIFLE_DAMAGE = MConfig.rifleDamage.get();
     public static final float N_RIFLE_DAMAGE = MConfig.netheriteRifleDamage.get();
+    public static final int RIFLE_DURABILITY = MConfig.rifleDurability.get();
+    public static final int N_RIFLE_DURABILITY = MConfig.netheriteRifleDurability.get();
 
     // Shotgun
     public static final float SHOTGUN_RECOIL = 25f;
     public static final float SHOTGUN_DAMAGE = MConfig.shotgunDamage.get();
     public static final float N_SHOTGUN_DAMAGE = MConfig.netheriteShotgunDamage.get();
+    public static final int SHOTGUN_DURABILITY = MConfig.shotgunDurability.get();
+    public static final int N_SHOTGUN_DURABILITY = MConfig.netheriteShotgunDurability.get();
 
     // Revolver
     public static final float REVOLVER_RECOIL = 15f;
     public static final float REVOLVER_DAMAGE = MConfig.revolverDamage.get();
     public static final float N_REVOLVER_DAMAGE = MConfig.netheriteRevolverDamage.get();
+    public static final int REVOLVER_DURABILITY = MConfig.revolverDurability.get();
+    public static final int N_REVOLVER_DURABILITY = MConfig.netheriteRevolverDurability.get();
     public static Item AUTO_PISTOL;
 
     // 将物品字段声明为null，在reg()方法中初始化
@@ -117,8 +127,8 @@ public class ItemReg {
     private static Item registerGunItem(String name, java.util.function.Function<Item.Properties, Item> factory, GunProperties properties) {
         LOGGER.info("Registering gun item with properties: {}", name);
         try {
-            // 直接使用标准注册模式
-            Item registeredItem = register(name, factory, new Item.Properties().stacksTo(1));
+            // 直接使用标准注册模式，durability() 需要 stacksTo(1) 才能生效；enchantable() 允许在附魔台/铁砧上附魔
+            Item registeredItem = register(name, factory, new Item.Properties().stacksTo(1).durability(properties.durability).enchantable(1));
             
             // 立即注册枪械属性
             GunItem.registerGunProperties(Identifier.fromNamespaceAndPath(Bren.MODID, name), properties);
@@ -182,7 +192,7 @@ public class ItemReg {
 
             // 自动枪
             AUTO_GUN = registerGunItem("auto_gun", GunWithMagItem::new,
-                new GunProperties().rangedDamage(AUTO_GUN_DAMAGE).fireRate(5).recoil(AUTO_GUN_RECOIL)
+                new GunProperties().rangedDamage(AUTO_GUN_DAMAGE).fireRate(5).recoil(AUTO_GUN_RECOIL).durability(AUTO_GUN_DURABILITY)
                     .shootSound(SoundReg.ITEM_AUTO_GUN_SHOOT, SoundReg.ITEM_AUTO_GUN_SHOOT_SILENCED));
 
             // TODO: BALANCING NEEDED — SMG disabled until fire rate is differentiated from auto gun
@@ -191,7 +201,7 @@ public class ItemReg {
             //                 .shootSound(SoundReg.ITEM_AUTO_GUN_SHOOT, SoundReg.ITEM_AUTO_GUN_SHOOT_SILENCED));
 
             NETHERITE_AUTO_GUN = registerGunItem("netherite_auto_gun", GunWithMagItem::new,
-                new GunProperties().rangedDamage(N_AUTO_GUN_DAMAGE).fireRate(4).recoil(AUTO_GUN_RECOIL)
+                new GunProperties().rangedDamage(N_AUTO_GUN_DAMAGE).fireRate(4).recoil(AUTO_GUN_RECOIL).durability(N_AUTO_GUN_DURABILITY)
                     .shootSound(SoundReg.ITEM_AUTO_GUN_SHOOT, SoundReg.ITEM_AUTO_GUN_SHOOT_SILENCED));
 
             // TODO: BALANCING NEEDED — tactical auto gun disabled until unique role is defined
@@ -206,11 +216,11 @@ public class ItemReg {
 
             // 步枪 - 使用SHORT_MAGAZINES标签
             RIFLE = registerGunItem("rifle", s -> new GunWithMagItem(s, TagReg.SHORT_MAGAZINES),
-                new GunProperties().rangedDamage(RIFLE_DAMAGE).fireRate(20).recoil(RIFLE_RECOIL)
+                new GunProperties().rangedDamage(RIFLE_DAMAGE).fireRate(20).recoil(RIFLE_RECOIL).durability(RIFLE_DURABILITY)
                     .shootSound(SoundReg.ITEM_RIFLE_SHOOT, SoundReg.ITEM_RIFLE_SHOOT_SILENCED));
 
             NETHERITE_RIFLE = registerGunItem("netherite_rifle", s -> new GunWithMagItem(s, TagReg.SHORT_MAGAZINES),
-                new GunProperties().rangedDamage(N_RIFLE_DAMAGE).fireRate(20).recoil(RIFLE_RECOIL)
+                new GunProperties().rangedDamage(N_RIFLE_DAMAGE).fireRate(20).recoil(RIFLE_RECOIL).durability(N_RIFLE_DURABILITY)
                     .shootSound(SoundReg.ITEM_RIFLE_SHOOT, SoundReg.ITEM_RIFLE_SHOOT_SILENCED));
 
             // TODO: BALANCING NEEDED — lever gun disabled until ammo type is assigned
@@ -220,11 +230,11 @@ public class ItemReg {
 
             // 霰弹枪
             SHOTGUN = registerGunItem("shotgun", ShotgunItem::new,
-                new GunProperties().rangedDamage(SHOTGUN_DAMAGE).fireRate(20).recoil(SHOTGUN_RECOIL)
+                new GunProperties().rangedDamage(SHOTGUN_DAMAGE).fireRate(20).recoil(SHOTGUN_RECOIL).durability(SHOTGUN_DURABILITY)
                     .shootSound(SoundReg.ITEM_SHOTGUN_SHOOT, null));
 
             NETHERITE_SHOTGUN = registerGunItem("netherite_shotgun", ShotgunItem::new,
-                    new GunProperties().rangedDamage(SHOTGUN_DAMAGE).fireRate(20).recoil(SHOTGUN_RECOIL)
+                    new GunProperties().rangedDamage(N_SHOTGUN_DAMAGE).fireRate(20).recoil(SHOTGUN_RECOIL).durability(N_SHOTGUN_DURABILITY)
                             .shootSound(SoundReg.ITEM_SHOTGUN_SHOOT, null));
 
             // TODO: BALANCING NEEDED — double-barrel shotgun disabled until burst mechanics are tuned
@@ -233,11 +243,11 @@ public class ItemReg {
             //                 .shootSound(SoundReg.ITEM_SHOTGUN_SHOOT, null));
 
             REVOLVER = registerGunItem("revolver", RevolverItem::new,
-                new GunProperties().rangedDamage(REVOLVER_DAMAGE).fireRate(15).recoil(REVOLVER_RECOIL)
+                new GunProperties().rangedDamage(REVOLVER_DAMAGE).fireRate(15).recoil(REVOLVER_RECOIL).durability(REVOLVER_DURABILITY)
                     .shootSound(SoundReg.ITEM_REVOLVER_SHOOT, null));
 
             NETHERITE_REVOLVER = registerGunItem("netherite_revolver", RevolverItem::new,
-                new GunProperties().rangedDamage(N_REVOLVER_DAMAGE).fireRate(15).recoil(REVOLVER_RECOIL)
+                new GunProperties().rangedDamage(N_REVOLVER_DAMAGE).fireRate(15).recoil(REVOLVER_RECOIL).durability(N_REVOLVER_DURABILITY)
                     .shootSound(SoundReg.ITEM_REVOLVER_SHOOT, null));
 
             // TODO: BALANCING NEEDED — big bore revolver disabled until high-damage tier is balanced

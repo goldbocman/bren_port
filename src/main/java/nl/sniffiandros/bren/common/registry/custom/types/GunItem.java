@@ -98,49 +98,7 @@ public class GunItem extends Item {
     }
 
 
-    // 重写isItemBarVisible方法，使耐久条可见
-    @Override
-    public boolean isBarVisible(ItemStack stack) {
-        // 只有当枪械有弹药容量时才显示耐久条
-        return getMaxCapacity(stack) > 0;
-    }
-
-    // 重写getItemBarStep方法，控制耐久条的长度
-    @Override
-    public int getBarWidth(ItemStack stack) {
-        int maxCapacity = getMaxCapacity(stack);
-        if (maxCapacity <= 0) {
-            return 0;
-        }
-        
-        int contents = getContents(stack);
-        // 计算耐久条的步骤（13是耐久条的最大步骤数）
-        return Math.round((float) contents / maxCapacity * 13);
-    }
-
-    // 重写getItemBarColor方法，设置耐久条的颜色
-    @Override
-    public int getBarColor(ItemStack stack) {
-        int maxCapacity = getMaxCapacity(stack);
-        if (maxCapacity <= 0) {
-            return 0xFFAE00; // 红色
-        }
-        
-        int contents = getContents(stack);
-        float ratio = (float) contents / maxCapacity;
-        
-        // 根据弹药比例改变颜色
-        if (ratio > 0.5) {
-            // 绿色到黄色的渐变
-            return 0xFFAE00; // 绿色
-        } else if (ratio > 0.25) {
-            // 黄色
-            return 0xFFAE00; // 黄色
-        } else {
-            // 红色
-            return 0xFFAE00; // 红色
-        }
-    }
+    // 弹药数量已经在tooltip和自定义HUD中显示，物品条改为显示真实耐久度（使用Item的默认实现）
 
     public boolean applyCustomMatrix(LivingEntity entity, GunHelper.GunStates state, PoseStack matrices, ItemStack stack, float cooldownProgress, boolean leftHanded) {
         return false;

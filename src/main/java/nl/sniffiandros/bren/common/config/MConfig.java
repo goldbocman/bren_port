@@ -81,6 +81,51 @@ public class MConfig {
     public static final ConfigHelper.FloatValue netheriteRevolverDamage = new ConfigHelper.FloatValue(9.0f,
             "Ranged damage for the Netherite Revolver || Default: 9.0");
 
+    // Durability is intentionally well below a vanilla bow's 384 uses — guns are meant to feel fragile/consumable
+    @Entry()
+    public static final ConfigHelper.IntValue machineGunDurability = new ConfigHelper.IntValue(100,
+            "Shots before the Machine Gun breaks || Default: 100");
+
+    @Entry()
+    public static final ConfigHelper.IntValue netheriteMachineGunDurability = new ConfigHelper.IntValue(150,
+            "Shots before the Netherite Machine Gun breaks || Default: 150");
+
+    @Entry()
+    public static final ConfigHelper.IntValue autoGunDurability = new ConfigHelper.IntValue(90,
+            "Shots before the Auto-Gun breaks || Default: 90");
+
+    @Entry()
+    public static final ConfigHelper.IntValue netheriteAutoGunDurability = new ConfigHelper.IntValue(135,
+            "Shots before the Netherite Auto-Gun breaks || Default: 135");
+
+    @Entry()
+    public static final ConfigHelper.IntValue rifleDurability = new ConfigHelper.IntValue(80,
+            "Shots before the Rifle breaks || Default: 80");
+
+    @Entry()
+    public static final ConfigHelper.IntValue netheriteRifleDurability = new ConfigHelper.IntValue(120,
+            "Shots before the Netherite Rifle breaks || Default: 120");
+
+    @Entry()
+    public static final ConfigHelper.IntValue shotgunDurability = new ConfigHelper.IntValue(40,
+            "Shots before the Shotgun breaks || Default: 40");
+
+    @Entry()
+    public static final ConfigHelper.IntValue netheriteShotgunDurability = new ConfigHelper.IntValue(60,
+            "Shots before the Netherite Shotgun breaks || Default: 60");
+
+    @Entry()
+    public static final ConfigHelper.IntValue revolverDurability = new ConfigHelper.IntValue(50,
+            "Shots before the Revolver breaks || Default: 50");
+
+    @Entry()
+    public static final ConfigHelper.IntValue netheriteRevolverDurability = new ConfigHelper.IntValue(75,
+            "Shots before the Netherite Revolver breaks || Default: 75");
+
+    @Entry()
+    public static final ConfigHelper.IntValue flameDurabilityPenalty = new ConfigHelper.IntValue(1,
+            "Extra durability lost per shot for each level of Flame on the weapon (on top of the normal 1) || Default: 1");
+
     @Entry()
     public static final ConfigHelper.BooleanValue allMobsAttackPlayers = new ConfigHelper.BooleanValue(false,
             "Makes all mobs hostile towards players");
