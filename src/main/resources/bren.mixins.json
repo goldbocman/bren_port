@@ -12,6 +12,8 @@
     "defaultRequire": 1
   },
   "client": [
+    "client.ArmedEntityRenderStateMixin",
+    "client.AvatarRendererMixin",
     "client.BipedEntityModelMixin",
     "client.DrawContextMixin",
     "client.EntityRenderStateMixin",

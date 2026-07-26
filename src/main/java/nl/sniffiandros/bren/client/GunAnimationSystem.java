@@ -36,8 +36,11 @@ public class GunAnimationSystem {
                 int gunTicks = gunUser.bren_1_21_1$getGunTicks();
 
                 switch (gunItem.holdingPose()) {
-                    case TWO_ARMS ->
-                            applyTwoArmsAnimation(leftArm, rightArm, head, entity, cooldownProgress, gunTicks, gunState);
+                    case TWO_ARMS -> {
+                        // Handled by ArmedEntityRenderStateMixin forcing vanilla's CROSSBOW_HOLD arm pose, which
+                        // HumanoidModel.setupAnim already applied before this injection runs - leave it alone
+                        // instead of overwriting it with hand-tuned math.
+                    }
                     case ONE_ARM ->
                             applyOneArmAnimation(leftArm, rightArm, head, entity, cooldownProgress, gunTicks, gunState);
                     case REVOLVER ->
@@ -60,8 +63,11 @@ public class GunAnimationSystem {
                 int gunTicks = gunUser.bren_1_21_1$getGunTicks();
 
                 switch (gunItem.holdingPose()) {
-                    case TWO_ARMS ->
-                            applyTwoArmsAnimation(leftArm, rightArm, head, hat, entity, cooldownProgress, gunTicks, gunState);
+                    case TWO_ARMS -> {
+                        // Handled by ArmedEntityRenderStateMixin forcing vanilla's CROSSBOW_HOLD arm pose, which
+                        // HumanoidModel.setupAnim already applied before this injection runs - leave it alone
+                        // instead of overwriting it with hand-tuned math.
+                    }
                     case ONE_ARM ->
                             applyOneArmAnimation(leftArm, rightArm, head, hat, entity, cooldownProgress, gunTicks, gunState);
                     case REVOLVER ->
@@ -102,22 +108,24 @@ public class GunAnimationSystem {
         float y = entity.getYHeadRot() * 0.01745329F;
         float bodyYaw = entity.getVisualRotationYInDegrees() * 0.01745329F;
 
-        // Main arm (dominant/shooting hand): raised 85 degrees toward horizontal - absolute value from in-game
-        // measurement, not derived from the model transform guesswork of earlier attempts.
-        mainArm.xRot = -1.4835299F + p + recoilX - sin;
+        // Main arm (dominant/shooting hand): 85 degrees was over-raised - combined with the item's own pitch, the
+        // wrist ended up almost inside the chest with the elbow collapsed. 72 degrees leaves the elbow visible and
+        // the wrist further from the torso; the item transform's pitch was relaxed to match (see *_handheld.json).
+        mainArm.xRot = -1.26F + p + recoilX - sin;
         mainArm.yRot = (y - bodyYaw) + recoilY;
-        mainArm.zRot = isLeftHanded ? -0.1F : 0.1F; // slight roll so the elbow tucks in instead of sticking straight out
+        mainArm.zRot = isLeftHanded ? -0.22F : 0.22F; // more roll so the elbow flares naturally instead of pointing straight down
 
-        // Support arm: raised 75 degrees - also absolute, measured independently rather than derived from the main
-        // arm - and still crossed in toward the main arm's side to grip the foregrip.
-        // grip is tapered by cos(p): at neutral pitch (p=0) it's the full ~45 degrees, which looked right - but a
-        // FIXED yRot offset combined with a growing pitch (xRot) visually swings further than 45 degrees the more
-        // you look up/down (Euler composition, not a bug in the numbers). Scaling it down as |p| grows keeps the
-        // apparent crossing angle roughly constant instead of drifting further left the more you look down.
-        float grip = (isLeftHanded ? -0.7853982F : 0.7853982F) * (float) Math.cos(p); // ~45 degrees at neutral pitch, tapering toward 0 at extreme up/down
-        secondaryArm.xRot = -1.3089969F + p + recoilX - sin;
+        // Support arm: needs a much bigger pitch gap from the main arm (52 vs 72 degrees, not 75 vs 85) - too close
+        // together and both elbows read as parallel instead of the support hand reaching forward to a different
+        // point on the weapon. grip is tapered by cos(p) for the same reason as before: a fixed yRot offset swings
+        // further than intended as pitch grows, so scaling it down keeps the apparent crossing angle stable.
+        float grip = (isLeftHanded ? -0.60F : 0.60F) * (float) Math.cos(p); // ~34 degrees at neutral pitch, tapering toward 0 at extreme up/down
+        // xRot follows pitch only partially (0.55x), not 1:1 like the main arm - the support hand is meant to stay
+        // near a roughly fixed point on the foregrip, not mirror the aiming arm's full pitch swing. At 1:1 the two
+        // arms' pitch sums diverged enough looking down that the support arm ended up pointing below the weapon.
+        secondaryArm.xRot = -0.90F + p * 0.55F + recoilX - sin;
         secondaryArm.yRot = mainArm.yRot + grip;
-        secondaryArm.zRot = isLeftHanded ? 0.15F : -0.15F;
+        secondaryArm.zRot = isLeftHanded ? 0.45F : -0.45F; // ~26 degrees roll
 
         // Head/hat follow the look direction
         head.yRot = (y - bodyYaw);

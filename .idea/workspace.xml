@@ -7,12 +7,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba47fd9e-a010-41b8-bb01-8ef9aadea2bd" name="更改" comment="0.0.5, crafting ammo 16 &gt; 8, metal tube crafting result 2 &gt; 1. added enchantable Flame and Unbreaking + Mending for all weapons. Fixed same damage for netherite and simple shotguns">
+    <list default="true" id="ba47fd9e-a010-41b8-bb01-8ef9aadea2bd" name="更改" comment="a little bit of changes, but drifting left arm">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/client/GunAnimationSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/client/GunAnimationSystem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/assault_gun_handheld.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/assault_gun_handheld.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/rifle_gun_handheld.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/rifle_gun_handheld.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/shotgun_handheld.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/shotgun_handheld.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/bren.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bren.mixins.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +63,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="26.2" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -82,6 +83,10 @@
             <RecentBranchesForRepo>
               <option name="branches">
                 <list>
+                  <RecentBranch>
+                    <option name="branchName" value="feature/fix-3d-person-pos" />
+                    <option name="lastUsedInstant" value="1785074348" />
+                  </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="main" />
                     <option name="lastUsedInstant" value="1782569042" />
@@ -133,38 +138,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Bren - 1.21.11 [:net.fabricmc.devlaunchinjector.Main.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Bren - 1.21.11 [build].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Bren - 1.21.11 [runClient].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Bren - 1.21.11 [test].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Bren - 26.1 [build].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Bren - 26.1 [genSourcesWithCfr].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Bren - 26.1 [runClientRenderDoc].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Bren - 26.1 [runClient].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Bren_Bin [:net.fabricmc.devlaunchinjector.Main.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.下载源代码.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.构建 Bren - 26.1.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/mc-musketmod-patch-1/Bren - 26.1/src/main/resources/assets/bren/textures/gui&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;库&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Bren - 1.21.11 [:net.fabricmc.devlaunchinjector.Main.main()].executor": "Run",
+    "Gradle.Bren - 1.21.11 [build].executor": "Run",
+    "Gradle.Bren - 1.21.11 [runClient].executor": "Run",
+    "Gradle.Bren - 1.21.11 [test].executor": "Run",
+    "Gradle.Bren - 26.1 [build].executor": "Run",
+    "Gradle.Bren - 26.1 [genSourcesWithCfr].executor": "Run",
+    "Gradle.Bren - 26.1 [runClientRenderDoc].executor": "Run",
+    "Gradle.Bren - 26.1 [runClient].executor": "Run",
+    "Gradle.Bren_Bin [:net.fabricmc.devlaunchinjector.Main.main()].executor": "Run",
+    "Gradle.下载源代码.executor": "Run",
+    "Gradle.构建 Bren - 26.1.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "feature/fix-3d-person-pos",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "F:/mc-musketmod-patch-1/Bren - 26.1/src/main/resources/assets/bren/textures/gui",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "库",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\mc-musketmod-patch-1\Bren - 26.1\src\main\resources\assets\bren\textures\gui" />
@@ -483,7 +488,15 @@
       <option name="project" value="LOCAL" />
       <updated>1785068073098</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="a little bit of changes, but drifting left arm">
+      <option name="closed" value="true" />
+      <created>1785074365438</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1785074365438</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -513,7 +526,8 @@
     <MESSAGE value="0.0.3, removed com.mojang.text2speech.Narrator to prevent Error &quot;Ticking player&quot; on Server" />
     <MESSAGE value="0.0.4, crafting ammo 32 &gt; 16" />
     <MESSAGE value="0.0.5, crafting ammo 16 &gt; 8, metal tube crafting result 2 &gt; 1. added enchantable Flame and Unbreaking + Mending for all weapons. Fixed same damage for netherite and simple shotguns" />
-    <option name="LAST_COMMIT_MESSAGE" value="0.0.5, crafting ammo 16 &gt; 8, metal tube crafting result 2 &gt; 1. added enchantable Flame and Unbreaking + Mending for all weapons. Fixed same damage for netherite and simple shotguns" />
+    <MESSAGE value="a little bit of changes, but drifting left arm" />
+    <option name="LAST_COMMIT_MESSAGE" value="a little bit of changes, but drifting left arm" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
