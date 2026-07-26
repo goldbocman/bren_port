@@ -78,48 +78,53 @@ public class GunAnimationSystem {
 
     public static void applyTwoArmsAnimation(ModelPart leftArm, ModelPart rightArm, ModelPart head, ModelPart hat,
                                              LivingEntity entity, float cooldownProgress, int gunTicks, GunHelper.GunStates gunState) {
+        // Rebuilt to match the revolver pose: driven entirely by vanilla-synced rotation (getXRot/getYHeadRot/
+        // getVisualRotationYInDegrees) instead of gunTicks/gunState, which are local-only and never networked to
+        // other clients. The old formula collapsed to a fixed "drawn bow" stance for remote players since those
+        // fields always read 0 there. This version degrades gracefully instead of getting stuck.
         boolean isLeftHanded = entity.getMainArm().equals(HumanoidArm.LEFT);
         ModelPart mainArm = isLeftHanded ? leftArm : rightArm;
         ModelPart secondaryArm = isLeftHanded ? rightArm : leftArm;
-
-        float animationProgress = Math.max(cooldownProgress - 0.15F, 0);
         boolean reloading = gunState.equals(GunHelper.GunStates.RELOADING);
-        float kick = 2.5F;
 
-        animationProgress = Math.max(animationProgress - 0.15F, 0);
-        float f = (((float)gunTicks/16) + animationProgress)/2;
-        float f1 = (float) (Math.sin(f)/Math.PI) * (kick/2);
+        float animationFactor = 0;
+        if (entity instanceof Player player) {
+            animationFactor = player.getCooldowns().getCooldownPercent(player.getMainHandItem(), 0.0F);
+        }
+        float sin = reloading ? (float) Math.sin((animationFactor * 2 - 0.5) * Math.PI) * 0.5F + 0.5F : 0;
 
-        float l = isLeftHanded ? -1 : 1;
+        // Small local-only recoil/reload flavor - harmless when zeroed out for remote players, unlike the old formula
+        float recoilX = (float) (Math.sin(animationFactor * 15) * 0.05235988);
+        float recoilY = (float) (Math.cos(animationFactor * 15) * 0.05235988);
 
-        // Get entity angle (convert to radians)
+        // Vanilla-synced rotation - always correct in third person, for local AND remote players
         float p = entity.getXRot() * 0.01745329F;
         float y = entity.getYHeadRot() * 0.01745329F;
         float bodyYaw = entity.getVisualRotationYInDegrees() * 0.01745329F;
 
-        float f2 = f1*kick/2;
+        // Main arm (dominant/shooting hand): raised 85 degrees toward horizontal - absolute value from in-game
+        // measurement, not derived from the model transform guesswork of earlier attempts.
+        mainArm.xRot = -1.4835299F + p + recoilX - sin;
+        mainArm.yRot = (y - bodyYaw) + recoilY;
+        mainArm.zRot = isLeftHanded ? -0.1F : 0.1F; // slight roll so the elbow tucks in instead of sticking straight out
 
-        float fr = ((float) Math.sin((animationProgress * 2 - 0.5) * Math.PI) * 0.5F + 0.5F);
-        float f3 = reloading ? fr/4 : f2 ;
-        float f4 = reloading ? (isLeftHanded ? -fr/4 : fr/4) : f2 * l;
+        // Support arm: raised 75 degrees - also absolute, measured independently rather than derived from the main
+        // arm - and still crossed in toward the main arm's side to grip the foregrip.
+        // grip is tapered by cos(p): at neutral pitch (p=0) it's the full ~45 degrees, which looked right - but a
+        // FIXED yRot offset combined with a growing pitch (xRot) visually swings further than 45 degrees the more
+        // you look up/down (Euler composition, not a bug in the numbers). Scaling it down as |p| grows keeps the
+        // apparent crossing angle roughly constant instead of drifting further left the more you look down.
+        float grip = (isLeftHanded ? -0.7853982F : 0.7853982F) * (float) Math.cos(p); // ~45 degrees at neutral pitch, tapering toward 0 at extreme up/down
+        secondaryArm.xRot = -1.3089969F + p + recoilX - sin;
+        secondaryArm.yRot = mainArm.yRot + grip;
+        secondaryArm.zRot = isLeftHanded ? 0.15F : -0.15F;
 
-        // Main arm animation - relative to torso
-        mainArm.yRot = isLeftHanded ? (y - bodyYaw) + 0.7853982F : (y - bodyYaw) - 0.7853982F;
-        mainArm.xRot = 0.2181662F + p + f3/2;
-        mainArm.zRot += f4;
-
-        // Off-arm animation - relative to torso
-        secondaryArm.xRot = -0.6981317F + p/3 - f3/2 - (reloading ? fr:0);
-        secondaryArm.yRot = (isLeftHanded ? -1.090831F - (y - bodyYaw) : 1.090831F + (y - bodyYaw)) + (p/2) * l + f3/3;
-
-        // Head animation - relative to torso
+        // Head/hat follow the look direction
         head.yRot = (y - bodyYaw);
-        head.xRot = p - f3/2;
-
-        // Hat layer animation - synchronized with the head
+        head.xRot = p - sin;
         if (hat != null) {
             hat.yRot = (y - bodyYaw);
-            hat.xRot = p - f3/2;
+            hat.xRot = p - sin;
         }
     }
 

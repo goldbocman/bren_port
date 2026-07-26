@@ -7,17 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba47fd9e-a010-41b8-bb01-8ef9aadea2bd" name="更改" comment="0.0.4, crafting ammo 32 &gt; 16">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
+    <list default="true" id="ba47fd9e-a010-41b8-bb01-8ef9aadea2bd" name="更改" comment="0.0.5, crafting ammo 16 &gt; 8, metal tube crafting result 2 &gt; 1. added enchantable Flame and Unbreaking + Mending for all weapons. Fixed same damage for netherite and simple shotguns">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BALANCE_CHANGES.md" beforeDir="false" afterPath="$PROJECT_DIR$/BALANCE_CHANGES.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/config/MConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/config/MConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/entity/BulletEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/entity/BulletEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/ItemReg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/ItemReg.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/custom/types/GunItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/custom/types/GunItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/custom/types/GunProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/custom/types/GunProperties.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/utils/GunUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/utils/GunUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/bren/recipe/metal_tube.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/bren/recipe/metal_tube.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/client/GunAnimationSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/client/GunAnimationSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/assault_gun_handheld.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/assault_gun_handheld.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/rifle_gun_handheld.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/rifle_gun_handheld.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/shotgun_handheld.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/shotgun_handheld.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -480,7 +475,15 @@
       <option name="project" value="LOCAL" />
       <updated>1784239115214</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="0.0.5, crafting ammo 16 &gt; 8, metal tube crafting result 2 &gt; 1. added enchantable Flame and Unbreaking + Mending for all weapons. Fixed same damage for netherite and simple shotguns">
+      <option name="closed" value="true" />
+      <created>1785068073098</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1785068073098</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -509,7 +512,8 @@
     <MESSAGE value="0.0.2, updated mod description" />
     <MESSAGE value="0.0.3, removed com.mojang.text2speech.Narrator to prevent Error &quot;Ticking player&quot; on Server" />
     <MESSAGE value="0.0.4, crafting ammo 32 &gt; 16" />
-    <option name="LAST_COMMIT_MESSAGE" value="0.0.4, crafting ammo 32 &gt; 16" />
+    <MESSAGE value="0.0.5, crafting ammo 16 &gt; 8, metal tube crafting result 2 &gt; 1. added enchantable Flame and Unbreaking + Mending for all weapons. Fixed same damage for netherite and simple shotguns" />
+    <option name="LAST_COMMIT_MESSAGE" value="0.0.5, crafting ammo 16 &gt; 8, metal tube crafting result 2 &gt; 1. added enchantable Flame and Unbreaking + Mending for all weapons. Fixed same damage for netherite and simple shotguns" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

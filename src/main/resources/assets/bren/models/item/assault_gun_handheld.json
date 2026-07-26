@@ -4,13 +4,13 @@
 	"parent": "item/generated",
 	"display": {
 		"thirdperson_righthand": {
-			"rotation": [0, -90, -15],
-			"translation": [0.5, 3, 5],
+			"rotation": [-55, -90, -15],
+			"translation": [0.5, -1, -1.5],
 			"scale": [1.7, 1.7, 0.85]
 		},
 		"thirdperson_lefthand": {
-			"rotation": [0, 90, 15],
-			"translation": [0.5, 3, 5],
+			"rotation": [55, 90, 15],
+			"translation": [0.5, -1, -1.5],
 			"scale": [1.7, 1.7, 0.85]
 		},
 		"firstperson_righthand": {
