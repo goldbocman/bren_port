@@ -64,7 +64,7 @@ public class MinecraftClientHudMixin {
                       0,  // mouseX
                       0   // mouseY
                   );
-                HUD_OVERLAY.renderWithTexture(graphics, gameRenderState.guiRenderState, deltaTracker, i, max, gunItem.bulletAmount() > 1 ? 12 : 0);
+                HUD_OVERLAY.renderWithTexture(graphics, gameRenderState.guiRenderState, deltaTracker, i, max, gunItem.ammoIconOffset());
             } catch (Exception e) {
                 LOGGER.error("Failed to create GuiGraphicsExtractor: {}", e.getMessage());
                 e.printStackTrace();

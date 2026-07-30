@@ -7,13 +7,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba47fd9e-a010-41b8-bb01-8ef9aadea2bd" name="更改" comment="a little bit of changes, but drifting left arm">
+    <list default="true" id="ba47fd9e-a010-41b8-bb01-8ef9aadea2bd" name="更改" comment="version update to 0.0.5">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/bren/items/magnum_bullet.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/magnum_bullet.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/bren/textures/item/magnum_bullet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/bren/advancements/recipes/decorations/magnum_bullet.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/bren/recipe/magnum_bullet.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/bren/tags/item/enchantable/punch.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/minecraft/enchantment/punch.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/client/GunAnimationSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/client/GunAnimationSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/assault_gun_handheld.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/assault_gun_handheld.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/rifle_gun_handheld.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/rifle_gun_handheld.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/shotgun_handheld.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/bren/models/item/shotgun_handheld.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bren.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bren.mixins.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/client/HudOverlay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/client/HudOverlay.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/Bren.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/Bren.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/config/MConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/config/MConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/entity/BulletEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/entity/BulletEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/mixin/client/MinecraftClientHudMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/mixin/client/MinecraftClientHudMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/ItemReg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/ItemReg.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/custom/types/GunItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/custom/types/GunItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/custom/types/RevolverItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/custom/types/RevolverItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/custom/types/ShotgunItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/registry/custom/types/ShotgunItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/utils/GunUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nl/sniffiandros/bren/common/utils/GunUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/bren/lang/en_us.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/bren/lang/en_us.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/bren/lang/zh_cn.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/bren/lang/zh_cn.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/bren/textures/gui/bullet_icons.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/bren/textures/gui/bullet_icons.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/bren/advancements/recipes/decorations/bullet.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/bren/advancements/recipes/decorations/bullet.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/bren/recipe/bullet.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/bren/recipe/bullet.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,10 +178,10 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "feature/fix-3d-person-pos",
+    "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "F:/mc-musketmod-patch-1/Bren - 26.1/src/main/resources/assets/bren/textures/gui",
+    "last_opened_file_path": "F:/IDEA/Bren_Bin/src/main/resources/assets/bren/textures/gui",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "库",
     "project.structure.proportion": "0.0",
@@ -172,11 +192,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\IDEA\Bren_Bin\src\main\resources\assets\bren\textures\gui" />
+      <recent name="F:\IDEA\Bren_Bin\src\main\resources\assets\bren\textures\item" />
       <recent name="F:\mc-musketmod-patch-1\Bren - 26.1\src\main\resources\assets\bren\textures\gui" />
       <recent name="F:\mc-musketmod-patch-1\Bren - 26.1\src\main\resources\data\bren" />
       <recent name="F:\mc-musketmod-patch-1\Bren - 26.1\src\main\resources\data" />
-      <recent name="F:\mc-musketmod-patch-1\Bren - 26.1\src\main\resources\resourcepacks\bren_3d_resources_2\assets\bren\models\item" />
-      <recent name="F:\mc-musketmod-patch-1\Bren - 26.1\src\main\resources\resourcepacks\bren_3d_resources_2\assets\bren\items" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\mc-musketmod-patch-1\Bren - 26.1\src\main\resources\data\bren" />
@@ -190,7 +210,7 @@
       <recent name="nl.sniffiandros.bren.common.entity" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Minecraft Client">
+  <component name="RunManager" selected="Gradle.Bren - 26.1 [build]">
     <configuration name="Bren - 26.1 [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -496,7 +516,15 @@
       <option name="project" value="LOCAL" />
       <updated>1785074365438</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="version update to 0.0.5">
+      <option name="closed" value="true" />
+      <created>1785081038906</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1785081038906</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -527,7 +555,8 @@
     <MESSAGE value="0.0.4, crafting ammo 32 &gt; 16" />
     <MESSAGE value="0.0.5, crafting ammo 16 &gt; 8, metal tube crafting result 2 &gt; 1. added enchantable Flame and Unbreaking + Mending for all weapons. Fixed same damage for netherite and simple shotguns" />
     <MESSAGE value="a little bit of changes, but drifting left arm" />
-    <option name="LAST_COMMIT_MESSAGE" value="a little bit of changes, but drifting left arm" />
+    <MESSAGE value="version update to 0.0.5" />
+    <option name="LAST_COMMIT_MESSAGE" value="version update to 0.0.5" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

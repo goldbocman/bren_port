@@ -8,9 +8,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import nl.sniffiandros.bren.common.Bren;
 import nl.sniffiandros.bren.common.config.MConfig;
-import nl.sniffiandros.bren.common.registry.custom.ColorableMagazineItem;
-import nl.sniffiandros.bren.common.registry.custom.types.*;
 import nl.sniffiandros.bren.common.registry.custom.MagazineItem;
+import nl.sniffiandros.bren.common.registry.custom.types.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,6 +69,7 @@ public class ItemReg {
     public static Item CLOTHED_MAGAZINE;
     public static Item SHORT_MAGAZINE;
     public static Item BULLET;
+    public static Item MAGNUM_BULLET;
     public static Item SHELL;
     public static Item AUTO_LOADER_CONTRAPTION;
     public static Item METAL_TUBE;
@@ -146,6 +146,7 @@ public class ItemReg {
             // 第一步：注册所有基础物品 - 使用1.21.4+标准模式
             LOGGER.info("Registering basic items");
             BULLET = registerItem("bullet", new Item.Properties().stacksTo(64));
+            MAGNUM_BULLET = registerItem("magnum_bullet", new Item.Properties().stacksTo(64));
             SHELL = registerItem("shell", new Item.Properties().stacksTo(64));
             // TODO: BALANCING NEEDED — disabled until ammo types are tuned
             // DRAGONBREATH_SHELL = registerItem("dragonbreath_shell", new Item.Properties().stacksTo(64));
@@ -192,7 +193,7 @@ public class ItemReg {
 
             // 自动枪
             AUTO_GUN = registerGunItem("auto_gun", GunWithMagItem::new,
-                new GunProperties().rangedDamage(AUTO_GUN_DAMAGE).fireRate(5).recoil(AUTO_GUN_RECOIL).durability(AUTO_GUN_DURABILITY)
+                new GunProperties().rangedDamage(AUTO_GUN_DAMAGE).fireRate(4).recoil(AUTO_GUN_RECOIL).durability(AUTO_GUN_DURABILITY)
                     .shootSound(SoundReg.ITEM_AUTO_GUN_SHOOT, SoundReg.ITEM_AUTO_GUN_SHOOT_SILENCED));
 
             // TODO: BALANCING NEEDED — SMG disabled until fire rate is differentiated from auto gun
@@ -201,7 +202,7 @@ public class ItemReg {
             //                 .shootSound(SoundReg.ITEM_AUTO_GUN_SHOOT, SoundReg.ITEM_AUTO_GUN_SHOOT_SILENCED));
 
             NETHERITE_AUTO_GUN = registerGunItem("netherite_auto_gun", GunWithMagItem::new,
-                new GunProperties().rangedDamage(N_AUTO_GUN_DAMAGE).fireRate(4).recoil(AUTO_GUN_RECOIL).durability(N_AUTO_GUN_DURABILITY)
+                new GunProperties().rangedDamage(N_AUTO_GUN_DAMAGE).fireRate(3).recoil(AUTO_GUN_RECOIL).durability(N_AUTO_GUN_DURABILITY)
                     .shootSound(SoundReg.ITEM_AUTO_GUN_SHOOT, SoundReg.ITEM_AUTO_GUN_SHOOT_SILENCED));
 
             // TODO: BALANCING NEEDED — tactical auto gun disabled until unique role is defined

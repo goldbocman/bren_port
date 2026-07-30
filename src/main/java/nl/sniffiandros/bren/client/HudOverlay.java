@@ -38,7 +38,7 @@ public class HudOverlay {
         int iconSize = baseIconSize * screenScale;
         int rows = 2;
         int ri = rows * 10;
-        int textureWidth = 48;
+        int textureWidth = 72;
         int textureHeight = 12;
         float v0 = 0.0f;
         float v1 = (float) baseIconSize / textureHeight;
@@ -47,8 +47,8 @@ public class HudOverlay {
             int row = n / ri;
             int y1 = n * (6 * screenScale) - row * ri * (6 * screenScale);
             int x1 = (15 * screenScale) * row + (15 * screenScale);
-            
-            int u1 = n < currentAmmo ? 0 : 24;
+
+            int u1 = n < currentAmmo ? 0 : 36;
             int textureOffset = uOffset + u1;
             
             float u0 = (float) textureOffset / textureWidth;

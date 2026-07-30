@@ -21,9 +21,7 @@
   ],
   "rewards": {
     "recipes": [
-      "bren:bullet",
-      "bren:magnum_bullet",
-      "bren:shell"
+      "bren:magnum_bullet"
     ]
   },
   "sends_telemetry_event": false

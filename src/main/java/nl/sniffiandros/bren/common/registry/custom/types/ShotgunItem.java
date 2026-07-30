@@ -216,6 +216,11 @@ public class ShotgunItem extends BulletOnlyGun {
         return 5;
     }
 
+    @Override
+    public int ammoIconOffset() {
+        return 12;
+    }
+
     public void setPlayer(Player player) {
         Player = player;
     }

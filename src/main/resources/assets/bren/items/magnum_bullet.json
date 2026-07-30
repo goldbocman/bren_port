@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "model",
+    "model": "bren:item/magnum_bullet"
+  },
+  "components": {
+    "minecraft:item_model": "bren:item/magnum_bullet"
+  }
+}

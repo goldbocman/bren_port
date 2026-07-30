@@ -208,6 +208,11 @@ public class GunItem extends Item {
         return 1;
     }
 
+    // HUD 0=bullet, 12=shell, 24=magnum_bullet
+    public int ammoIconOffset() {
+        return 0;
+    }
+
     public float bulletSpeed(ItemStack stack) {
         return getBulletSpeed(stack);
     }

@@ -50,12 +50,12 @@ public class MConfig {
             "Ranged damage for the Netherite Machine Gun || Default: 5.0");
 
     @Entry()
-    public static final ConfigHelper.FloatValue autoGunDamage = new ConfigHelper.FloatValue(5.5f,
-            "Ranged damage for the Auto-Gun || Default: 5.5");
+    public static final ConfigHelper.FloatValue autoGunDamage = new ConfigHelper.FloatValue(6.0f,
+            "Ranged damage for the Auto-Gun || Default: 6.0");
 
     @Entry()
-    public static final ConfigHelper.FloatValue netheriteAutoGunDamage = new ConfigHelper.FloatValue(6.0f,
-            "Ranged damage for the Netherite Auto-Gun || Default: 6.0");
+    public static final ConfigHelper.FloatValue netheriteAutoGunDamage = new ConfigHelper.FloatValue(6.5f,
+            "Ranged damage for the Netherite Auto-Gun || Default: 6.5");
 
     @Entry()
     public static final ConfigHelper.FloatValue rifleDamage = new ConfigHelper.FloatValue(10.0f,

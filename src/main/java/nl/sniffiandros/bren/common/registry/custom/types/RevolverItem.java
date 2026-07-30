@@ -2,12 +2,16 @@ package nl.sniffiandros.bren.common.registry.custom.types;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import nl.sniffiandros.bren.common.entity.IGunUser;
+import nl.sniffiandros.bren.common.registry.ItemReg;
 import nl.sniffiandros.bren.common.registry.SoundReg;
 import nl.sniffiandros.bren.common.registry.custom.PoseType;
 import nl.sniffiandros.bren.common.utils.GunHelper;
@@ -27,6 +31,21 @@ public class RevolverItem extends BulletOnlyGun {
     @Override
     public PoseType holdingPose() {
         return PoseType.REVOLVER;
+    }
+
+    @Override
+    public Item compatibleBullet(Player player) {
+        return ItemReg.MAGNUM_BULLET;
+    }
+
+    @Override
+    protected Component getAmmoDescription() {
+        return Component.literal("Uses: Magnum Bullet").withStyle(ChatFormatting.YELLOW);
+    }
+
+    @Override
+    public int ammoIconOffset() {
+        return 24;
     }
 
     @Override

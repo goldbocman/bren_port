@@ -259,6 +259,12 @@ public class GunUtils {
             bullet.setRemainingFireTicks(100);
         }
 
+        int punchLevel = EnchantmentHelper.getItemEnchantmentLevel(
+                world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.PUNCH), stack);
+        if (punchLevel > 0) {
+            bullet.setPunchLevel(punchLevel);
+        }
+
         world.addFreshEntity(bullet);
     }
 

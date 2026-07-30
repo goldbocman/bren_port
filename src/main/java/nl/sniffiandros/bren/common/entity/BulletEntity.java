@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 public class BulletEntity extends Projectile {
     private static final EntityDataAccessor<Integer> LIFESPAN = SynchedEntityData.defineId(BulletEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> BULLET_TYPE = SynchedEntityData.defineId(BulletEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> PUNCH_LEVEL = SynchedEntityData.defineId(BulletEntity.class, EntityDataSerializers.INT);
     private float damage;
     // 子弹类型常量
     public static final int TYPE_NORMAL = 0;
@@ -66,10 +67,20 @@ public class BulletEntity extends Projectile {
     public int getBulletType() {
         return this.entityData.get(BULLET_TYPE);
     }
+
+    public void setPunchLevel(int punchLevel) {
+        this.entityData.set(PUNCH_LEVEL, punchLevel);
+    }
+
+    public int getPunchLevel() {
+        return this.entityData.get(PUNCH_LEVEL);
+    }
+
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(LIFESPAN, 0);
         builder.define(BULLET_TYPE, TYPE_NORMAL);
+        builder.define(PUNCH_LEVEL, 0);
     }
 
     public void tick() {
@@ -138,6 +149,14 @@ public class BulletEntity extends Projectile {
         // Flame附魔：子弹着火时点燃命中的实体（与onHitBlock中已有的isOnFire()方块点燃逻辑保持一致）
         if (this.isOnFire()) {
             entity.igniteForSeconds(5);
+        }
+
+        int punchLevel = this.getPunchLevel();
+        if (punchLevel > 0) {
+            Vec3 knockback = this.getDeltaMovement().multiply(1.0, 0.0, 1.0).normalize().scale(punchLevel * 0.6);
+            if (knockback.lengthSqr() > 0.0) {
+                entity.push(knockback.x, 0.1, knockback.z);
+            }
         }
 
         DamageSource damageSource = DamageTypeReg.shot(this.level(), this, this.getOwner());

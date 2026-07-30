@@ -118,6 +118,7 @@ public class Bren implements ModInitializer {
 
 				// 添加弹药
 				output.accept(ItemReg.BULLET);
+				output.accept(ItemReg.MAGNUM_BULLET);
 				output.accept(ItemReg.SHELL);
 				// output.accept(ItemReg.DRAGONBREATH_SHELL);
 
