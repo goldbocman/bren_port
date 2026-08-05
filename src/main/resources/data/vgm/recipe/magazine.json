@@ -2,16 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "M": "minecraft:bowl",
-    "I": "minecraft:iron_nugget"
+    "I": "minecraft:iron_nugget",
+    "M": "minecraft:bowl"
   },
   "pattern": [
     "IMI",
     " I "
   ],
   "result": {
-    "id": "vgm:magazine",
-    "count": 1
-  },
-  "show_notification": true
+    "id": "vgm:magazine"
+  }
 }

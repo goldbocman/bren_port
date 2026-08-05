@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_auto_loader_contraption": {
+      "conditions": {
+        "items": [
+          {
+            "items": "vgm:auto_loader_contraption"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "vgm:shotgun"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_auto_loader_contraption"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "vgm:shotgun"
+    ]
+  }
+}

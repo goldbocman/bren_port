@@ -50,6 +50,11 @@ neoForge {
             gameDirectory = file("../../run/")
             server()
         }
+
+        register("data") {
+            gameDirectory = file("../../run/")
+            clientData()
+        }
     }
 }
 

@@ -1,29 +1,32 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_iron_nugget": {
+    "has_gunpowder": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:iron_nugget"
-            ]
+            "items": "minecraft:gunpowder"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "vgm:shell"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_iron_nugget"
+      "has_the_recipe",
+      "has_gunpowder"
     ]
   ],
   "rewards": {
     "recipes": [
-      "vgm:magazine",
-      "vgm:short_magazine"
+      "vgm:shell"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -5,33 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "vgm:netherite_auto_gun"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "netherite_rifle": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "vgm:netherite_rifle"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "netherite_shotgun": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "vgm:netherite_shotgun"
-            ]
+            "items": "vgm:netherite_auto_gun"
           }
         ]
       },
@@ -41,9 +15,27 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "vgm:netherite_revolver"
-            ]
+            "items": "vgm:netherite_revolver"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "netherite_rifle": {
+      "conditions": {
+        "items": [
+          {
+            "items": "vgm:netherite_rifle"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "netherite_shotgun": {
+      "conditions": {
+        "items": [
+          {
+            "items": "vgm:netherite_shotgun"
           }
         ]
       },
@@ -51,16 +43,13 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancements.vgm.adventure.debris_armed.description"
     },
     "frame": "challenge",
-    "hidden": false,
     "icon": {
       "id": "minecraft:netherite_ingot"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.vgm.adventure.debris_armed.title"
     }

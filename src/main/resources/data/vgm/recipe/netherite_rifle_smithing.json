@@ -3,8 +3,7 @@
   "addition": "minecraft:netherite_ingot",
   "base": "vgm:rifle",
   "result": {
-    "id": "vgm:netherite_rifle",
-    "count": 1
+    "id": "vgm:netherite_rifle"
   },
   "template": "minecraft:netherite_upgrade_smithing_template"
 }

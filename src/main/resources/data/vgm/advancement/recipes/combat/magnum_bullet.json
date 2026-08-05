@@ -5,26 +5,28 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:gunpowder"
-            ]
+            "items": "minecraft:gunpowder"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "vgm:magnum_bullet"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_gunpowder"
     ]
   ],
   "rewards": {
     "recipes": [
-      "vgm:bullet",
-      "vgm:magnum_bullet",
-      "vgm:shell"
+      "vgm:magnum_bullet"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

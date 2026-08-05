@@ -57,16 +57,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancements.vgm.adventure.a_touch_of_magic.description"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "id": "minecraft:enchanted_book"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.vgm.adventure.a_touch_of_magic.title"
     }

@@ -5,10 +5,10 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "vgm:shotgun",
-              "vgm:netherite_shotgun"
-            ]
+            "items": "vgm:shotgun"
+          },
+          {
+            "items": "vgm:netherite_shotgun"
           }
         ]
       },
@@ -16,16 +16,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancements.vgm.adventure.shotgun.description"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "id": "vgm:shotgun"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.vgm.adventure.shotgun.title"
     }

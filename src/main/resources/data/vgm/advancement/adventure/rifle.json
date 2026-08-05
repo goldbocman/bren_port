@@ -5,10 +5,10 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "vgm:rifle",
-              "vgm:netherite_rifle"
-            ]
+            "items": "vgm:rifle"
+          },
+          {
+            "items": "vgm:netherite_rifle"
           }
         ]
       },
@@ -16,16 +16,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancements.vgm.adventure.rifle.description"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "id": "vgm:rifle"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.vgm.adventure.rifle.title"
     }

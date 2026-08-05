@@ -1,8 +1,18 @@
 {
   "criteria": {
     "in_world": {
-      "trigger": "minecraft:location",
-      "conditions": {}
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {}
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
     }
   },
   "display": {
