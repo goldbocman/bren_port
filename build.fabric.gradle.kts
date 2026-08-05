@@ -57,7 +57,8 @@ dependencies {
         "fabric-rendering-v1",
         "fabric-key-mapping-api-v1",
         "fabric-creative-tab-api-v1",
-        "fabric-convention-tags-v2"
+        "fabric-convention-tags-v2",
+        "fabric-data-generation-api-v1"
     )
 }
 
@@ -80,6 +81,10 @@ loom {
     }
 }
 
+fabricApi {
+    configureDataGeneration()
+}
+
 java {
     withSourcesJar()
     targetCompatibility = requiredJava
@@ -93,6 +98,12 @@ java {
 
 tasks {
     processResources {
+        // `fabricApi.configureDataGeneration()` wires `src/main/generated` as a live resources
+        // source dir, which duplicates whatever's already been diff-copied into the shared
+        // `src/main/resources` tree (this repo treats datagen output as a manual diff/copy
+        // artifact, never a live-compiled source set) - keep the first-seen (real) copy.
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
         fun MutableMap<String, String>.register(key: String, property: String) {
             val value: String = sc.properties[property]
             inputs.property(key, value)

@@ -20,6 +20,9 @@
     ],
     "client": [
       "com.goldbocman.vgm.client.ClientBren"
+    ],
+    "fabric-datagen": [
+      "com.goldbocman.vgm.datagen.VgmFabricDataGenerator"
     ]
   },
   "mixins": [

@@ -2,12 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "M": "vgm:auto_loader_contraption",
-    "I": "minecraft:iron_ingot",
-    "T": "vgm:metal_tube",
     "F": "minecraft:iron_block",
+    "I": "minecraft:iron_ingot",
     "L": "minecraft:lever",
-    "P": "#minecraft:logs"
+    "M": "vgm:auto_loader_contraption",
+    "P": "#minecraft:logs",
+    "T": "vgm:metal_tube"
   },
   "pattern": [
     "TI ",
@@ -15,8 +15,6 @@
     " LP"
   ],
   "result": {
-    "id": "vgm:rifle",
-    "count": 1
-  },
-  "show_notification": true
+    "id": "vgm:rifle"
+  }
 }

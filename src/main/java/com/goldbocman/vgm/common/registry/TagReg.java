@@ -11,6 +11,7 @@ public class TagReg {
     public static final TagKey<Item> MEDIUM_MAGAZINES = itemTag("magazines/medium_magazines");
     public static final TagKey<Item> SHORT_MAGAZINES = itemTag("magazines/short_magazines");
     public static final TagKey<Item> LARGE_MAGAZINES = itemTag("magazines/large_magazines");
+    public static final TagKey<Item> WEAPONS = itemTag("weapons");
     public static final TagKey<DamageType> IS_BULLET = damageTypeTag("is_bullet");
 
     public static TagKey<Item> itemTag(String name) {

@@ -1,5 +1,5 @@
 {
-  "parent": "vgm:adventure/machine_gun",
+  "parent": "vgm:adventure/root",
   "criteria": {
     "killed_villager": {
       "conditions": {
@@ -8,7 +8,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "minecraft:villager"
+              "minecraft:entity_type": "minecraft:villager"
             }
           }
         ],
@@ -25,16 +25,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancements.vgm.adventure.warcrimes.description"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "id": "vgm:bullet"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.vgm.adventure.warcrimes.title"
     }

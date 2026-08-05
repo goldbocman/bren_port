@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "vgm:auto_loader_contraption"
-            ]
+            "items": "vgm:auto_loader_contraption"
           }
         ]
       },
@@ -15,16 +13,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancements.vgm.adventure.auto_loader_contraption.description"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "id": "vgm:auto_loader_contraption"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.vgm.adventure.auto_loader_contraption.title"
     }

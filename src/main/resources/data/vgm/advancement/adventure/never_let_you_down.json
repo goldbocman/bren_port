@@ -38,19 +38,16 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancements.vgm.adventure.never_let_you_down.description"
     },
     "frame": "challenge",
-    "hidden": false,
     "icon": {
-      "id": "vgm:netherite_shotgun",
       "components": {
         "minecraft:enchantment_glint_override": true
-      }
+      },
+      "id": "vgm:netherite_shotgun"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.vgm.adventure.never_let_you_down.title"
     }

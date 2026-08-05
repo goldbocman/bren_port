@@ -3,8 +3,7 @@
   "addition": "minecraft:netherite_ingot",
   "base": "vgm:auto_gun",
   "result": {
-    "id": "vgm:netherite_auto_gun",
-    "count": 1
+    "id": "vgm:netherite_auto_gun"
   },
   "template": "minecraft:netherite_upgrade_smithing_template"
 }

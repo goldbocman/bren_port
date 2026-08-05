@@ -2,10 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "M": "minecraft:gold_ingot",
-    "P": "minecraft:paper",
     "G": "minecraft:gunpowder",
-    "N": "minecraft:iron_nugget"
+    "M": "minecraft:gold_ingot",
+    "N": "minecraft:iron_nugget",
+    "P": "minecraft:paper"
   },
   "pattern": [
     " PN",
@@ -13,8 +13,7 @@
     "GM "
   ],
   "result": {
-    "id": "vgm:shell",
-    "count": 8
-  },
-  "show_notification": true
+    "count": 8,
+    "id": "vgm:shell"
+  }
 }
