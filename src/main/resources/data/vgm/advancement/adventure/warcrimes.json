@@ -32,7 +32,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "vgm:bullet"
+      "id": "vgm:bullet"
     },
     "show_toast": true,
     "title": {

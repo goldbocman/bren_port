@@ -1,8 +1,10 @@
 package com.goldbocman.vgm.client.features;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+//? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+//?}
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -17,6 +19,7 @@ import com.goldbocman.vgm.client.GunAnimationSystem;
  * Implement the FeatureRenderer for gun animation in the new rendering system
 
  */
+//? if fabric
 @Environment(EnvType.CLIENT)
 public class GunAnimationFeatureRenderer<T extends HumanoidRenderState, M extends HumanoidModel<T>> 
         extends RenderLayer<T, M> {

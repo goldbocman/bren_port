@@ -23,7 +23,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "vgm:shotgun"
+      "id": "vgm:shotgun"
     },
     "show_toast": true,
     "title": {

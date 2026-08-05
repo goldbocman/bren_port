@@ -23,7 +23,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "vgm:auto_gun"
+      "id": "vgm:auto_gun"
     },
     "show_toast": true,
     "title": {

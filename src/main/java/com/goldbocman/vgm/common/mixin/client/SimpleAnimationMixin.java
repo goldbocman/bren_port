@@ -1,7 +1,9 @@
 package com.goldbocman.vgm.common.mixin.client;
 
+//? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+//?}
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.item.SpecialModelWrapper;
@@ -18,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * 用于调试和验证动画系统是否正常工作
  */
 @SuppressWarnings("ALL")
+//? if fabric
 @Environment(value= EnvType.CLIENT)
 @Mixin(SpecialModelWrapper.class)
 public class SimpleAnimationMixin {

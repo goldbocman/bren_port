@@ -1,7 +1,9 @@
 package com.goldbocman.vgm.common.mixin.client;
 
+//? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+//?}
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.world.InteractionHand;
@@ -20,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 // afterward via this exact method - that's the real, final authority on a player's third-person arm pose, and
 // it only recognizes vanilla items (CrossbowItem, bow, trident, ...), falling through to the generic ITEM pose
 // for anything else. ArmedEntityRenderStateMixin's change was getting silently clobbered by this.
+//? if fabric
 @Environment(value = EnvType.CLIENT)
 @Mixin(AvatarRenderer.class)
 public abstract class AvatarRendererMixin {

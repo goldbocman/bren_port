@@ -1,8 +1,10 @@
 package com.goldbocman.vgm.common.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+//? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+//?}
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
@@ -25,6 +27,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @SuppressWarnings("ALL")
+//? if fabric
 @Environment(value= EnvType.CLIENT)
 @Mixin(SpecialModelWrapper.class)
 public abstract class ItemRendererMixin {

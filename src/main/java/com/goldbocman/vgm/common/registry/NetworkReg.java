@@ -1,7 +1,9 @@
 package com.goldbocman.vgm.common.registry;
 
+//? if fabric {
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+//?}
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -30,9 +32,40 @@ public class NetworkReg {
     public static final CustomPacketPayload.Type<ShootParticlePayload> SHOOT_PARTICLE_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "shoot_particle"));
 //    public static final CustomPacketPayload.Type<GrenadeLeftClickPayload> GRENADE_LEFT_CLICK_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "grenade_left_click"));
 
+    private static void handleReload(ServerPlayer player) {
+        MinecraftServer server = player.level().getServer();
+
+        if (server != null) {
+            server.execute(() -> {
+                ItemStack stack = player.getMainHandItem();
+
+                if (stack.getItem() instanceof GunItem gunItem) {
+                    gunItem.onReload(player);
+                    // If onReload started a reload, tell all nearby clients
+//                        if (player instanceof IGunUser gunUser &&
+//                                gunUser.bren_1_21_1$getGunState() == GunHelper.GunStates.RELOADING) {
+//                            broadcastGunState(player, true);
+//                        }
+                } else if (stack.getItem() instanceof MagazineItem) {
+                    GunUtils.fillMagazine(stack, player);
+                }
+            });
+        }
+    }
+
+    private static void handleShoot(ServerPlayer player) {
+        // 获取玩家和主手物品
+        // 检查是否为GunItem
+        // 调用GunUtils.fire方法执行射击逻辑
+        // 设置冷却时间
+        // 发送粒子效果到客户端
+        // 触发射击事件
+    }
+
+    //? if fabric {
     public static void registerAllPackets() {
         LOGGER.info("Registering all network packets");
-        
+
         // 注册所有数据包类型
         // 客户端接收的数据包（S2C - Server to Client）
         PayloadTypeRegistry.clientboundPlay().register(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC);
@@ -44,38 +77,11 @@ public class NetworkReg {
         PayloadTypeRegistry.serverboundPlay().register(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.serverboundPlay().register(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC);
 //        PayloadTypeRegistry.serverboundPlay().register(GRENADE_LEFT_CLICK_PACKET_ID, GrenadeLeftClickPayload.PACKET_CODEC);
-    
-        ServerPlayNetworking.registerGlobalReceiver(RELOAD_PACKET_ID, (payload, context) -> {
-            ServerPlayer player = context.player();
-            MinecraftServer server = player.level().getServer();
 
-            if (server != null) {
-                server.execute(() -> {
-                    ItemStack stack = player.getMainHandItem();
+        ServerPlayNetworking.registerGlobalReceiver(RELOAD_PACKET_ID, (payload, context) -> handleReload(context.player()));
 
-                    if (stack.getItem() instanceof GunItem gunItem) {
-                        gunItem.onReload(player);
-                        // If onReload started a reload, tell all nearby clients
-//                        if (player instanceof IGunUser gunUser &&
-//                                gunUser.bren_1_21_1$getGunState() == GunHelper.GunStates.RELOADING) {
-//                            broadcastGunState(player, true);
-//                        }
-                    } else if (stack.getItem() instanceof MagazineItem) {
-                        GunUtils.fillMagazine(stack, player);
-                    }
-                });
-            }
-        });
-        
-        ServerPlayNetworking.registerGlobalReceiver(SHOOT_PACKET_ID, (payload, context) -> {
-            // 获取玩家和主手物品
-            // 检查是否为GunItem
-            // 调用GunUtils.fire方法执行射击逻辑
-            // 设置冷却时间
-            // 发送粒子效果到客户端
-            // 触发射击事件
-        });
-        
+        ServerPlayNetworking.registerGlobalReceiver(SHOOT_PACKET_ID, (payload, context) -> handleShoot(context.player()));
+
 //        ServerPlayNetworking.registerGlobalReceiver(GRENADE_LEFT_CLICK_PACKET_ID, (payload, context) -> {
 //            ServerPlayer player = context.player();
 //            MinecraftServer server = player.level().getServer();
@@ -87,9 +93,12 @@ public class NetworkReg {
 //                });
 //            }
 //        });
-        
+
         LOGGER.info("All network packets registered successfully");
     }
+    //?}
+    //? if neoforge
+    //public static void registerAllPackets() {} // NeoForge registers via NeoForgePayloads (RegisterPayloadHandlersEvent) below instead.
     
     // 重装包数据类
     public record ReloadPayload() implements CustomPacketPayload {
@@ -254,5 +263,33 @@ public class NetworkReg {
 //        }
 //    }
 
+    //? if neoforge {
+    /*@net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID)
+    public static class NeoForgePayloads {
+        @net.neoforged.bus.api.SubscribeEvent
+        public static void register(net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent event) {
+            // "1" is the payload-version string NeoForge uses to reject clients/servers with mismatched
+            // channel versions - bump it if any of these payload records ever change shape.
+            net.neoforged.neoforge.network.registration.PayloadRegistrar registrar = event.registrar("1");
 
+            // 服务器端接收的数据包（C2S - Client to Server）
+            registrar.playToServer(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC,
+                    (payload, context) -> handleReload((net.minecraft.server.level.ServerPlayer) context.player()));
+            registrar.playToServer(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC,
+                    (payload, context) -> handleShoot((net.minecraft.server.level.ServerPlayer) context.player()));
+
+            // 客户端接收的数据包（S2C - Server to Client）
+            registrar.playToClient(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC,
+                    (payload, context) -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleRecoil(net.minecraft.client.Minecraft.getInstance(), payload));
+            registrar.playToClient(SHOOT_CLIENT_PACKET_ID, ShootClientPayload.PACKET_CODEC,
+                    (payload, context) -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleClientShoot(net.minecraft.client.Minecraft.getInstance(), payload));
+            registrar.playToClient(SHOOT_ANIMATION_PACKET_ID, ShootAnimationPayload.PACKET_CODEC,
+                    (payload, context) -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleShootAnimation(net.minecraft.client.Minecraft.getInstance()));
+            registrar.playToClient(SHOOT_PARTICLE_PACKET_ID, ShootParticlePayload.PACKET_CODEC,
+                    (payload, context) -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleShootParticle(net.minecraft.client.Minecraft.getInstance(), payload));
+            registrar.playToClient(ITEM_COMPONENT_SYNC_PACKET_ID, ItemComponentSyncPayload.PACKET_CODEC,
+                    (payload, context) -> {});
+        }
+    }
+    *///?}
 }

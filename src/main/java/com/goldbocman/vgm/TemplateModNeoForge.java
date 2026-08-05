@@ -10,7 +10,15 @@ import static com.goldbocman.vgm.TemplateModCommon.*;
 @Mod("vgm")
 public class TemplateModNeoForge {
     public TemplateModNeoForge(IEventBus modEventBus, ModContainer modContainer) {
-        LOGGER.info("Hello NeoForge world!");
+        com.goldbocman.vgm.common.Bren.CREATIVE_MODE_TABS.register(modEventBus);
+
+        new com.goldbocman.vgm.common.Bren().onInitialize();
+
+        if (com.goldbocman.vgm.ModLoaderAccess.INSTANCE.isClient()) {
+            new com.goldbocman.vgm.client.ClientBren().onInitializeClient();
+        }
+
+        LOGGER.info("BAM! vgm (NeoForge) is done loading!");
     }
 }
 *///?}

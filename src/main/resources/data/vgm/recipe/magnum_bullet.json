@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "M": "minecraft:gold_ingot",
+    "I": "minecraft:copper_ingot",
+    "G": "minecraft:gunpowder"
+  },
+  "pattern": [
+    " MI",
+    "MGM",
+    "GM "
+  ],
+  "result": {
+    "id": "vgm:magnum_bullet",
+    "count": 8
+  },
+  "show_notification": true
+}

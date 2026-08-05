@@ -2,8 +2,10 @@ package com.goldbocman.vgm.client.features;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+//? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+//?}
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -15,6 +17,7 @@ import com.goldbocman.vgm.common.registry.custom.PoseType;
 import com.goldbocman.vgm.common.registry.custom.types.GunItem;
 import org.jetbrains.annotations.NotNull;
 
+//? if fabric
 @Environment(EnvType.CLIENT)
 public class GunHoldingFeatureRenderer<S extends HumanoidRenderState, M extends EntityModel<S>> extends RenderLayer<S, M> {
     public GunHoldingFeatureRenderer(LivingEntityRenderer context) {

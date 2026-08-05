@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:adventure/root",
+  "parent": "vgm:adventure/auto_loader_contraption",
   "criteria": {
     "rifle": {
       "conditions": {
@@ -23,7 +23,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "vgm:rifle"
+      "id": "vgm:rifle"
     },
     "show_toast": true,
     "title": {
