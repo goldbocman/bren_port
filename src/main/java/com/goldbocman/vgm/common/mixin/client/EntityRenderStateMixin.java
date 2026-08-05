@@ -1,12 +1,15 @@
 package com.goldbocman.vgm.common.mixin.client;
 
+//? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+//?}
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import com.goldbocman.vgm.client.IEntityRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
+//? if fabric
 @Environment(EnvType.CLIENT)
 @Mixin(EntityRenderState.class)
 public class EntityRenderStateMixin implements IEntityRenderState {

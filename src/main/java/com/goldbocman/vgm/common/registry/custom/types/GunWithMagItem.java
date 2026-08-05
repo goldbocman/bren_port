@@ -1,6 +1,5 @@
 package com.goldbocman.vgm.common.registry.custom.types;
 
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
@@ -23,6 +22,7 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import com.goldbocman.vgm.common.Bren;
 import com.goldbocman.vgm.common.entity.IGunUser;
+import com.goldbocman.vgm.common.network.NetworkUtils;
 import com.goldbocman.vgm.common.registry.NetworkReg.ItemComponentSyncPayload;
 import com.goldbocman.vgm.common.registry.SoundReg;
 import com.goldbocman.vgm.common.registry.TagReg;
@@ -512,7 +512,7 @@ public class GunWithMagItem extends GunItem {
         if (player != null) {
             // 发送网络包同步物品组件状态
             ItemComponentSyncPayload payload = new ItemComponentSyncPayload(-1, hasMagazine); // -1 表示任意槽位，或可指定特定槽位
-            ServerPlayNetworking.send(player, payload);
+            NetworkUtils.sendToPlayer(player, payload);
             LOGGER.info("Sent item component sync packet to client - hasMagazine: {}", hasMagazine);
         }
     }

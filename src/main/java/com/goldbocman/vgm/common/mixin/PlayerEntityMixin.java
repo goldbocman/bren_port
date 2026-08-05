@@ -1,7 +1,6 @@
 package com.goldbocman.vgm.common.mixin;
 
 import com.mojang.authlib.GameProfile;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -17,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import com.goldbocman.vgm.common.entity.IGunUser;
 import com.goldbocman.vgm.common.events.MEvents;
+import com.goldbocman.vgm.common.network.NetworkUtils;
 import com.goldbocman.vgm.common.registry.AttributeReg;
 import com.goldbocman.vgm.common.registry.NetworkReg;
 import com.goldbocman.vgm.common.registry.custom.types.GunItem;
@@ -242,7 +242,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
                     (float) direction.x, (float) direction.y, (float) direction.z,
                     true // 是否抛出弹壳
             );
-            ClientPlayNetworking.send(payload);
+            NetworkUtils.sendToServer(payload);
         }
 
         MEvents.GUN_FIRED_EVENT.invoker().gunFired(player, mainHandStack);

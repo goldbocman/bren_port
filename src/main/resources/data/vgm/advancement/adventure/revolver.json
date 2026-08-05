@@ -23,7 +23,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "vgm:revolver"
+      "id": "vgm:revolver"
     },
     "show_toast": true,
     "title": {

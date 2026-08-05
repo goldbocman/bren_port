@@ -1,11 +1,13 @@
 package com.goldbocman.vgm.common;
 
+//? if fabric {
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
+//?}
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -27,24 +29,49 @@ import com.goldbocman.vgm.common.registry.custom.MagazineItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Bren implements ModInitializer {
+public class Bren
+		//? if fabric
+		implements ModInitializer
+{
 	public static final String MODID = "vgm";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 	public static final int UNIVERSAL_AMMO_COLOR = 0xFFAE00;
 
 	public static final ResourceKey<CreativeModeTab> BREN_TAB = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(MODID, "bren_tab"));
 
+	//? if neoforge {
+	/*public static final net.neoforged.neoforge.registries.DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
+			net.neoforged.neoforge.registries.DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
+	public static final java.util.function.Supplier<CreativeModeTab> BREN_TAB_NEO = CREATIVE_MODE_TABS.register("bren_tab",
+			() -> CreativeModeTab.builder()
+					.title(Component.translatable("itemGroup." + MODID + ".bren_tab"))
+					.icon(() -> new ItemStack(ItemReg.NETHERITE_AUTO_GUN))
+					.displayItems((context, output) -> addTabItems(output))
+					.build());
+	*///?}
+
+	// EntityType's own constructor touches BuiltInRegistries.ENTITY_TYPE (creates an intrusive holder),
+	// not just the explicit Registry.register() call below - so on NeoForge even *building* it must wait
+	// for the registry's RegisterEvent window (registries are frozen everywhere else). Fabric can build
+	// and register eagerly here as a `final` field; NeoForge builds+registers it lazily in
+	// onRegister() below, so BULLET can't be `final` on that branch.
+	//? if fabric {
 	public static final EntityType<@org.jetbrains.annotations.NotNull BulletEntity> BULLET = Registry.register(BuiltInRegistries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID,
 			"bullet"), EntityType.Builder.<BulletEntity>of(
 					(type, level) -> new BulletEntity(type, level), MobCategory.MISC).clientTrackingRange(10)
 					.sized(0.35F, 0.35F).noSave().build(
 							ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, "bullet"))));
+	//?}
+	//? if neoforge
+	//public static EntityType<@org.jetbrains.annotations.NotNull BulletEntity> BULLET;
 
+	//? if fabric
 	@Override
 	public void onInitialize() {
 		// 在1.21.4中，必须先注册属性，然后再注册物品
 		// 属性注册必须在物品注册之前
 
+		//? if fabric {
 		ModContainer container = FabricLoader.getInstance().getModContainer(MODID)
 				.orElseThrow(RuntimeException::new);
 
@@ -57,6 +84,14 @@ public class Bren implements ModInitializer {
 				container,
 				ResourcePackActivationType.NORMAL  // 玩家可以手动关闭
 		);
+		//?}
+		// TODO NeoForge: builtin resource pack (bren_3d_resources_2) not yet ported — no NeoForge
+		// AddPackFindersEvent equivalent implemented here yet; the pack's assets are still bundled in
+		// resources/resourcepacks/bren_3d_resources_2 but won't be offered to NeoForge players.
+		// NeoForge can't register into these vanilla registries eagerly here (frozen outside the
+		// RegisterEvent window) - it runs the same calls from onRegister() below instead, one per
+		// registry, as each one's RegisterEvent fires.
+		//? if fabric {
 		AttributeReg.reg();
 		// 注册数据组件类型（必须在物品注册之前）
 		DataComponentReg.register();
@@ -65,12 +100,14 @@ public class Bren implements ModInitializer {
 		ItemReg.reg();
 		SoundReg.reg();
 		ParticleReg.reg();
+		//?}
 
 		MConfig.init();
 
 
 
 		// 初始化世界生成
+		//? if fabric
 		WorldGenReg.init();
 
 		// 移除CommonLifecycleEvents中的属性注册调用
@@ -87,53 +124,91 @@ public class Bren implements ModInitializer {
 //		com.goldbocman.vgm.common.events.GrenadeHandler.register();
 
 		// 注册自定义创意标签页
+		//? if fabric {
 		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, BREN_TAB, FabricCreativeModeTab.builder()
 			.title(Component.translatable("itemGroup." + MODID + ".bren_tab"))
 			.icon(() -> new ItemStack(ItemReg.NETHERITE_AUTO_GUN))
-			.displayItems((context, output) -> {
-				// 添加所有武器
-				// TODO: BALANCING NEEDED — disabled items are commented out; re-enable after tuning
-				// output.accept(ItemReg.MACHINE_GUN);
-				output.accept(ItemReg.AUTO_GUN);
-				output.accept(ItemReg.SHOTGUN);
-				output.accept(ItemReg.RIFLE);
-				output.accept(ItemReg.REVOLVER);
-				// output.accept(ItemReg.NETHERITE_MACHINE_GUN);
-				output.accept(ItemReg.NETHERITE_AUTO_GUN);
-				// output.accept(ItemReg.NETHERITE_TACTICAL_AUTO_GUN);
-				output.accept(ItemReg.NETHERITE_SHOTGUN);
-				// output.accept(ItemReg.NETHERITE_DOUBLE_BARRELS_SHOTGUN);
-				output.accept(ItemReg.NETHERITE_RIFLE);
-				// output.accept(ItemReg.NETHERITE_LEVER_GUN);
-				output.accept(ItemReg.NETHERITE_REVOLVER);
-				// output.accept(ItemReg.AUTO_PISTOL);
-				// output.accept(ItemReg.FLARE_GUN);
-				// output.accept(ItemReg.FIRE_AXE);
-				// output.accept(ItemReg.EXPLOSIVE_SPEAR);
-				// output.accept(ItemReg.AIR_GUN);
-				// output.accept(ItemReg.SMG);
-				// output.accept(ItemReg.GRAPPLING_HOOK);
-
-				// 添加弹药
-				output.accept(ItemReg.BULLET);
-				output.accept(ItemReg.MAGNUM_BULLET);
-				output.accept(ItemReg.SHELL);
-				// output.accept(ItemReg.DRAGONBREATH_SHELL);
-
-				// 添加配件
-				output.accept(ItemReg.MAGAZINE);
-				// output.accept(ItemReg.DRUM_MAGAZINE);
-				// output.accept(ItemReg.CLOTHED_MAGAZINE);
-				output.accept(ItemReg.SHORT_MAGAZINE);
-
-				// 添加材料
-				output.accept(ItemReg.AUTO_LOADER_CONTRAPTION);
-				output.accept(ItemReg.METAL_TUBE);
-			})
+			.displayItems((context, output) -> addTabItems(output))
 			.build()
 		);
+		//?}
+		// NeoForge registers CREATIVE_MODE_TABS (declared above) via DeferredRegister at mod-bus setup
+		// time instead — see TemplateModNeoForge.
 
 		LOGGER.info("BAM! {} is done loading!", MODID);
+	}
+
+	//? if neoforge {
+	/*// NeoForge freezes BuiltInRegistries outside the RegisterEvent window for each registry, so the
+	// AttributeReg/DataComponentReg/ItemReg/SoundReg/ParticleReg/WorldGenReg/.reg()/.init() calls (and
+	// BULLET's registration) that run eagerly from onInitialize() on Fabric must instead run here, once
+	// per matching registry's own RegisterEvent - calling them any earlier throws
+	// "Registry is already frozen". Vanilla's own registry bootstrap order fires ATTRIBUTE and
+	// DATA_COMPONENT_TYPE before ITEM, matching the ordering onInitialize() relies on for Fabric.
+	@net.neoforged.fml.common.EventBusSubscriber(modid = MODID)
+	public static class NeoForgeRegistration {
+		@net.neoforged.bus.api.SubscribeEvent
+		public static void onRegister(net.neoforged.neoforge.registries.RegisterEvent event) {
+			net.minecraft.resources.ResourceKey<? extends Registry<?>> key = event.getRegistryKey();
+			if (key == Registries.ATTRIBUTE) {
+				AttributeReg.reg();
+			} else if (key == Registries.DATA_COMPONENT_TYPE) {
+				DataComponentReg.register();
+			} else if (key == Registries.ITEM) {
+				ItemReg.reg();
+			} else if (key == Registries.SOUND_EVENT) {
+				SoundReg.reg();
+			} else if (key == Registries.PARTICLE_TYPE) {
+				ParticleReg.reg();
+			} else if (key == Registries.FEATURE) {
+				WorldGenReg.init();
+			} else if (key == Registries.ENTITY_TYPE) {
+				BULLET = Registry.register(BuiltInRegistries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, "bullet"),
+						EntityType.Builder.<BulletEntity>of((type, level) -> new BulletEntity(type, level), MobCategory.MISC)
+								.clientTrackingRange(10).sized(0.35F, 0.35F).noSave()
+								.build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, "bullet"))));
+			}
+		}
+	}
+	*///?}
+
+	private static void addTabItems(CreativeModeTab.Output output) {
+		// output.accept(ItemReg.MACHINE_GUN);
+		output.accept(ItemReg.AUTO_GUN);
+		output.accept(ItemReg.SHOTGUN);
+		output.accept(ItemReg.RIFLE);
+		output.accept(ItemReg.REVOLVER);
+		// output.accept(ItemReg.NETHERITE_MACHINE_GUN);
+		output.accept(ItemReg.NETHERITE_AUTO_GUN);
+		// output.accept(ItemReg.NETHERITE_TACTICAL_AUTO_GUN);
+		output.accept(ItemReg.NETHERITE_SHOTGUN);
+		// output.accept(ItemReg.NETHERITE_DOUBLE_BARRELS_SHOTGUN);
+		output.accept(ItemReg.NETHERITE_RIFLE);
+		// output.accept(ItemReg.NETHERITE_LEVER_GUN);
+		output.accept(ItemReg.NETHERITE_REVOLVER);
+		// output.accept(ItemReg.AUTO_PISTOL);
+		// output.accept(ItemReg.FLARE_GUN);
+		// output.accept(ItemReg.FIRE_AXE);
+		// output.accept(ItemReg.EXPLOSIVE_SPEAR);
+		// output.accept(ItemReg.AIR_GUN);
+		// output.accept(ItemReg.SMG);
+		// output.accept(ItemReg.GRAPPLING_HOOK);
+
+		// 添加弹药
+		output.accept(ItemReg.BULLET);
+		output.accept(ItemReg.MAGNUM_BULLET);
+		output.accept(ItemReg.SHELL);
+		// output.accept(ItemReg.DRAGONBREATH_SHELL);
+
+		// 添加配件
+		output.accept(ItemReg.MAGAZINE);
+		// output.accept(ItemReg.DRUM_MAGAZINE);
+		// output.accept(ItemReg.CLOTHED_MAGAZINE);
+		output.accept(ItemReg.SHORT_MAGAZINE);
+
+		// 添加材料
+		output.accept(ItemReg.AUTO_LOADER_CONTRAPTION);
+		output.accept(ItemReg.METAL_TUBE);
 	}
 
 	private static ItemStack mag(MagazineItem m) {

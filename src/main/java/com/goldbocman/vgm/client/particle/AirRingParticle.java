@@ -1,7 +1,9 @@
 package com.goldbocman.vgm.client.particle;
 
+//? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+//?}
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.ParticleOptions;
@@ -24,6 +26,7 @@ public class AirRingParticle extends BaseAshSmokeParticle {
         return 15728880;
     }
 
+    //? if fabric
     @Environment(EnvType.CLIENT)
     public static class Factory implements ParticleProvider<ParticleOptions> { // 修改为ParticleEffect
         private final SpriteSet spriteProvider;

@@ -1,13 +1,11 @@
 {
-  "parent": "vgm:adventure/auto_loader_contraption",
   "criteria": {
-    "machine_gun": {
+    "auto_loader_contraption": {
       "conditions": {
         "items": [
           {
             "items": [
-              "vgm:machine_gun",
-              "vgm:netherite_machine_gun"
+              "vgm:auto_loader_contraption"
             ]
           }
         ]
@@ -17,22 +15,23 @@
   },
   "display": {
     "announce_to_chat": true,
+    "background": "minecraft:gui/advancements/backgrounds/adventure",
     "description": {
-      "translate": "advancements.vgm.adventure.machine_gun.description"
+      "translate": "advancements.vgm.adventure.auto_loader_contraption.description"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "vgm:machine_gun"
+      "id": "vgm:auto_loader_contraption"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.vgm.adventure.machine_gun.title"
+      "translate": "advancements.vgm.adventure.auto_loader_contraption.title"
     }
   },
   "requirements": [
     [
-      "machine_gun"
+      "auto_loader_contraption"
     ]
   ],
   "sends_telemetry_event": true

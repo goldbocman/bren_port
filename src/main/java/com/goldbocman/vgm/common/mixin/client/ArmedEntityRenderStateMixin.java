@@ -1,7 +1,9 @@
 package com.goldbocman.vgm.common.mixin.client;
 
+//? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+//?}
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.state.ArmedEntityRenderState;
 import net.minecraft.client.renderer.item.ItemModelResolver;
@@ -17,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 // Two-handed guns (shotgun, rifle, auto-gun) reuse vanilla's crossbow-hold arm pose instead of hand-tuned Euler
 // math in GunAnimationSystem - it's already network-synced and handles every look angle correctly for both the
 // local and remote players, which hand-rolled xRot/yRot/zRot formulas kept failing to reproduce.
+//? if fabric
 @Environment(value = EnvType.CLIENT)
 @Mixin(ArmedEntityRenderState.class)
 public abstract class ArmedEntityRenderStateMixin {

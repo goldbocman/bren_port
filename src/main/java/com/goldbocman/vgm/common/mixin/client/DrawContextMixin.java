@@ -1,11 +1,14 @@
 package com.goldbocman.vgm.common.mixin.client;
 
+//? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+//?}
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
+//? if fabric
 @Environment(value= EnvType.CLIENT)
 @Mixin(GuiGraphicsExtractor.class)
 public abstract class DrawContextMixin {

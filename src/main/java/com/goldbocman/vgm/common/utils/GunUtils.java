@@ -1,9 +1,7 @@
 package com.goldbocman.vgm.common.utils;
 
-import net.fabricmc.fabric.api.networking.v1.FriendlyByteBufs;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffects;
@@ -130,22 +128,18 @@ public class GunUtils {
         }
 
         if (user instanceof Player player) {
-            FriendlyByteBuf buf = FriendlyByteBufs.create();
-
             // 关键修复：直接使用GunItem的getGunProperties方法获取后坐力属性
             float recoil = 0f;
                 if (properties != null) {
                     recoil = properties.recoil;
                 }
-            
+
 
             // 新增：调用CalculateRecoil函数计算后坐力
             double calculatedRecoil = CalculateRecoil(player, stack, recoil);
             recoil = (float) calculatedRecoil;
 
-            buf.writeFloat(recoil);
-
-            NetworkUtils.sendDataToClient(player, NetworkReg.RECOIL_CLIENT_PACKET_ID.id(), buf);
+            NetworkUtils.sendToPlayer(player, new NetworkReg.RecoilPayload(recoil));
         }
 
         gunItem.useBullet(stack);
@@ -270,9 +264,7 @@ public class GunUtils {
 
 
     public static void sendAnimationPacket(Player player) {
-        FriendlyByteBuf buf = FriendlyByteBufs.empty();
-
-        NetworkUtils.sendDataToClient(player, NetworkReg.SHOOT_ANIMATION_PACKET_ID.id(), buf);
+        NetworkUtils.sendToPlayer(player, new NetworkReg.ShootAnimationPayload());
     }
 
     public static void playDistantGunFire(Level world, Vec3 pos) {
@@ -288,9 +280,7 @@ public class GunUtils {
                 float volume = (float) Math.max(1.0F - (distance / 400)/100, 0);
 
                 if (volume > 0) {
-                    FriendlyByteBuf buf = FriendlyByteBufs.create();
-                    buf.writeFloat(volume);
-                    NetworkUtils.sendDataToClient(player, NetworkReg.SHOOT_CLIENT_PACKET_ID.id(), buf);
+                    NetworkUtils.sendToPlayer(player, new NetworkReg.ShootClientPayload(volume));
                 }
             }
         });

@@ -1,15 +1,17 @@
 package com.goldbocman.vgm.common.entity;
 
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -19,6 +21,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -32,6 +35,8 @@ import com.goldbocman.vgm.common.registry.ParticleReg;
 import org.jetbrains.annotations.NotNull;
 
 public class BulletEntity extends Projectile {
+    private static final TagKey<Block> GLASS_BLOCKS = TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("c", "glass_blocks"));
+    private static final TagKey<Block> GLASS_PANES = TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("c", "glass_panes"));
     private static final EntityDataAccessor<Integer> LIFESPAN = SynchedEntityData.defineId(BulletEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> BULLET_TYPE = SynchedEntityData.defineId(BulletEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> PUNCH_LEVEL = SynchedEntityData.defineId(BulletEntity.class, EntityDataSerializers.INT);
@@ -197,7 +202,7 @@ public class BulletEntity extends Projectile {
 
         if (!state.isAir() && state.isSolid() && this.tickCount > 1) {
 
-            if ((state.is(ConventionalBlockTags.GLASS_BLOCKS) || state.is(ConventionalBlockTags.GLASS_PANES)) && MConfig.bulletsBreakGlass.get()) {
+            if ((state.is(GLASS_BLOCKS) || state.is(GLASS_PANES)) && MConfig.bulletsBreakGlass.get()) {
                 if (this.level().isClientSide()) { return;} // 修复：使用getEntityWorld()方法替代getWorld()
                 this.level().destroyBlock(pos, false, this.getOwner()); // 修复：使用getEntityWorld()方法替代getWorld()
             } else {
