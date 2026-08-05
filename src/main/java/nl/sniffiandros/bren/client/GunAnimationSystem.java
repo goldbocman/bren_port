@@ -42,9 +42,9 @@ public class GunAnimationSystem {
                         // instead of overwriting it with hand-tuned math.
                     }
                     case ONE_ARM ->
-                            applyOneArmAnimation(leftArm, rightArm, head, entity, cooldownProgress, gunTicks, gunState);
+                            applyOneArmAnimation(leftArm, rightArm, head, state, entity, cooldownProgress, gunTicks, gunState);
                     case REVOLVER ->
-                            applyRevolverAnimation(leftArm, rightArm, head, entity, cooldownProgress, gunTicks, gunState);
+                            applyRevolverAnimation(leftArm, rightArm, head, state, entity, cooldownProgress, gunTicks, gunState);
                 }
             }
         }
@@ -69,9 +69,9 @@ public class GunAnimationSystem {
                         // instead of overwriting it with hand-tuned math.
                     }
                     case ONE_ARM ->
-                            applyOneArmAnimation(leftArm, rightArm, head, hat, entity, cooldownProgress, gunTicks, gunState);
+                            applyOneArmAnimation(leftArm, rightArm, head, hat, state, entity, cooldownProgress, gunTicks, gunState);
                     case REVOLVER ->
-                            applyRevolverAnimation(leftArm, rightArm, head, hat, entity, cooldownProgress, gunTicks, gunState);
+                            applyRevolverAnimation(leftArm, rightArm, head, hat, state, entity, cooldownProgress, gunTicks, gunState);
                 }
             }
         }
@@ -137,39 +137,39 @@ public class GunAnimationSystem {
     }
 
     public static void applyOneArmAnimation(ModelPart leftArm, ModelPart rightArm, ModelPart head,
-                                            LivingEntity entity, float cooldownProgress, int gunTicks, GunHelper.GunStates gunState) {
-        applyOneArmAnimation(leftArm, rightArm, head, null, entity, cooldownProgress, gunTicks, gunState);
+                                            HumanoidRenderState state, LivingEntity entity, float cooldownProgress, int gunTicks, GunHelper.GunStates gunState) {
+        applyOneArmAnimation(leftArm, rightArm, head, null, state, entity, cooldownProgress, gunTicks, gunState);
     }
 
     public static void applyOneArmAnimation(ModelPart leftArm, ModelPart rightArm, ModelPart head, ModelPart hat,
-                                            LivingEntity entity, float cooldownProgress, int gunTicks, GunHelper.GunStates gunState) {
+                                            HumanoidRenderState state, LivingEntity entity, float cooldownProgress, int gunTicks, GunHelper.GunStates gunState) {
         boolean isLeftHanded = entity.getMainArm().equals(HumanoidArm.LEFT);
         ModelPart arm = isLeftHanded ? leftArm : rightArm;
 
         float h_pi = 1.570796F;
-        float p = entity.getXRot() * 0.01745329F;
-        float bodyYaw = entity.getVisualRotationYInDegrees() * 0.01745329F;
+        // Driven by the render state's already-interpolated rotation - the same values vanilla's
+        // own setupAnim used for head/hat just before this injection - instead of raw
+        // entity.getXRot()/getVisualRotationYInDegrees(), which only update once per tick and
+        // produced visible stepping/jerk as the camera rotated.
+        float p = state.xRot * 0.017453292F;
+        float bodyYaw = state.bodyRot * 0.017453292F;
 
         arm.yRot = bodyYaw;
         arm.xRot = p - h_pi;
 
-        head.yRot = 0;
-        head.xRot = p;
-
-        // Hat layer animation - synchronized with the head
-        if (hat != null) {
-            hat.yRot = 0;
-            hat.xRot = p;
-        }
+        // Head/hat rotation is left to vanilla's own setupAnim, which already ran before this
+        // injection - hat is a child ModelPart of head, so it inherits head's rotation through
+        // the parent transform. Setting hat's local rotation to the same absolute value here
+        // doubled it, causing the outer skin layer to detach/over-rotate.
     }
 
     public static void applyRevolverAnimation(ModelPart leftArm, ModelPart rightArm, ModelPart head,
-                                              LivingEntity entity, float cooldownProgress, int gunTicks, GunHelper.GunStates gunState) {
-        applyRevolverAnimation(leftArm, rightArm, head, null, entity, cooldownProgress, gunTicks, gunState);
+                                              HumanoidRenderState state, LivingEntity entity, float cooldownProgress, int gunTicks, GunHelper.GunStates gunState) {
+        applyRevolverAnimation(leftArm, rightArm, head, null, state, entity, cooldownProgress, gunTicks, gunState);
     }
 
     public static void applyRevolverAnimation(ModelPart leftArm, ModelPart rightArm, ModelPart head, ModelPart hat,
-                                              LivingEntity entity, float cooldownProgress, int gunTicks, GunHelper.GunStates gunState) {
+                                              HumanoidRenderState state, LivingEntity entity, float cooldownProgress, int gunTicks, GunHelper.GunStates gunState) {
         boolean isLeftHanded = entity.getMainArm().equals(HumanoidArm.LEFT);
         ModelPart arm = isLeftHanded ? leftArm : rightArm;
         boolean reloading = gunState.equals(GunHelper.GunStates.RELOADING);
@@ -188,20 +188,22 @@ public class GunAnimationSystem {
         rotationY = (float) (Math.cos(animationFactor*15)*0.08726646);
         rotationX = (float) (Math.sin(animationFactor*15)*0.08726646) - sin;
 
-        float p = entity.getXRot() * 0.01745329F;
-        float y = entity.getYHeadRot() * 0.01745329F;
-        float bodyYaw = entity.getVisualRotationYInDegrees() * 0.01745329F;
+        // Driven by the render state's already-interpolated rotation - the same values vanilla's
+        // own setupAnim used for head/hat just before this injection - instead of raw
+        // entity.getXRot()/getYHeadRot(), which only update once per tick and produced visible
+        // stepping/jerk as the camera rotated. state.yRot is already head yaw relative to body
+        // (wrapDegrees(headYaw - bodyRot)), same as the old (y - bodyYaw).
+        float p = state.xRot * 0.017453292F;
+        float yRelative = state.yRot * 0.017453292F;
 
         arm.xRot = p - f1 + rotationX;
-        arm.yRot = (y - bodyYaw) + rotationY;
+        arm.yRot = yRelative + rotationY;
 
-        head.yRot = (y - bodyYaw);
-        head.xRot = p - sin;
-
-        // Hat layer animation - synchronized with the head
-        if (hat != null) {
-            hat.yRot = (y - bodyYaw);
-            hat.xRot = p - sin;
-        }
+        // Head/hat rotation is left to vanilla's own setupAnim, which already ran before this
+        // injection - hat is a child ModelPart of head, so it inherits head's rotation through
+        // the parent transform. Setting hat's local rotation to the same absolute value here
+        // doubled it, causing the outer skin layer to detach/over-rotate. Vanilla also uses
+        // interpolated rotation, unlike the raw entity.getXRot()/getYHeadRot() used above, which
+        // fixes the jerkiness seen on remote players.
     }
 }

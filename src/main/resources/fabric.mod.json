@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "bren",
 	"version": "${version}",
-	"name": "Vanilla Weapon Mod",
-	"description": "Vanilla-like minecraft weapons [Bren Legacy Port]",
+	"name": "Vanilla Guns Mod",
+	"description": "Vanilla-like Minecraft guns [Bren Legacy Port]",
 	"authors": [
 		"goldbocman", "Sniffiandros!", "Bin!"
 	],
