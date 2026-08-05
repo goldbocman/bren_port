@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "model",
+    "model": "bren:item/short_magazine"
+  },
+  "components": {
+    "minecraft:item_model": "bren:item/short_magazine"
+  }
+}

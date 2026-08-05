@@ -1,0 +1,15 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"parent": "bren:item/rifle_gun_handheld",
+	"textures": {
+		"layer0": "bren:item/netherite_rifle"
+	},
+	"overrides": [
+		{"predicate": {"has_magazine": 1, "has_colorable_magazine": 0, "is_full": 0}, "model": "bren:item/netherite_rifle_with_magazine"},
+		{"predicate": {"has_magazine": 1, "has_colorable_magazine": 0, "is_full": 1}, "model": "bren:item/netherite_rifle_with_full_magazine"},
+		{"predicate": {"has_magazine": 1, "has_colorable_magazine": 1, "is_full": 0}, "model": "bren:item/netherite_rifle_with_clothed_magazine"},
+		{"predicate": {"has_magazine": 1, "has_colorable_magazine": 1, "is_full": 1}, "model": "bren:item/netherite_rifle_with_full_clothed_magazine"},
+		{"predicate": {"custom_model_data": 1}, "model": "bren:item/gun_reloading"}
+	]
+}

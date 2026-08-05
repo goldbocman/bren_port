@@ -1,0 +1,46 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": [
+          "gui",
+          "fixed",
+          "ground"
+        ],
+        "model": {
+          "type": "minecraft:condition",
+          "property": "minecraft:has_component",
+          "component": "vgm:has_magazine",
+          "on_true": {
+            "type": "minecraft:model",
+            "model": "vgm:item/smg_1"
+          },
+          "on_false": {
+            "type": "minecraft:model",
+            "model": "vgm:item/smg_0"
+          }
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:condition",
+      "property": "minecraft:has_component",
+      "component": "vgm:has_magazine",
+      "on_true": {
+        "type": "minecraft:model",
+        "model": "vgm:item/smg_1"
+      },
+      "on_false": {
+        "type": "minecraft:model",
+        "model": "vgm:item/smg_0"
+      }
+    }
+  },
+  "components": {
+    "minecraft:item_model_properties": {
+      "vgm:is_reloading": false
+    }
+  }
+}

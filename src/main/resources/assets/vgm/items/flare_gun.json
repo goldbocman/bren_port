@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "model",
+    "model": "vgm:item/new_flare_gun"
+  },
+  "components": {
+    "minecraft:item_model": "vgm:item/new_flare_gun",
+    "minecraft:item_model_properties": {
+      "vgm:is_reloading": false
+    }
+  }
+}

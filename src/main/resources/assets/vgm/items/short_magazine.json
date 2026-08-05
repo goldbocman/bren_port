@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "model",
+    "model": "vgm:item/short_magazine"
+  },
+  "components": {
+    "minecraft:item_model": "vgm:item/short_magazine"
+  }
+}

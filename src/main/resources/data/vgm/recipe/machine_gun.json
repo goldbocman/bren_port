@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "M": "vgm:auto_loader_contraption",
+    "I": "minecraft:iron_ingot",
+    "T": "vgm:metal_tube",
+    "F": "minecraft:iron_block",
+    "P": "#minecraft:logs"
+  },
+  "pattern": [
+    "T  ",
+    "PFM",
+    " IP"
+  ],
+  "result": {
+    "id": "vgm:machine_gun",
+    "count": 1
+  },
+  "show_notification": true
+}

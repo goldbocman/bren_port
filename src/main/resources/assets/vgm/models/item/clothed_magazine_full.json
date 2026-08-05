@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "vgm:item/magazine_cloth",
+    "layer1": "vgm:item/full_magazine_clothed"
+  }
+}

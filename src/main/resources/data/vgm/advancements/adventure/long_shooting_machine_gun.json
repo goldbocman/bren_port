@@ -1,0 +1,40 @@
+{
+
+  "parent": "vgm:adventure/machine_gun",
+  "criteria": {
+    "shooting": {
+      "trigger": "vgm:shooting",
+      "conditions": {
+        "firearm": {
+          "items": [
+            "vgm:machine_gun",
+            "vgm:netherite_machine_gun"
+          ]
+        }
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "vgm:machine_gun"
+    },
+    "title": {
+      "translate": "advancements.vgm.adventure.long_shooting_machine_gun.title"
+    },
+    "description": {
+      "translate": "advancements.vgm.adventure.long_shooting_machine_gun.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "requirements": [
+    [
+      "shooting"
+    ]
+  ],
+  "rewards": {
+    "experience": 30
+  },
+  "sends_telemetry_event": true
+}

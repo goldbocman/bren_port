@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "model",
+    "model": "bren:item/drum_magazine"
+  },
+  "components": {
+    "minecraft:item_model": "bren:item/drum_magazine"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone",
+    "L": "minecraft:lever"
+  },
+  "pattern": [
+    "IRI",
+    "RLR",
+    "IRI"
+  ],
+  "result": {
+    "id": "vgm:auto_loader_contraption",
+    "count": 1
+  },
+  "show_notification": true
+}

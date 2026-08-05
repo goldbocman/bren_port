@@ -1,0 +1,14 @@
+{
+  "parent": "vgm:item/revolver_handheld",
+  "textures": {
+    "layer0": "vgm:item/revolver"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "vgm:item/gun_reloading"
+    }
+  ]
+}

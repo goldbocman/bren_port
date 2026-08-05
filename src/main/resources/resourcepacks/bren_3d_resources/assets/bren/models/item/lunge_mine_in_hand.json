@@ -1,0 +1,8 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:item/spear_in_hand",
+	"textures": {
+		"layer0": "bren:item/lunge_mine_in_hand"
+	}
+}

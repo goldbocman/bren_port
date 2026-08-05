@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "model",
+    "model": "vgm:item/shotgun_handheld"
+  },
+  "components": {
+    "minecraft:item_model": "vgm:item/shotgun_handheld",
+    "minecraft:item_model_properties": {}
+  }
+}

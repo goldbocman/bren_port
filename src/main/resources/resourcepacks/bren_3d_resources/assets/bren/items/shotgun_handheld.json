@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "model",
+    "model": "bren:item/shotgun_handheld"
+  },
+  "components": {
+    "minecraft:item_model": "bren:item/shotgun_handheld",
+    "minecraft:item_model_properties": {}
+  }
+}

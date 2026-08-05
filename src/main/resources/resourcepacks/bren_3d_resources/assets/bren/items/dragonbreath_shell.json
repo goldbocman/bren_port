@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "model",
+    "model": "bren:item/db_shell"
+  },
+  "components": {
+    "minecraft:item_model": "bren:item/db_shell"
+  }
+}

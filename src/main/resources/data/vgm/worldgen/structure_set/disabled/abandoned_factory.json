@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "vgm:abandoned_factory",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 120,
+    "separation": 100,
+    "salt": 1357449236
+  }
+}

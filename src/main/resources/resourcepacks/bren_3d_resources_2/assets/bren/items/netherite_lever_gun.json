@@ -1,0 +1,28 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": [
+          "gui",
+          "fixed",
+          "ground"
+        ],
+        "model": {
+          "type": "minecraft:model",
+          "model": "bren:item/netherite_lever_gun"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "bren:item/netherite_lever_gun"
+    }
+  },
+  "components": {
+    "minecraft:item_model_properties": {
+      "bren:is_reloading": false
+    }
+  }
+}

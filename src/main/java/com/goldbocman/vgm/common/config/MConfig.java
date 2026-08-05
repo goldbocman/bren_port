@@ -1,0 +1,251 @@
+package com.goldbocman.vgm.common.config;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.goldbocman.vgm.common.Bren;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Field;
+
+/*
+ * Credits : Khajiitos
+ * Git : https://github.com/Khajiitos/ChestedCompanions/blob/master/Common/src/main/java/me/khajiitos/chestedcompanions/common/config/CCConfig.java
+ */
+
+public class MConfig {
+    private static final File file = new File("config/bren_config.json");
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
+
+    @Entry(clientOnly = true)
+    public static final ConfigHelper.BooleanValue renderGunOnBack = new ConfigHelper.BooleanValue(true,
+            "Renders the gun on backs");
+
+    @Entry(clientOnly = true)
+    public static final ConfigHelper.BooleanValue spawnCasingParticles = new ConfigHelper.BooleanValue(true,
+            "Spawns empty casings when a gun is fired");
+
+    @Entry(clientOnly = true)
+    public static final ConfigHelper.BooleanValue showAmmoGui = new ConfigHelper.BooleanValue(true,
+            "Shows the ammo GUI");
+
+    @Entry()
+    public static final ConfigHelper.BooleanValue bulletsBreakGlass = new ConfigHelper.BooleanValue(true,
+            "Breaks glass on bullet impact");
+
+    @Entry()
+    public static final ConfigHelper.FloatValue recoilMultiplier = new ConfigHelper.FloatValue(1.0f,
+            "The recoil multiplier, so 0 is no recoil || Default: 1.0");
+
+    @Entry()
+    public static final ConfigHelper.FloatValue machineGunDamage = new ConfigHelper.FloatValue(4.0f,
+            "Ranged damage for the Machine Gun || Default: 4.0");
+
+    @Entry()
+    public static final ConfigHelper.FloatValue netheriteMachineGunDamage = new ConfigHelper.FloatValue(5.0f,
+            "Ranged damage for the Netherite Machine Gun || Default: 5.0");
+
+    @Entry()
+    public static final ConfigHelper.FloatValue autoGunDamage = new ConfigHelper.FloatValue(6.0f,
+            "Ranged damage for the Auto-Gun || Default: 6.0");
+
+    @Entry()
+    public static final ConfigHelper.FloatValue netheriteAutoGunDamage = new ConfigHelper.FloatValue(6.5f,
+            "Ranged damage for the Netherite Auto-Gun || Default: 6.5");
+
+    @Entry()
+    public static final ConfigHelper.FloatValue rifleDamage = new ConfigHelper.FloatValue(10.0f,
+            "Ranged damage for the Rifle || Default: 10.0");
+
+    @Entry()
+    public static final ConfigHelper.FloatValue netheriteRifleDamage = new ConfigHelper.FloatValue(11.0f,
+            "Ranged damage for the Netherite Rifle || Default: 11.0");
+
+    @Entry()
+    public static final ConfigHelper.FloatValue shotgunDamage = new ConfigHelper.FloatValue(3.5f,
+            "Damage per shrapnel for the Shotgun || Default: 3.5");
+
+    @Entry()
+    public static final ConfigHelper.FloatValue netheriteShotgunDamage = new ConfigHelper.FloatValue(3.75f,
+            "Damage per shrapnel for the Netherite Shotgun || Default: 3.75");
+
+    @Entry()
+    public static final ConfigHelper.FloatValue revolverDamage = new ConfigHelper.FloatValue(8.0f,
+            "Ranged damage for the Revolver || Default: 8.0");
+
+    @Entry()
+    public static final ConfigHelper.FloatValue netheriteRevolverDamage = new ConfigHelper.FloatValue(9.0f,
+            "Ranged damage for the Netherite Revolver || Default: 9.0");
+
+    // Durability is intentionally well below a vanilla bow's 384 uses — guns are meant to feel fragile/consumable
+    @Entry()
+    public static final ConfigHelper.IntValue machineGunDurability = new ConfigHelper.IntValue(100,
+            "Shots before the Machine Gun breaks || Default: 100");
+
+    @Entry()
+    public static final ConfigHelper.IntValue netheriteMachineGunDurability = new ConfigHelper.IntValue(150,
+            "Shots before the Netherite Machine Gun breaks || Default: 150");
+
+    @Entry()
+    public static final ConfigHelper.IntValue autoGunDurability = new ConfigHelper.IntValue(90,
+            "Shots before the Auto-Gun breaks || Default: 90");
+
+    @Entry()
+    public static final ConfigHelper.IntValue netheriteAutoGunDurability = new ConfigHelper.IntValue(135,
+            "Shots before the Netherite Auto-Gun breaks || Default: 135");
+
+    @Entry()
+    public static final ConfigHelper.IntValue rifleDurability = new ConfigHelper.IntValue(80,
+            "Shots before the Rifle breaks || Default: 80");
+
+    @Entry()
+    public static final ConfigHelper.IntValue netheriteRifleDurability = new ConfigHelper.IntValue(120,
+            "Shots before the Netherite Rifle breaks || Default: 120");
+
+    @Entry()
+    public static final ConfigHelper.IntValue shotgunDurability = new ConfigHelper.IntValue(40,
+            "Shots before the Shotgun breaks || Default: 40");
+
+    @Entry()
+    public static final ConfigHelper.IntValue netheriteShotgunDurability = new ConfigHelper.IntValue(60,
+            "Shots before the Netherite Shotgun breaks || Default: 60");
+
+    @Entry()
+    public static final ConfigHelper.IntValue revolverDurability = new ConfigHelper.IntValue(50,
+            "Shots before the Revolver breaks || Default: 50");
+
+    @Entry()
+    public static final ConfigHelper.IntValue netheriteRevolverDurability = new ConfigHelper.IntValue(75,
+            "Shots before the Netherite Revolver breaks || Default: 75");
+
+    @Entry()
+    public static final ConfigHelper.IntValue flameDurabilityPenalty = new ConfigHelper.IntValue(1,
+            "Extra durability lost per shot for each level of Flame on the weapon (on top of the normal 1) || Default: 1");
+
+    @Entry()
+    public static final ConfigHelper.BooleanValue allMobsAttackPlayers = new ConfigHelper.BooleanValue(false,
+            "Makes all mobs hostile towards players");
+
+    // 补给箱配置
+    @Entry()
+    public static final ConfigHelper.BooleanValue enableSupplyCrates = new ConfigHelper.BooleanValue(true,
+            "Enable supply crate generation");
+
+    @Entry()
+    public static final ConfigHelper.IntValue supplyCrateSpawnChance = new ConfigHelper.IntValue(10,
+            "Supply crate spawn chance (1 in X chunks)");
+
+    @Entry()
+    public static final ConfigHelper.IntValue minGunsPerCrate = new ConfigHelper.IntValue(1,
+            "Minimum number of guns per supply crate");
+
+    @Entry()
+    public static final ConfigHelper.IntValue maxGunsPerCrate = new ConfigHelper.IntValue(2,
+            "Maximum number of guns per supply crate");
+
+    @Entry()
+    public static final ConfigHelper.IntValue minAmmoTypesPerCrate = new ConfigHelper.IntValue(2,
+            "Minimum number of ammo types per supply crate");
+
+    @Entry()
+    public static final ConfigHelper.IntValue maxAmmoTypesPerCrate = new ConfigHelper.IntValue(4,
+            "Maximum number of ammo types per supply crate");
+
+    @Entry()
+    public static final ConfigHelper.IntValue minMagazinesPerCrate = new ConfigHelper.IntValue(1,
+            "Minimum number of magazines per supply crate");
+
+    @Entry()
+    public static final ConfigHelper.IntValue maxMagazinesPerCrate = new ConfigHelper.IntValue(3,
+            "Maximum number of magazines per supply crate");
+
+    public static void init() {
+        if (!file.exists()) {
+            save();
+        } else {
+            load();
+        }
+    }
+
+    public static void save() {
+        if (!file.getParentFile().isDirectory() && !file.getParentFile().mkdirs()) {
+            Bren.LOGGER.error("Failed to create config directory");
+            return;
+        }
+
+        try (FileWriter fileWriter = new FileWriter(file)) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("name", "Config for the Bren mod");
+
+            for (Field field : MConfig.class.getDeclaredFields()) {
+                if (!field.isAnnotationPresent(Entry.class)) {
+                    continue;
+                }
+
+                Object object = field.get(null);
+
+                if (!(object instanceof ConfigHelper.Value<?> configValue)) {
+                    continue;
+                }
+
+                jsonObject.addProperty(String.format("_comment_%s", field.getName()), configValue.getComment());
+
+                jsonObject.add(field.getName(), configValue.write());
+            }
+
+            GSON.toJson(jsonObject, fileWriter);
+        } catch (IOException e) {
+            Bren.LOGGER.error("Failed to save the Bren config", e);
+        } catch (IllegalAccessException e) {
+            Bren.LOGGER.error("Error while saving the Bren config", e);
+        }
+    }
+
+    public static void load() {
+        if (!file.exists()) {
+            return;
+        }
+
+        try (FileReader fileReader = new FileReader(file)) {
+            JsonObject jsonObject = GSON.fromJson(fileReader, JsonObject.class);
+
+            for (Field field : MConfig.class.getDeclaredFields()) {
+                if (!field.isAnnotationPresent(Entry.class)) {
+                    continue;
+                }
+
+                String fieldName = field.getName();
+
+                if (!jsonObject.has(fieldName)) {
+                    continue;
+                }
+
+                Object object = field.get(null);
+
+                if (!(object instanceof ConfigHelper.Value<?> configValue)) {
+                    continue;
+                }
+
+                JsonElement jsonElement = jsonObject.get(fieldName);
+                configValue.setUnchecked(configValue.read(jsonElement));
+            }
+        } catch (IOException e) {
+            Bren.LOGGER.error("Failed to read the Bren config", e);
+        } catch (IllegalAccessException e) {
+            Bren.LOGGER.error("Error while reading the Bren config", e);
+        }
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Entry {
+        String category() default "general";
+        boolean clientOnly() default false;
+    }
+}

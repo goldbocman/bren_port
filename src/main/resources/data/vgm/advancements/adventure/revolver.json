@@ -1,0 +1,39 @@
+{
+  "parent": "vgm:adventure/auto_loader_contraption",
+  "criteria": {
+    "revolver": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "vgm:revolver",
+              "vgm:netherite_revolver"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.vgm.adventure.revolver.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "vgm:revolver"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.vgm.adventure.revolver.title"
+    }
+  },
+  "requirements": [
+    [
+      "revolver"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "model",
+    "model": "vgm:item/assault_gun_handheld"
+  },
+  "components": {
+    "minecraft:item_model": "vgm:item/assault_gun_handheld",
+    "minecraft:item_model_properties": {}
+  }
+}

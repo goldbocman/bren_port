@@ -1,0 +1,11 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"parent": "bren:item/shotgun_handheld",
+	"textures": {
+		"layer0": "bren:item/netherite_double_barrels_shotgun"
+	},
+	"overrides": [
+		{"predicate": {"custom_model_data": 1}, "model": "bren:item/gun_reloading"}
+	]
+}

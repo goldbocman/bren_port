@@ -1,0 +1,106 @@
+{
+  "itemGroup.vgm.bren_tab": "Bren Guns",
+  "item.vgm.arquebus": "Arquebus",
+  "item.vgm.musket": "Musket",
+  "item.vgm.thunder_arquebus": "Thunder Arquebus",
+  "item.vgm.arquebus_blunderbuss": "Matchlock Blunderbuss",
+  "item.vgm.machine_gun": "Machine Gun",
+  "item.vgm.auto_gun": "Auto-Gun",
+  "item.vgm.rifle": "Rifle",
+  "item.vgm.shotgun": "Shotgun",
+  "item.vgm.revolver": "Revolver",
+  "item.vgm.netherite_machine_gun": "Netherite Machine Gun",
+  "item.vgm.netherite_auto_gun": "Netherite Auto-Gun",
+  "item.vgm.netherite_rifle": "Netherite Rifle",
+  "item.vgm.netherite_shotgun": "Netherite Shotgun",
+  "item.vgm.netherite_revolver": "Netherite Revolver",
+  "item.vgm.netherite_double_barrels_shotgun": "Netherite Double Barrels Shotgun",
+  "item.vgm.netherite_lever_gun": "Netherite Lever-Action Gun",
+  "item.vgm.auto_pistol": "Auto Pistol",
+  "item.vgm.air_gun": "Air Gun",
+  "item.vgm.flare_gun":  "§bFlare Gun",
+  "item.vgm.fire_axe": "Fire Axe",
+  "item.vgm.lunge_mine": "Lunge Mine",
+  "item.vgm.smg": "Open-bolt Submachine Gun",
+  "item.vgm.ar_15": "§9AR-15§kauto-gun",
+  "item.vgm.grappling_hook": "Grappling Hook",
+
+
+  "item.vgm.magazine": "Magazine",
+  "item.vgm.cartridge": "Cartridge",
+  "item.vgm.drum_magazine": "Drum Magazine",
+  "item.vgm.short_magazine": "Short Magazine",
+  "item.vgm.clothed_magazine": "Clothed Magazine",
+  "item.vgm.bullet": "Bullet",
+  "item.vgm.magnum_bullet": "Magnum Bullet",
+  "item.vgm.shell": "Shell",
+  "item.vgm.dragonbreath_shell": "Dragonbreath Shell",
+  "item.vgm.metal_tube": "Metal Tube",
+  "item.vgm.auto_loader_contraption": "AutoLoader Contraption",
+
+  "enchantment.vgm.silenced": "Silenced",
+  "enchantment.vgm.overflow": "Overflow",
+  "enchantment.vgm.autofill": "Autofill",
+  "enchantment.vgm.steady_hands": "Steady Hands",
+  "enchantment.vgm.fire_lance": "Fire Lance",
+  "enchantment.vgm.mounted": "Mounted",
+
+  "desc.vgm.item.gun_with_mag.content": "§bRounds",
+  "desc.vgm.item.magazine.content": "§bAmmo",
+
+  "attribute.name.ranged_damage": "§cRanged Damage",
+  "attribute.name.fire_rate": "§eFire Rate",
+  "attribute.name.recoil": "§aRecoil",
+
+  "block.vgm.workbench": "Workbench",
+
+  "entity.minecraft.villager.gunsmith": "Gunsmith",
+
+  "vgm.item.shoot_silenced": "Silenced gunfire",
+  "vgm.item.shoot": "Gunfire",
+  "vgm.item.distant_gunfire": "Distant gunfire",
+  "vgm.item.magazine_insert": "Magazine inserted",
+  "vgm.item.magazine_remove": "Magazine removed",
+  "vgm.item.shell_insert": "Shell inserted",
+  "vgm.item.rack": "Shotgun racked",
+  "vgm.particle.casing.bounce": "Casing bouncing",
+  "vgm.entity.villager.work_gunsmith": "Gunsmith works",
+  "vgm.item.revolver.bullet_insert": "Bullet inserted",
+  "vgm.item.revolver.reload": "Cylinder clicks",
+  "vgm.item.revolver.spinning": "Revolver spinning",
+
+  "death.attack.bullet": "%1$s was gunned down by %2$s!",
+
+  "advancements.vgm.adventure.auto_loader_contraption.description": "Obtain an AutoLoader Contraption",
+  "advancements.vgm.adventure.auto_loader_contraption.title": "A whaaa...?!",
+
+  "advancements.vgm.adventure.machine_gun.description": "Obtain an Machine Gun",
+  "advancements.vgm.adventure.machine_gun.title": "BRRRT!!",
+
+  "advancements.vgm.adventure.auto_gun.description": "Obtain an Auto-Gun",
+  "advancements.vgm.adventure.auto_gun.title": "An AK-4... never mind",
+
+  "advancements.vgm.adventure.rifle.description": "Obtain an Rifle",
+  "advancements.vgm.adventure.rifle.title": "See you in five minutes..",
+
+  "advancements.vgm.adventure.shotgun.description": "Obtain an Shotgun",
+  "advancements.vgm.adventure.shotgun.title": "BAM!!!",
+
+  "advancements.vgm.adventure.revolver.description": "Obtain an Revolver",
+  "advancements.vgm.adventure.revolver.title": "Little Jimmy",
+
+  "advancements.vgm.adventure.warcrimes.description": "Kill a villager with a gun",
+  "advancements.vgm.adventure.warcrimes.title": "War crimes",
+
+  "advancements.vgm.adventure.long_shooting_machine_gun.description": "Shoot a Machine Gun for a couple of seconds",
+  "advancements.vgm.adventure.long_shooting_machine_gun.title": "AHHHHH AH HA HA HA HA HA!!",
+
+  "advancements.vgm_new_achievements.title": "Bin‘s Gunpowder Republic",
+  "advancements.vgm_new_achievements.descr": "We will offer a new fight way...",
+
+  "key.vgm.reload": "Reload Gun",
+  "key.vgm.open_config": "Open Bren Config",
+  "category.vgm.keys": "Bren Keys",
+  "vgm.config.title": "Bren Configuration",
+  "vgm.config.toggle_mobs_attack_players": "All Mobs Attack Players: %s"
+}

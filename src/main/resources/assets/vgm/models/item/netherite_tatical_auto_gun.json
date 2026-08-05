@@ -1,0 +1,13 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"parent": "vgm:item/assault_gun_handheld",
+	"textures": {
+		"layer0": "vgm:item/netherite_tatical_auto_gun"
+	},
+	"overrides": [
+		{"predicate": {"has_magazine": 1, "has_colorable_magazine": 0}, "model": "vgm:item/netherite_auto_gun_with_magazine"},
+		{"predicate": {"has_magazine": 1, "has_colorable_magazine": 1}, "model": "vgm:item/netherite_auto_gun_with_clothed_magazine"},
+		{"predicate": {"custom_model_data": 1}, "model": "vgm:item/gun_reloading"}
+	]
+}

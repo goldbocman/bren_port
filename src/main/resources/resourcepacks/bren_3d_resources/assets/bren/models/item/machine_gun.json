@@ -1,0 +1,46 @@
+{
+  "parent": "bren:item/gun_handheld",
+  "textures": {
+    "layer0": "bren:item/machine_gun"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "has_magazine": 1,
+        "has_colorable_magazine": 0,
+        "is_full": 0
+      },
+      "model": "bren:item/machine_gun_with_magazine"
+    },
+    {
+      "predicate": {
+        "has_magazine": 1,
+        "has_colorable_magazine": 0,
+        "is_full": 1
+      },
+      "model": "bren:item/machine_gun_with_full_magazine"
+    },
+    {
+      "predicate": {
+        "has_magazine": 1,
+        "has_colorable_magazine": 1,
+        "is_full": 0
+      },
+      "model": "bren:item/machine_gun_with_clothed_magazine"
+    },
+    {
+      "predicate": {
+        "has_magazine": 1,
+        "has_colorable_magazine": 1,
+        "is_full": 1
+      },
+      "model": "bren:item/machine_gun_with_full_clothed_magazine"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "bren:item/gun_reloading"
+    }
+  ]
+}

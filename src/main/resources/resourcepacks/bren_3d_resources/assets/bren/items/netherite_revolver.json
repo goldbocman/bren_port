@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "model",
+    "model": "bren:item/netherite_revolver_3d"
+  },
+  "components": {
+    "minecraft:item_model": "bren:item/netherite_revolver_3d",
+    "minecraft:item_model_properties": {
+      "bren:is_reloading": false
+    }
+  }
+}

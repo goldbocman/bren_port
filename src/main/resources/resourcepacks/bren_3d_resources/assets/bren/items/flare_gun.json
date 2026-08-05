@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "model",
+    "model": "bren:item/flare_gun_3d"
+  },
+  "components": {
+    "minecraft:item_model": "bren:item/flare_gun_3d",
+    "minecraft:item_model_properties": {
+      "bren:is_reloading": false
+    }
+  }
+}

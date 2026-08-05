@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:netherite_ingot",
+  "base": "vgm:shotgun",
+  "result": {
+    "id": "vgm:netherite_shotgun",
+    "count": 1
+  },
+  "template": "minecraft:netherite_upgrade_smithing_template"
+}

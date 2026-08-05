@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:bow",
+    "vgm:auto_gun",
+    "vgm:netherite_auto_gun",
+    "vgm:rifle",
+    "vgm:netherite_rifle",
+    "vgm:shotgun",
+    "vgm:netherite_shotgun",
+    "vgm:revolver",
+    "vgm:netherite_revolver"
+  ]
+}
