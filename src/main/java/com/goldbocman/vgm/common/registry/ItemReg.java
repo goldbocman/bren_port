@@ -262,11 +262,10 @@ public class ItemReg {
             //                 .shootSound(SoundReg.ITEM_REVOLVER_SHOOT, null)
             // );
 
-            // TODO: BALANCING NEEDED — auto pistol disabled until pistol tier is designed
-            // AUTO_PISTOL = registerGunItem("auto_pistol", s -> new GunWithMagItem(s, TagReg.SHORT_MAGAZINES),
-            //         new GunProperties().rangedDamage(9F).fireRate(4).recoil(RIFLE_RECOIL)
-            //                 .shootSound(SoundReg.ITEM_RIFLE_SHOOT, SoundReg.ITEM_RIFLE_SHOOT_SILENCED)
-            //                 );
+            // TODO: BALANCING NEEDED — pistol tier not designed yet. Registered as a plain (non-gun)
+            // item so it exists for the "adventure/root" advancement icon; creative-only (no recipe,
+            // not a functional GunWithMagItem) until the real pistol is implemented.
+            AUTO_PISTOL = registerItem("auto_pistol", new Item.Properties().stacksTo(1));
 
             LOGGER.info("Item registration process completed successfully");
         } catch (Exception e) {

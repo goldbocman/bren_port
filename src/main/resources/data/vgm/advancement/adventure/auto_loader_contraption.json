@@ -1,4 +1,5 @@
 {
+  "parent": "vgm:adventure/root",
   "criteria": {
     "auto_loader_contraption": {
       "conditions": {
@@ -15,7 +16,6 @@
   },
   "display": {
     "announce_to_chat": true,
-    "background": "minecraft:gui/advancements/backgrounds/adventure",
     "description": {
       "translate": "advancements.vgm.adventure.auto_loader_contraption.description"
     },

@@ -71,6 +71,9 @@
 
   "death.attack.bullet": "%1$s was gunned down by %2$s!",
 
+  "advancements.vgm.adventure.root.description": "Join a world with Vanilla Gun Mod installed",
+  "advancements.vgm.adventure.root.title": "Time to get some guns",
+
   "advancements.vgm.adventure.auto_loader_contraption.description": "Obtain an AutoLoader Contraption",
   "advancements.vgm.adventure.auto_loader_contraption.title": "A whaaa...?!",
 
@@ -92,8 +95,17 @@
   "advancements.vgm.adventure.warcrimes.description": "Kill a villager with a gun",
   "advancements.vgm.adventure.warcrimes.title": "War crimes",
 
-  "advancements.vgm.adventure.long_shooting_machine_gun.description": "Shoot a Machine Gun for a couple of seconds",
-  "advancements.vgm.adventure.long_shooting_machine_gun.title": "AHHHHH AH HA HA HA HA HA!!",
+  "advancements.vgm.adventure.arms_dealer.description": "Craft all four base weapons",
+  "advancements.vgm.adventure.arms_dealer.title": "Arms Dealer",
+
+  "advancements.vgm.adventure.debris_armed.description": "Upgrade every weapon to netherite",
+  "advancements.vgm.adventure.debris_armed.title": "Debris Armed",
+
+  "advancements.vgm.adventure.a_touch_of_magic.description": "Enchant a weapon with Flame, Punch, or Unbreaking",
+  "advancements.vgm.adventure.a_touch_of_magic.title": "A Touch of Magic",
+
+  "advancements.vgm.adventure.never_let_you_down.description": "Max out Flame, Punch, and Unbreaking on a netherite weapon",
+  "advancements.vgm.adventure.never_let_you_down.title": "Never Let You Down",
 
   "advancements.vgm_new_achievements.title": "Vanilla Gun Mod",
   "advancements.vgm_new_achievements.descr": "We will offer a new fight way...",

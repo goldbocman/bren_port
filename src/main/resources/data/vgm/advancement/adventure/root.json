@@ -1,0 +1,28 @@
+{
+  "criteria": {
+    "in_world": {
+      "trigger": "minecraft:location",
+      "conditions": {}
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:gui/advancements/backgrounds/adventure",
+    "description": {
+      "translate": "advancements.vgm.adventure.root.description"
+    },
+    "icon": {
+      "id": "vgm:auto_pistol"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.vgm.adventure.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "in_world"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
