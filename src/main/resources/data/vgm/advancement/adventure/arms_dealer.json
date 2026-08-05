@@ -1,0 +1,83 @@
+{
+  "parent": "vgm:adventure/root",
+  "criteria": {
+    "auto_gun": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "vgm:auto_gun"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "rifle": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "vgm:rifle"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "shotgun": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "vgm:shotgun"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "revolver": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "vgm:revolver"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.vgm.adventure.arms_dealer.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "id": "vgm:auto_gun"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.vgm.adventure.arms_dealer.title"
+    }
+  },
+  "requirements": [
+    [
+      "auto_gun"
+    ],
+    [
+      "rifle"
+    ],
+    [
+      "shotgun"
+    ],
+    [
+      "revolver"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

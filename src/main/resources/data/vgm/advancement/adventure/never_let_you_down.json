@@ -1,0 +1,64 @@
+{
+  "parent": "vgm:adventure/a_touch_of_magic",
+  "criteria": {
+    "maxed_out": {
+      "conditions": {
+        "item": {
+          "items": [
+            "vgm:netherite_auto_gun",
+            "vgm:netherite_rifle",
+            "vgm:netherite_shotgun",
+            "vgm:netherite_revolver"
+          ],
+          "predicates": {
+            "minecraft:enchantments": [
+              {
+                "enchantments": "minecraft:flame",
+                "levels": {
+                  "min": 1
+                }
+              },
+              {
+                "enchantments": "minecraft:punch",
+                "levels": {
+                  "min": 2
+                }
+              },
+              {
+                "enchantments": "minecraft:unbreaking",
+                "levels": {
+                  "min": 3
+                }
+              }
+            ]
+          }
+        }
+      },
+      "trigger": "minecraft:enchanted_item"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.vgm.adventure.never_let_you_down.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "id": "vgm:netherite_shotgun",
+      "components": {
+        "minecraft:enchantment_glint_override": true
+      }
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.vgm.adventure.never_let_you_down.title"
+    }
+  },
+  "requirements": [
+    [
+      "maxed_out"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

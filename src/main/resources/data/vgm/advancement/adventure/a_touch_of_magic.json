@@ -1,0 +1,82 @@
+{
+  "parent": "vgm:adventure/root",
+  "criteria": {
+    "flame": {
+      "conditions": {
+        "item": {
+          "items": "#vgm:weapons",
+          "predicates": {
+            "minecraft:enchantments": [
+              {
+                "enchantments": "minecraft:flame",
+                "levels": {
+                  "min": 1
+                }
+              }
+            ]
+          }
+        }
+      },
+      "trigger": "minecraft:enchanted_item"
+    },
+    "punch": {
+      "conditions": {
+        "item": {
+          "items": "#vgm:weapons",
+          "predicates": {
+            "minecraft:enchantments": [
+              {
+                "enchantments": "minecraft:punch",
+                "levels": {
+                  "min": 1
+                }
+              }
+            ]
+          }
+        }
+      },
+      "trigger": "minecraft:enchanted_item"
+    },
+    "unbreaking": {
+      "conditions": {
+        "item": {
+          "items": "#vgm:weapons",
+          "predicates": {
+            "minecraft:enchantments": [
+              {
+                "enchantments": "minecraft:unbreaking",
+                "levels": {
+                  "min": 1
+                }
+              }
+            ]
+          }
+        }
+      },
+      "trigger": "minecraft:enchanted_item"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.vgm.adventure.a_touch_of_magic.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "id": "minecraft:enchanted_book"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.vgm.adventure.a_touch_of_magic.title"
+    }
+  },
+  "requirements": [
+    [
+      "flame",
+      "punch",
+      "unbreaking"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

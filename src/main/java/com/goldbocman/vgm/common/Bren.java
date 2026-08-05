@@ -186,7 +186,7 @@ public class Bren
 		output.accept(ItemReg.NETHERITE_RIFLE);
 		// output.accept(ItemReg.NETHERITE_LEVER_GUN);
 		output.accept(ItemReg.NETHERITE_REVOLVER);
-		// output.accept(ItemReg.AUTO_PISTOL);
+		output.accept(ItemReg.AUTO_PISTOL);
 		// output.accept(ItemReg.FLARE_GUN);
 		// output.accept(ItemReg.FIRE_AXE);
 		// output.accept(ItemReg.EXPLOSIVE_SPEAR);
