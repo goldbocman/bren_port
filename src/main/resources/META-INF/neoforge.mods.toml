@@ -7,12 +7,14 @@ loaderVersion="[1,)"
 modId = "${id}"
 displayName = "${name}"
 version = "${version}"
-authors = "Me!"
-description = "This is an example description! Tell everyone what your mod is about!"
+authors = [
+    "goldbocman"
+]
+description = "Vanilla-like Minecraft guns [Bren Legacy Port]"
 
 logoFile = "assets/vgm/icon.png"
-#displayURL = "..."
-#issueTrackerUrl = "..."
+displayURL = "https://modrinth.com/mod/vanilla-guns-mod"
+issueTrackerUrl = "https://github.com/goldbocman/bren_port/issues"
 
 [[mixins]]
 config = "vgm.mixins.json"
