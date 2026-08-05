@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "model",
+    "model": "vgm:item/netherite_revolver"
+  },
+  "components": {
+    "minecraft:item_model": "vgm:item/netherite_revolver",
+    "minecraft:item_model_properties": {
+      "vgm:is_reloading": false
+    }
+  }
+}

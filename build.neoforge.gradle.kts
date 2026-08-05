@@ -35,7 +35,7 @@ neoForge {
     version = property("deps.neo_loader") as String
 
     mods {
-        register("template") {
+        register("vgm") {
             sourceSet(sourceSets.main.get())
         }
     }

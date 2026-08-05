@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "model",
+    "model": "vgm:item/metal_tube"
+  },
+  "components": {
+    "minecraft:item_model": "vgm:item/metal_tube"
+  }
+}

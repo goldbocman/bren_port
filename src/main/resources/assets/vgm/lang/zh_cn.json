@@ -1,0 +1,105 @@
+{
+  "item.vgm.arquebus": "火绳枪",
+  "item.vgm.musket": "燧发枪",
+  "item.vgm.thunder_arquebus": "雷鸣火绳枪",
+  "item.vgm.arquebus_blunderbuss": "火绳雷铳",
+  "item.vgm.machine_gun": "机枪",
+  "item.vgm.auto_gun": "自动步枪",
+  "item.vgm.rifle": "步枪",
+  "item.vgm.shotgun": "霰弹枪",
+  "item.vgm.revolver": "转轮手枪",
+  "item.vgm.netherite_machine_gun": "下界合金机枪",
+  "item.vgm.netherite_auto_gun": "下界合金自动步枪",
+  "item.vgm.netherite_rifle": "下界合金步枪",
+  "item.vgm.netherite_shotgun": "下界合金霰弹枪",
+  "item.vgm.netherite_revolver": "下界合金转轮手枪",
+  "item.vgm.netherite_double_barrels_shotgun": "下界合金双管霰弹枪",
+  "item.vgm.netherite_lever_gun": "下界合金杠杆式步枪",
+  "item.vgm.air_gun": "气步枪",
+  "item.vgm.auto_pistol": "自动手枪",
+  "item.vgm.flare_gun":  "§b信号枪",
+  "item.vgm.fire_axe": "消防斧",
+  "item.vgm.lunge_mine": "刺雷",
+  "item.vgm.smg": "开膛式冲锋枪",
+  "item.vgm.ar_15": "§9AR-15§kauto-gun",
+  "item.vgm.grappling_hook": "钩索发射器",
+
+
+  "item.vgm.magazine": "弹匣",
+  "item.vgm.drum_magazine": "鼓形弹匣",
+  "item.vgm.short_magazine": "短弹匣",
+  "item.vgm.clothed_magazine": "扩容弹匣",
+  "item.vgm.bullet": "子弹",
+  "item.vgm.magnum_bullet": "马格南子弹",
+  "item.vgm.cartridge": "定装纸弹",
+  "item.vgm.shell": "霰弹",
+  "item.vgm.dragonbreath_shell": "龙息弹",
+  "item.vgm.metal_tube": "金属管",
+  "item.vgm.auto_loader_contraption": "自动加载装置",
+
+  "enchantment.vgm.silenced": "Silenced",
+  "enchantment.vgm.overflow": "Overflow",
+  "enchantment.vgm.autofill": "Autofill",
+  "enchantment.vgm.steady_hands": "Steady Hands",
+  "enchantment.vgm.fire_lance": "Fire Lance",
+  "enchantment.vgm.mounted": "Mounted",
+
+  "desc.vgm.item.gun_with_mag.content": "§bRounds",
+  "desc.vgm.item.magazine.content": "§bAmmo",
+
+  "attribute.name.ranged_damage": "§cRanged Damage",
+  "attribute.name.fire_rate": "§eFire Rate",
+  "attribute.name.recoil": "§aRecoil",
+
+  "block.vgm.workbench": "Workbench",
+
+  "entity.minecraft.villager.gunsmith": "Gunsmith",
+
+  "vgm.item.shoot_silenced": "消音开火",
+  "vgm.item.shoot": "开火",
+  "vgm.item.distant_gunfire": "远处开火",
+  "vgm.item.magazine_insert": "弹匣插入",
+  "vgm.item.magazine_remove": "弹匣移除",
+  "vgm.item.shell_insert": "霰弹插入",
+  "vgm.item.rack": "霰弹枪上膛",
+  "vgm.particle.casing.bounce": "弹壳弹跳",
+  "vgm.entity.villager.work_gunsmith": "Gunsmith works",
+  "vgm.item.revolver.bullet_insert": "子弹插入",
+  "vgm.item.revolver.reload": "扳机咔哒",
+  "vgm.item.revolver.spinning": "转轮手枪转轮",
+
+  "death.attack.bullet": "%1$s was gunned down by %2$s!",
+
+  "advancements.vgm.adventure.auto_loader_contraption.description": "Obtain an AutoLoader Contraption",
+  "advancements.vgm.adventure.auto_loader_contraption.title": "A whaaa...?!",
+
+  "advancements.vgm.adventure.machine_gun.description": "Obtain an Machine Gun",
+  "advancements.vgm.adventure.machine_gun.title": "BRRRT!!",
+
+  "advancements.vgm.adventure.auto_gun.description": "Obtain an Auto-Gun",
+  "advancements.vgm.adventure.auto_gun.title": "An AK-4... never mind",
+
+  "advancements.vgm.adventure.rifle.description": "Obtain an Rifle",
+  "advancements.vgm.adventure.rifle.title": "See you in five minutes..",
+
+  "advancements.vgm.adventure.shotgun.description": "Obtain an Shotgun",
+  "advancements.vgm.adventure.shotgun.title": "BAM!!!",
+
+  "advancements.vgm.adventure.revolver.description": "Obtain an Revolver",
+  "advancements.vgm.adventure.revolver.title": "Little Jimmy",
+
+  "advancements.vgm.adventure.warcrimes.description": "Kill a villager with a gun",
+  "advancements.vgm.adventure.warcrimes.title": "War crimes",
+
+  "advancements.vgm.adventure.long_shooting_machine_gun.description": "Shoot a Machine Gun for a couple of seconds",
+  "advancements.vgm.adventure.long_shooting_machine_gun.title": "AHHHHH AH HA HA HA HA HA!!",
+
+  "advancements.vgm_new_achievements.title": "小彬的火药共和国",
+  "advancements.vgm_new_achievements.descr": "我们将会提供一种全新的杀戮方式......",
+
+  "key.vgm.reload": "Bren:Reload Gun",
+  "key.vgm.open_config": "Open Bren Config",
+  "category.vgm.keys": "Bren Keys",
+  "vgm.config.title": "Bren Configuration",
+  "vgm.config.toggle_mobs_attack_players": "All Mobs Attack Players: %s"
+}

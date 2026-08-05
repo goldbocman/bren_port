@@ -1,0 +1,6 @@
+{
+  "parent": "vgm:item/gun_handheld",
+  "textures": {
+    "layer0": "vgm:item/machine_gun_with_full_clothed_magazine"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_gunpowder": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:gunpowder"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_gunpowder"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "vgm:bullet",
+      "vgm:magnum_bullet",
+      "vgm:shell"
+    ]
+  },
+  "sends_telemetry_event": false
+}

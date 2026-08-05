@@ -1,0 +1,14 @@
+{
+  "parent": "vgm:item/shotgun_handheld",
+  "textures": {
+    "layer0": "vgm:item/shotgun"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "vgm:item/gun_reloading"
+    }
+  ]
+}

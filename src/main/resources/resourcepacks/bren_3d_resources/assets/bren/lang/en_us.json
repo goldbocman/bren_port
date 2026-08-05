@@ -1,0 +1,102 @@
+{
+  "itemGroup.bren.bren_tab": "Bren Guns",
+  "item.bren.arquebus": "Arquebus",
+  "item.bren.musket": "Musket",
+  "item.bren.thunder_arquebus": "Thunder Arquebus",
+  "item.bren.arquebus_blunderbuss": "Matchlock Blunderbuss",
+  "item.bren.machine_gun": "Machine Gun",
+  "item.bren.auto_gun": "Auto-Gun",
+  "item.bren.rifle": "Rifle",
+  "item.bren.shotgun": "Shotgun",
+  "item.bren.revolver": "Revolver",
+  "item.bren.netherite_machine_gun": "Netherite Machine Gun",
+  "item.bren.netherite_auto_gun": "Netherite Auto-Gun",
+  "item.bren.netherite_rifle": "Netherite Rifle",
+  "item.bren.netherite_shotgun": "Netherite Shotgun",
+  "item.bren.netherite_revolver": "Netherite Revolver",
+  "item.bren.netherite_double_barrels_shotgun": "Netherite Double Barrels Shotgun",
+  "item.bren.netherite_lever_gun": "Netherite Lever-Action Gun",
+  "item.bren.auto_pistol": "Auto Pistol",
+  "item.bren.air_gun": "Air Gun",
+  "item.bren.flare_gun":  "§bFlare Gun",
+  "item.bren.fire_axe": "Fire Axe",
+  "item.bren.lunge_mine": "Lunge Mine",
+
+
+  "item.bren.magazine": "Magazine",
+  "item.bren.cartridge": "Cartridge",
+  "item.bren.drum_magazine": "Drum Magazine",
+  "item.bren.short_magazine": "Short Magazine",
+  "item.bren.clothed_magazine": "Clothed Magazine",
+  "item.bren.bullet": "Bullet",
+  "item.bren.shell": "Shell",
+  "item.bren.dragonbreath_shell": "Dragonbreath Shell",
+  "item.bren.metal_tube": "Metal Tube",
+  "item.bren.auto_loader_contraption": "AutoLoader Contraption",
+
+  "enchantment.bren.silenced": "Silenced",
+  "enchantment.bren.overflow": "Overflow",
+  "enchantment.bren.autofill": "Autofill",
+  "enchantment.bren.steady_hands": "Steady Hands",
+  "enchantment.bren.fire_lance": "Fire Lance",
+  "enchantment.bren.mounted": "Mounted",
+
+  "desc.bren.item.gun_with_mag.content": "§bRounds",
+  "desc.bren.item.magazine.content": "§bAmmo",
+
+  "attribute.name.ranged_damage": "§cRanged Damage",
+  "attribute.name.fire_rate": "§eFire Rate",
+  "attribute.name.recoil": "§aRecoil",
+
+  "block.bren.workbench": "Workbench",
+
+  "entity.minecraft.villager.gunsmith": "Gunsmith",
+
+  "bren.item.shoot_silenced": "Silenced gunfire",
+  "bren.item.shoot": "Gunfire",
+  "bren.item.distant_gunfire": "Distant gunfire",
+  "bren.item.magazine_insert": "Magazine inserted",
+  "bren.item.magazine_remove": "Magazine removed",
+  "bren.item.shell_insert": "Shell inserted",
+  "bren.item.rack": "Shotgun racked",
+  "bren.particle.casing.bounce": "Casing bouncing",
+  "bren.entity.villager.work_gunsmith": "Gunsmith works",
+  "bren.item.revolver.bullet_insert": "Bullet inserted",
+  "bren.item.revolver.reload": "Cylinder clicks",
+  "bren.item.revolver.spinning": "Revolver spinning",
+
+  "death.attack.bullet": "%1$s was gunned down by %2$s!",
+
+  "advancements.bren.adventure.auto_loader_contraption.description": "Obtain an AutoLoader Contraption",
+  "advancements.bren.adventure.auto_loader_contraption.title": "A whaaa...?!",
+
+  "advancements.bren.adventure.machine_gun.description": "Obtain an Machine Gun",
+  "advancements.bren.adventure.machine_gun.title": "BRRRT!!",
+
+  "advancements.bren.adventure.auto_gun.description": "Obtain an Auto-Gun",
+  "advancements.bren.adventure.auto_gun.title": "An AK-4... never mind",
+
+  "advancements.bren.adventure.rifle.description": "Obtain an Rifle",
+  "advancements.bren.adventure.rifle.title": "See you in five minutes..",
+
+  "advancements.bren.adventure.shotgun.description": "Obtain an Shotgun",
+  "advancements.bren.adventure.shotgun.title": "BAM!!!",
+
+  "advancements.bren.adventure.revolver.description": "Obtain an Revolver",
+  "advancements.bren.adventure.revolver.title": "Little Jimmy",
+
+  "advancements.bren.adventure.warcrimes.description": "Kill a villager with a gun",
+  "advancements.bren.adventure.warcrimes.title": "War crimes",
+
+  "advancements.bren.adventure.long_shooting_machine_gun.description": "Shoot a Machine Gun for a couple of seconds",
+  "advancements.bren.adventure.long_shooting_machine_gun.title": "AHHHHH AH HA HA HA HA HA!!",
+
+  "advancements.bren_new_achievements.title": "Bin‘s Gunpowder Republic",
+  "advancements.bren_new_achievements.descr": "We will offer a new fight way...",
+
+  "key.bren.reload": "Reload Gun",
+  "key.bren.open_config": "Open Bren Config",
+  "category.bren.keys": "Bren Keys",
+  "bren.config.title": "Bren Configuration",
+  "bren.config.toggle_mobs_attack_players": "All Mobs Attack Players: %s"
+}

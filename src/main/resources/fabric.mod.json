@@ -12,17 +12,20 @@
     "sources": "https://codeberg.org/stonecutter/template-fabric"
   },
   "license": "CC0-1.0",
-  "icon": "assets/template/icon.png",
+  "icon": "assets/vgm/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.example.TemplateModFabric"
+      "com.goldbocman.vgm.TemplateModFabric"
+    ],
+    "client": [
+      "com.goldbocman.vgm.client.ClientBren"
     ]
   },
   "mixins": [
-    "template.mixins.json"
+    "vgm.mixins.json"
   ],
-  "accessWidener": "template.ct",
+  "accessWidener": "vgm.ct",
   "depends": {
     "fabricloader": ">=0.17",
     "minecraft": "${minecraft}"

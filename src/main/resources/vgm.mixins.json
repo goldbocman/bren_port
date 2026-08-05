@@ -1,0 +1,26 @@
+{
+  "required": true,
+  "package": "com.goldbocman.vgm.common.mixin",
+  "compatibilityLevel": "${java}",
+  "mixins": [
+    "PlayerEntityMixin",
+    "StructurePoolAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "client.ArmedEntityRenderStateMixin",
+    "client.AvatarRendererMixin",
+    "client.BipedEntityModelMixin",
+    "client.DrawContextMixin",
+    "client.EntityRenderStateMixin",
+    "client.FirstPersonItemRendererMixin",
+    "client.ItemRendererMixin",
+    "client.LivingEntityRendererMixin",
+    "client.MinecraftClientMixin",
+    "client.GameRendererMixin",
+    "client.MinecraftClientHudMixin",
+    "client.SimpleAnimationMixin"
+  ]
+}

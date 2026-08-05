@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "model",
+    "model": "bren:item/revolver_handheld"
+  },
+  "components": {
+    "minecraft:item_model": "bren:item/revolver_handheld",
+    "minecraft:item_model_properties": {}
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "parent": "bren:item/shotgun_handheld",
+  "textures": {
+    "layer0": "bren:item/netherite_shotgun"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "bren:item/gun_reloading"
+    }
+  ]
+}

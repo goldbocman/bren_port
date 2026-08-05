@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "model",
+    "model": "vgm:item/db_shell"
+  },
+  "components": {
+    "minecraft:item_model": "vgm:item/db_shell"
+  }
+}

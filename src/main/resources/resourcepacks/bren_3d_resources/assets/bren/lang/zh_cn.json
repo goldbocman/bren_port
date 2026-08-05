@@ -1,0 +1,101 @@
+{
+  "item.bren.arquebus": "火绳枪",
+  "item.bren.musket": "燧发枪",
+  "item.bren.thunder_arquebus": "雷鸣火绳枪",
+  "item.bren.arquebus_blunderbuss": "火绳雷铳",
+  "item.bren.machine_gun": "机枪",
+  "item.bren.auto_gun": "自动步枪",
+  "item.bren.rifle": "步枪",
+  "item.bren.shotgun": "霰弹枪",
+  "item.bren.revolver": "转轮手枪",
+  "item.bren.netherite_machine_gun": "下界合金机枪",
+  "item.bren.netherite_auto_gun": "下界合金自动步枪",
+  "item.bren.netherite_rifle": "下界合金步枪",
+  "item.bren.netherite_shotgun": "下界合金霰弹枪",
+  "item.bren.netherite_revolver": "下界合金转轮手枪",
+  "item.bren.netherite_double_barrels_shotgun": "下界合金双管霰弹枪",
+  "item.bren.netherite_lever_gun": "下界合金杠杆式步枪",
+  "item.bren.air_gun": "气步枪",
+  "item.bren.auto_pistol": "自动手枪",
+  "item.bren.flare_gun":  "§b信号枪",
+  "item.bren.fire_axe": "消防斧",
+  "item.bren.lunge_mine": "刺雷",
+
+
+  "item.bren.magazine": "弹匣",
+  "item.bren.drum_magazine": "鼓形弹匣",
+  "item.bren.short_magazine": "短弹匣",
+  "item.bren.clothed_magazine": "扩容弹匣",
+  "item.bren.bullet": "子弹",
+  "item.bren.cartridge": "定装纸弹",
+  "item.bren.shell": "霰弹",
+  "item.bren.dragonbreath_shell": "龙息弹",
+  "item.bren.metal_tube": "金属管",
+  "item.bren.auto_loader_contraption": "自动加载装置",
+
+  "enchantment.bren.silenced": "Silenced",
+  "enchantment.bren.overflow": "Overflow",
+  "enchantment.bren.autofill": "Autofill",
+  "enchantment.bren.steady_hands": "Steady Hands",
+  "enchantment.bren.fire_lance": "Fire Lance",
+  "enchantment.bren.mounted": "Mounted",
+
+  "desc.bren.item.gun_with_mag.content": "§bRounds",
+  "desc.bren.item.magazine.content": "§bAmmo",
+
+  "attribute.name.ranged_damage": "§cRanged Damage",
+  "attribute.name.fire_rate": "§eFire Rate",
+  "attribute.name.recoil": "§aRecoil",
+
+  "block.bren.workbench": "Workbench",
+
+  "entity.minecraft.villager.gunsmith": "Gunsmith",
+
+  "bren.item.shoot_silenced": "消音开火",
+  "bren.item.shoot": "开火",
+  "bren.item.distant_gunfire": "远处开火",
+  "bren.item.magazine_insert": "弹匣插入",
+  "bren.item.magazine_remove": "弹匣移除",
+  "bren.item.shell_insert": "霰弹插入",
+  "bren.item.rack": "霰弹枪上膛",
+  "bren.particle.casing.bounce": "弹壳弹跳",
+  "bren.entity.villager.work_gunsmith": "Gunsmith works",
+  "bren.item.revolver.bullet_insert": "子弹插入",
+  "bren.item.revolver.reload": "扳机咔哒",
+  "bren.item.revolver.spinning": "转轮手枪转轮",
+
+  "death.attack.bullet": "%1$s was gunned down by %2$s!",
+
+  "advancements.bren.adventure.auto_loader_contraption.description": "Obtain an AutoLoader Contraption",
+  "advancements.bren.adventure.auto_loader_contraption.title": "A whaaa...?!",
+
+  "advancements.bren.adventure.machine_gun.description": "Obtain an Machine Gun",
+  "advancements.bren.adventure.machine_gun.title": "BRRRT!!",
+
+  "advancements.bren.adventure.auto_gun.description": "Obtain an Auto-Gun",
+  "advancements.bren.adventure.auto_gun.title": "An AK-4... never mind",
+
+  "advancements.bren.adventure.rifle.description": "Obtain an Rifle",
+  "advancements.bren.adventure.rifle.title": "See you in five minutes..",
+
+  "advancements.bren.adventure.shotgun.description": "Obtain an Shotgun",
+  "advancements.bren.adventure.shotgun.title": "BAM!!!",
+
+  "advancements.bren.adventure.revolver.description": "Obtain an Revolver",
+  "advancements.bren.adventure.revolver.title": "Little Jimmy",
+
+  "advancements.bren.adventure.warcrimes.description": "Kill a villager with a gun",
+  "advancements.bren.adventure.warcrimes.title": "War crimes",
+
+  "advancements.bren.adventure.long_shooting_machine_gun.description": "Shoot a Machine Gun for a couple of seconds",
+  "advancements.bren.adventure.long_shooting_machine_gun.title": "AHHHHH AH HA HA HA HA HA!!",
+
+  "advancements.bren_new_achievements.title": "小彬的火药共和国",
+  "advancements.bren_new_achievements.descr": "我们将会提供一种全新的杀戮方式......",
+
+  "key.bren.reload": "Bren:Reload Gun",
+  "key.bren.open_config": "Open Bren Config",
+  "category.bren.keys": "Bren Keys",
+  "bren.config.title": "Bren Configuration",
+  "bren.config.toggle_mobs_attack_players": "All Mobs Attack Players: %s"
+}

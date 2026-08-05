@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "model",
+    "model": "bren:item/auto_loader_contraption"
+  },
+  "components": {
+    "minecraft:item_model": "bren:item/auto_loader_contraption"
+  }
+}

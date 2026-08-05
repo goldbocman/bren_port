@@ -10,12 +10,12 @@ version = "${version}"
 authors = "Me!"
 description = "This is an example description! Tell everyone what your mod is about!"
 
-logoFile = "assets/template/icon.png"
+logoFile = "assets/vgm/icon.png"
 #displayURL = "..."
 #issueTrackerUrl = "..."
 
 [[mixins]]
-config = "template.mixins.json"
+config = "vgm.mixins.json"
 
 [[dependencies.${id}]]
 modId = "minecraft"

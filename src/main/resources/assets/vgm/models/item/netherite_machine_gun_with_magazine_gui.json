@@ -1,0 +1,6 @@
+{
+  "parent": "vgm:item/gun_handheld",
+  "textures": {
+    "layer0": "vgm:item/netherite_machine_gun_with_magazine_gui"
+  }
+}

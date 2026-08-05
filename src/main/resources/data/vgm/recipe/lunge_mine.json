@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "M": "minecraft:tnt",
+    "I": "minecraft:stick"
+  },
+  "pattern": [
+    "  M",
+    " I ",
+    "I  "
+  ],
+  "result": {
+    "id": "vgm:lunge_mine",
+    "count": 1
+  },
+  "show_notification": true
+}

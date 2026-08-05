@@ -47,13 +47,24 @@ dependencies {
 
     // Use `mod{dependency type}` even on 26.1+ - loom-back-compat converts them
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
-    fapi("fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-content-registries-v0", "fabric-registry-sync-v0")
+    fapi(
+        "fabric-lifecycle-events-v1",
+        "fabric-resource-loader-v0",
+        "fabric-content-registries-v0",
+        "fabric-registry-sync-v0",
+        "fabric-networking-api-v1",
+        "fabric-particles-v1",
+        "fabric-rendering-v1",
+        "fabric-key-mapping-api-v1",
+        "fabric-creative-tab-api-v1",
+        "fabric-convention-tags-v2"
+    )
 }
 
 loom {
     fabricModJsonPath = rootProject.file("src/main/resources/fabric.mod.json") // Useful for interface injection
     accessWidenerPath = sc.process(
-        rootProject.file("src/main/resources/template.ct"),
+        rootProject.file("src/main/resources/vgm.ct"),
         "build/processed.ct"
     )
 

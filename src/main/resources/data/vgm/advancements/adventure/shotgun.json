@@ -1,0 +1,39 @@
+{
+  "parent": "vgm:adventure/auto_loader_contraption",
+  "criteria": {
+    "shotgun": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "vgm:shotgun",
+              "vgm:netherite_shotgun"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.vgm.adventure.shotgun.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "vgm:shotgun"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.vgm.adventure.shotgun.title"
+    }
+  },
+  "requirements": [
+    [
+      "shotgun"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
