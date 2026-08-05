@@ -101,7 +101,8 @@ jobs:
         if: contains(fromJSON('["all","fabric"]'), steps.tag.outputs.option)
         run: |
           ./gradlew :stonecutterSwitchTo26.2.x-fabric
-          ./gradlew :26.2.x-fabric:clean :26.2.x-fabric:build --stacktrace
+          ./gradlew :26.2.x-fabric:clean
+          ./gradlew :26.2.x-fabric:build --stacktrace
 
       - name: Publish Fabric
         if: contains(fromJSON('["all","fabric"]'), steps.tag.outputs.option)
@@ -124,7 +125,8 @@ jobs:
         if: contains(fromJSON('["all","neoforge"]'), steps.tag.outputs.option)
         run: |
           ./gradlew :stonecutterSwitchTo26.2.x-neoforge
-          ./gradlew :26.2.x-neoforge:clean :26.2.x-neoforge:build --stacktrace
+          ./gradlew :26.2.x-neoforge:clean
+          ./gradlew :26.2.x-neoforge:build --stacktrace
 
       - name: Publish NeoForge
         if: contains(fromJSON('["all","neoforge"]'), steps.tag.outputs.option)
