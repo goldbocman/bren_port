@@ -1,0 +1,6 @@
+{
+  "parent": "vgm:item/revolver_handheld",
+  "textures": {
+    "layer0": "vgm:item/revolver_gui"
+  }
+}

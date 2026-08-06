@@ -1,0 +1,46 @@
+{
+  "parent": "vgm:item/rifle_gun_handheld",
+  "textures": {
+    "layer0": "vgm:item/rifle"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "has_magazine": 1,
+        "has_colorable_magazine": 0,
+        "is_full": 0
+      },
+      "model": "vgm:item/rifle_with_magazine"
+    },
+    {
+      "predicate": {
+        "has_magazine": 1,
+        "has_colorable_magazine": 0,
+        "is_full": 1
+      },
+      "model": "vgm:item/rifle_with_full_magazine"
+    },
+    {
+      "predicate": {
+        "has_magazine": 1,
+        "has_colorable_magazine": 1,
+        "is_full": 0
+      },
+      "model": "vgm:item/rifle_with_clothed_magazine"
+    },
+    {
+      "predicate": {
+        "has_magazine": 1,
+        "has_colorable_magazine": 1,
+        "is_full": 1
+      },
+      "model": "vgm:item/rifle_with_full_clothed_magazine"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "vgm:item/gun_reloading"
+    }
+  ]
+}

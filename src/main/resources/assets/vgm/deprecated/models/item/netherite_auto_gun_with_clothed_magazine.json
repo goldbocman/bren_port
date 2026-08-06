@@ -1,0 +1,7 @@
+{
+  "parent": "vgm:item/assault_gun_handheld",
+  "textures": {
+    "layer0": "vgm:item/auto_gun_with_magazine_cloth",
+    "layer1": "vgm:item/netherite_auto_gun_with_clothed_magazine"
+  }
+}
