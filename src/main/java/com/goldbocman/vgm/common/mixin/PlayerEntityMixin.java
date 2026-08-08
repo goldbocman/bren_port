@@ -305,6 +305,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
     @Override
     public void bren_1_21_1$setGunState(GunHelper.GunStates state) {
         this.gunState = state; // 修改：设置实例字段值
+        // Sync to the owning player's own client - state only ever changes server-side, and
+        // NetworkUtils.sendToPlayer no-ops unless `this` is actually a ServerPlayer, so this is
+        // safe to call unconditionally from every call site (including client-side ones, if any).
+        NetworkUtils.sendToPlayer((Player) (Object) this, new NetworkReg.GunStatePayload(state.getId()));
     }
 
     @Override

@@ -203,7 +203,7 @@ public class ItemReg {
             //         .shootSound(SoundReg.ITEM_MACHINE_GUN_SHOOT, SoundReg.ITEM_MACHINE_GUN_SHOOT_SILENCED));
 
             // 自动枪
-            AUTO_GUN = registerGunItem("auto_gun", GunWithMagItem::new,
+            AUTO_GUN = registerGunItem("auto_gun", AutoGunItem::new,
                 new GunProperties().rangedDamage(AUTO_GUN_DAMAGE).fireRate(4).recoil(AUTO_GUN_RECOIL).durability(AUTO_GUN_DURABILITY)
                     .shootSound(SoundReg.ITEM_AUTO_GUN_SHOOT, SoundReg.ITEM_AUTO_GUN_SHOOT_SILENCED));
 
@@ -212,7 +212,7 @@ public class ItemReg {
             //         new GunProperties().rangedDamage(AUTO_GUN_DAMAGE).fireRate(2).recoil(AUTO_GUN_RECOIL)
             //                 .shootSound(SoundReg.ITEM_AUTO_GUN_SHOOT, SoundReg.ITEM_AUTO_GUN_SHOOT_SILENCED));
 
-            NETHERITE_AUTO_GUN = registerGunItem("netherite_auto_gun", GunWithMagItem::new,
+            NETHERITE_AUTO_GUN = registerGunItem("netherite_auto_gun", AutoGunItem::new,
                 new GunProperties().rangedDamage(N_AUTO_GUN_DAMAGE).fireRate(3).recoil(AUTO_GUN_RECOIL).durability(N_AUTO_GUN_DURABILITY)
                     .shootSound(SoundReg.ITEM_AUTO_GUN_SHOOT, SoundReg.ITEM_AUTO_GUN_SHOOT_SILENCED));
 

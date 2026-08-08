@@ -1,7 +1,6 @@
 package com.goldbocman.vgm.common.registry.custom.types;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponentType;
@@ -204,37 +203,20 @@ public class GunWithMagItem extends GunItem {
         return this.compatibleMagazines.equals(TagReg.SHORT_MAGAZINES) ? 6 : 20;
     }
 
-    // Same eased-sine cooldown kick as LeverGunItem.applyCustomMatrix (another PoseType.TWO_ARMS
-    // gun) - GunItem's default applyCustomMatrix is a no-op, so without this override rifle/auto_gun
-    // never got any recoil animation at all, unlike revolver/shotgun which both override it.
     @Override
     public boolean applyCustomMatrix(LivingEntity entity, GunHelper.GunStates state, PoseStack matrices, ItemStack stack, float cooldownProgress, boolean leftHanded) {
-        if (matrices == null) {
-            return false;
+        if (matrices == null) return false;
+
+        if (Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
+            return super.applyCustomMatrix(entity, state, matrices, stack, cooldownProgress, leftHanded);
         }
 
-        Minecraft client = Minecraft.getInstance();
-        boolean isFirstPerson = client.options.getCameraType().isFirstPerson();
+        if (state != GunHelper.GunStates.NORMAL) return false;
 
-        if (state == GunHelper.GunStates.NORMAL && isFirstPerson) {
-            float progress = Math.max(0, Math.min(cooldownProgress, 1.0F));
+        float f2 = Math.max(1 - cooldownProgress, 0);
+        matrices.translate(0, -f2 / 4 + 0.25F, f2 / 8 - 0.25F);
 
-            float f = Math.max(0, progress - 0.1F) * 2;
-            float f1 = Math.max(0, progress - 0.2F) * 3;
-
-            float sin1 = (float) Math.sin(f * Math.PI);
-            float sin2 = (float) Math.sin(f1 * Math.PI);
-
-            sin1 = Math.max(0, sin1);
-            sin2 = Math.max(0, sin2);
-
-            matrices.translate(0, sin1 * 0.3F - sin2 * 0.7F, -0.2F * sin1);
-            matrices.mulPose(Axis.XP.rotation(sin1 * 1.047198F));
-
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     @Override

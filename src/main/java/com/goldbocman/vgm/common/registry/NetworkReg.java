@@ -28,6 +28,7 @@ public class NetworkReg {
     public static final CustomPacketPayload.Type<ShootPayload> SHOOT_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "shoot"));
     public static final CustomPacketPayload.Type<ShootAnimationPayload> SHOOT_ANIMATION_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "shoot_animation"));
     public static final CustomPacketPayload.Type<ItemComponentSyncPayload> ITEM_COMPONENT_SYNC_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "item_component_sync"));
+    public static final CustomPacketPayload.Type<GunStatePayload> GUN_STATE_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "gun_state"));
     // 添加新的射击粒子效果数据包（S2C）
     public static final CustomPacketPayload.Type<ShootParticlePayload> SHOOT_PARTICLE_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "shoot_particle"));
 //    public static final CustomPacketPayload.Type<GrenadeLeftClickPayload> GRENADE_LEFT_CLICK_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "grenade_left_click"));
@@ -74,6 +75,7 @@ public class NetworkReg {
         PayloadTypeRegistry.clientboundPlay().register(SHOOT_ANIMATION_PACKET_ID, ShootAnimationPayload.PACKET_CODEC);
         PayloadTypeRegistry.clientboundPlay().register(SHOOT_PARTICLE_PACKET_ID, ShootParticlePayload.PACKET_CODEC);
         PayloadTypeRegistry.clientboundPlay().register(ITEM_COMPONENT_SYNC_PACKET_ID, ItemComponentSyncPayload.PACKET_CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(GUN_STATE_PACKET_ID, GunStatePayload.PACKET_CODEC);
         // 服务器端接收的数据包（C2S - Client to Server）
         PayloadTypeRegistry.serverboundPlay().register(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.serverboundPlay().register(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC);
@@ -85,6 +87,7 @@ public class NetworkReg {
         PayloadTypeRegistry.playS2C().register(SHOOT_ANIMATION_PACKET_ID, ShootAnimationPayload.PACKET_CODEC);
         PayloadTypeRegistry.playS2C().register(SHOOT_PARTICLE_PACKET_ID, ShootParticlePayload.PACKET_CODEC);
         PayloadTypeRegistry.playS2C().register(ITEM_COMPONENT_SYNC_PACKET_ID, ItemComponentSyncPayload.PACKET_CODEC);
+        PayloadTypeRegistry.playS2C().register(GUN_STATE_PACKET_ID, GunStatePayload.PACKET_CODEC);
         PayloadTypeRegistry.playC2S().register(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.playC2S().register(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC);
         *///?}
@@ -142,7 +145,31 @@ public class NetworkReg {
             return RECOIL_CLIENT_PACKET_ID;
         }
     }
-    
+
+    // Syncs the owning player's GunHelper.GunStates (NORMAL/RELOADING) to their own client - the
+    // state itself only ever changes server-side (onReload/reloadTick), and without this the
+    // client's IGunUser copy never leaves NORMAL, so applyCustomMatrix's reload-specific animation
+    // branch was permanently dead code.
+    public record GunStatePayload(int state) implements CustomPacketPayload {
+        public static final StreamCodec<RegistryFriendlyByteBuf, GunStatePayload> PACKET_CODEC = StreamCodec.ofMember(
+            GunStatePayload::write,
+            GunStatePayload::read
+        );
+
+        public static GunStatePayload read(RegistryFriendlyByteBuf buf) {
+            return new GunStatePayload(buf.readVarInt());
+        }
+
+        public void write(RegistryFriendlyByteBuf buf) {
+            buf.writeVarInt(state);
+        }
+
+        @Override
+        public @NotNull Type<? extends CustomPacketPayload> type() {
+            return GUN_STATE_PACKET_ID;
+        }
+    }
+
     // 客户端射击声音数据包
     public record ShootClientPayload(float volume) implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, ShootClientPayload> PACKET_CODEC = StreamCodec.ofMember(
@@ -277,10 +304,10 @@ public class NetworkReg {
 
     //? if neoforge {
     /*//? if >=1.21.9 {
-    @net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID)
-    //?} else {
-    /^@net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
-    ^///?}
+    /^@net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID)
+    ^///?} else {
+    @net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
+    //?}
     public static class NeoForgePayloads {
         @net.neoforged.bus.api.SubscribeEvent
         public static void register(net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent event) {
@@ -305,6 +332,8 @@ public class NetworkReg {
                     (payload, context) -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleShootParticle(net.minecraft.client.Minecraft.getInstance(), payload));
             registrar.playToClient(ITEM_COMPONENT_SYNC_PACKET_ID, ItemComponentSyncPayload.PACKET_CODEC,
                     (payload, context) -> {});
+            registrar.playToClient(GUN_STATE_PACKET_ID, GunStatePayload.PACKET_CODEC,
+                    (payload, context) -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleGunState(net.minecraft.client.Minecraft.getInstance(), payload));
         }
     }
     *///?}

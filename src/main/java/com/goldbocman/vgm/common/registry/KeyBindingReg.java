@@ -55,10 +55,10 @@ public class KeyBindingReg {
 
     //? if neoforge {
     /*//? if >=1.21.9 {
-    @net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, value = net.neoforged.api.distmarker.Dist.CLIENT)
-    //?} else {
-    /^@net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, value = net.neoforged.api.distmarker.Dist.CLIENT, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
-    ^///?}
+    /^@net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, value = net.neoforged.api.distmarker.Dist.CLIENT)
+    ^///?} else {
+    @net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, value = net.neoforged.api.distmarker.Dist.CLIENT, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
+    //?}
     public static class NeoForgeKeyBindings {
         @net.neoforged.bus.api.SubscribeEvent
         public static void register(net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent event) {

@@ -12,7 +12,9 @@ import net.minecraft.world.phys.Vec3;
 import com.goldbocman.vgm.client.renderer.RecoilSys;
 import com.goldbocman.vgm.client.renderer.WeaponTickHolder;
 import com.goldbocman.vgm.common.config.MConfig;
+import com.goldbocman.vgm.common.entity.IGunUser;
 import com.goldbocman.vgm.common.registry.custom.types.GunItem;
+import com.goldbocman.vgm.common.utils.GunHelper;
 
 //? if fabric
 import static com.goldbocman.vgm.common.registry.NetworkReg.SHOOT_PACKET_ID;
@@ -30,6 +32,11 @@ public class ClientNetworkReg {
     static void handleRecoil(Minecraft client, NetworkReg.RecoilPayload payload) {
         if (client.player == null) {return;}
         RecoilSys.shotEvent(client.player, payload.recoil());
+    }
+
+    static void handleGunState(Minecraft client, NetworkReg.GunStatePayload payload) {
+        if (client.player == null) return;
+        ((IGunUser) client.player).bren_1_21_1$setGunState(GunHelper.GunStates.byIndex(payload.state()));
     }
 
     static void handleClientShoot(Minecraft client, NetworkReg.ShootClientPayload payload) {
@@ -63,6 +70,10 @@ public class ClientNetworkReg {
 
     public static void recoilPacket() {
         ClientPlayNetworking.registerReceiver(NetworkReg.RECOIL_CLIENT_PACKET_ID, (payload, context) -> handleRecoil(context.client(), payload));
+    }
+
+    public static void gunStatePacket() {
+        ClientPlayNetworking.registerReceiver(NetworkReg.GUN_STATE_PACKET_ID, (payload, context) -> handleGunState(context.client(), payload));
     }
 
     public static void clientShootPacket() {

@@ -38,7 +38,7 @@ public class LeverGunItem extends RevolverItem {
             Minecraft client = Minecraft.getInstance();
             boolean isFirstPerson = client.options.getCameraType().isFirstPerson();
 
-            if (state == GunHelper.GunStates.NORMAL && isFirstPerson) {
+            if (isFirstPerson) {
                 // 修复动画计算：确保在动画结束时模型不会消失
                 // 使用更安全的动画计算，避免负值和异常
 

@@ -32,10 +32,10 @@ public class NetworkUtils {
         // 1.21.1's PacketDistributor has sendToServer(...) directly - no separate client-only class yet.
         //? if neoforge {
         /*//? if >=1.21.11 {
-        net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(payload);
-        //?} else {
-        /^net.neoforged.neoforge.network.PacketDistributor.sendToServer(payload);
-        ^///?}
+        /^net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(payload);
+        ^///?} else {
+        net.neoforged.neoforge.network.PacketDistributor.sendToServer(payload);
+        //?}
         *///?}
     }
 

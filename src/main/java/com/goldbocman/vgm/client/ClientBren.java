@@ -78,6 +78,7 @@ public class ClientBren
             ClientNetworkReg.shootAnimationPacket();
             ClientNetworkReg.recoilPacket();
             ClientNetworkReg.shootParticlePacket();
+            ClientNetworkReg.gunStatePacket();
         });
 
         //? if >=1.21.11 {
@@ -211,10 +212,10 @@ public class ClientBren
 
     //? if neoforge {
     /*//? if >=1.21.9 {
-    @net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, value = net.neoforged.api.distmarker.Dist.CLIENT)
-    //?} else {
-    /^@net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, value = net.neoforged.api.distmarker.Dist.CLIENT, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
-    ^///?}
+    /^@net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, value = net.neoforged.api.distmarker.Dist.CLIENT)
+    ^///?} else {
+    @net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, value = net.neoforged.api.distmarker.Dist.CLIENT, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
+    //?}
     public static class NeoForgeClientModBusEvents {
         @net.neoforged.bus.api.SubscribeEvent
         @SuppressWarnings("unchecked")
@@ -225,7 +226,7 @@ public class ClientBren
         }
 
         //? if <1.21.11 {
-        /^@net.neoforged.bus.api.SubscribeEvent
+        @net.neoforged.bus.api.SubscribeEvent
         public static void onClientSetup(net.neoforged.fml.event.lifecycle.FMLClientSetupEvent event) {
             registerLegacyMagazineModelPredicates();
             registerLegacyMagazineFullnessModelPredicates();
@@ -247,22 +248,22 @@ public class ClientBren
                 event.register(new net.minecraft.client.resources.model.ModelIdentifier(id, "standalone"));
             }
         }
-        ^///?}
+        //?}
 
         @net.neoforged.bus.api.SubscribeEvent
         public static void registerRenderers(net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers event) {
             //? if >=1.21.11 {
-            event.registerEntityRenderer(Bren.BULLET, BulletRenderer::new);
-            //?} else {
-            /^event.registerEntityRenderer(Bren.BULLET, LegacyBulletRenderer::new);
-            ^///?}
+            /^event.registerEntityRenderer(Bren.BULLET, BulletRenderer::new);
+            ^///?} else {
+            event.registerEntityRenderer(Bren.BULLET, LegacyBulletRenderer::new);
+            //?}
         }
 
         // GunBackFeatureRenderer/GunHoldingFeatureRenderer are both confirmed no-op stubs (see their
         // own file comments) - on 1.21.1, LivingEntityRenderer.addLayer(...) is also `protected`, not
         // callable from here at all, so this whole subscriber is skipped there with no behavior loss.
         //? if >=1.21.11 {
-        @net.neoforged.bus.api.SubscribeEvent
+        /^@net.neoforged.bus.api.SubscribeEvent
         public static void addLayers(net.neoforged.neoforge.client.event.EntityRenderersEvent.AddLayers event) {
             for (net.minecraft.world.entity.player.PlayerModelType skin : event.getSkins()) {
                 var renderer = event.<net.minecraft.client.renderer.entity.player.AvatarRenderer<net.minecraft.client.player.AbstractClientPlayer>>getPlayerRenderer(skin);
@@ -272,7 +273,7 @@ public class ClientBren
                 renderer.addLayer(new GunHoldingFeatureRenderer(renderer));
             }
         }
-        //?}
+        ^///?}
     }
 
     // Game-bus subscriber (ClientTickEvent) - Bus.GAME is the default on every version, no gating needed.

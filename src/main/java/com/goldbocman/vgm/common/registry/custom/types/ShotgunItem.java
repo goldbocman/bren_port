@@ -150,7 +150,12 @@ public class ShotgunItem extends BulletOnlyGun {
         Minecraft client = Minecraft.getInstance();
         boolean isFirstPerson = client.options.getCameraType().isFirstPerson();
 
-        if (state == GunHelper.GunStates.NORMAL && isFirstPerson) {
+        // GunHelper.GunStates only has NORMAL/RELOADING, so gating on NORMAL alone used to silently
+        // rely on the client never actually knowing about RELOADING (that sync didn't exist yet) -
+        // now that it's synced correctly, that check would suppress the kick during every one-shell
+        // reload cycle instead of playing it, which is the per-shell animation this gun is meant to
+        // have. Animate on cooldownProgress regardless of state.
+        if (isFirstPerson) {
             // 修复动画计算：确保在动画结束时模型不会消失
             // 使用更安全的动画计算，避免负值和异常
 

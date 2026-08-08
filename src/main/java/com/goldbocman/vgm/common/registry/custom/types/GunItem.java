@@ -1,7 +1,9 @@
 package com.goldbocman.vgm.common.registry.custom.types;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -112,8 +114,47 @@ public class GunItem extends Item {
 
     // 弹药数量已经在tooltip和自定义HUD中显示，物品条改为显示真实耐久度（使用Item的默认实现）
 
+    // Toggle to bring back the third-person reload wobble in applyCustomMatrix
+    private static final boolean ANIMATE_RELOAD_IN_THIRD_PERSON = false;
+
+    // Generic fallback recoil curve for any gun that doesn't override this with bespoke motion
+    // (RevolverItem/ShotgunItem/LeverGunItem/DoubleBarrelShotgunItem all provide their own).
+    // isFirstPerson is read from the camera rather than passed in because on 1.21.1
+    // LegacyItemInHandRendererMixin is a single choke point for both views.
     public boolean applyCustomMatrix(LivingEntity entity, GunHelper.GunStates state, PoseStack matrices, ItemStack stack, float cooldownProgress, boolean leftHanded) {
-        return false;
+        if (matrices == null) return false;
+
+        Minecraft client = Minecraft.getInstance();
+        boolean reloading = state == GunHelper.GunStates.RELOADING;
+        boolean isFirstPerson = client.options.getCameraType().isFirstPerson();
+
+        float sinA = (float) Math.sin((cooldownProgress * 2 - 0.5) * Math.PI) * 0.5F + 0.5F;
+
+        if (isFirstPerson) {
+            float sinC = reloading ? sinA : (float) Math.sin(1 - cooldownProgress);
+            float delta = GunApiCompat.getPartialTick(client);
+            double wobble = Math.sin(((float) entity.tickCount + delta) / 2) * (reloading ? sinA : cooldownProgress) * 30;
+
+            float zOffset = reloading ? 0 : (sinA / 2 + sinA / 4) * 0.5F;
+            float zRotation = (float) ((leftHanded ? -15 : 15) + wobble);
+            float xRotation = sinC * 10 * 0.5F;
+
+            matrices.translate(0, 0, zOffset);
+            matrices.mulPose(Axis.ZP.rotationDegrees(zRotation));
+            matrices.mulPose(Axis.XP.rotationDegrees(xRotation));
+        } else {
+            float f2 = reloading
+                    ? (ANIMATE_RELOAD_IN_THIRD_PERSON ? sinA / 3 : 0)
+                    : Math.max(1 - cooldownProgress, 0);
+            float yRotation = leftHanded ? 10 : -10;
+            float xRotation = f2 * 30 + 45;
+
+            matrices.mulPose(Axis.YP.rotationDegrees(yRotation));
+            matrices.mulPose(Axis.XP.rotationDegrees(xRotation));
+            matrices.translate(0, -f2 / 4 + 0.25F, f2 / 8 - 0.25F);
+        }
+
+        return true;
     }
 
 
