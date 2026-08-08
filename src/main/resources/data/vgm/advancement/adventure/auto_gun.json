@@ -6,7 +6,14 @@
         "items": [
           {
             "items": "vgm:auto_gun"
-          },
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "auto_gun_netherite": {
+      "conditions": {
+        "items": [
           {
             "items": "vgm:netherite_auto_gun"
           }
@@ -28,7 +35,8 @@
   },
   "requirements": [
     [
-      "auto_gun"
+      "auto_gun",
+      "auto_gun_netherite"
     ]
   ],
   "sends_telemetry_event": true

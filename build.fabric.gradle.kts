@@ -55,6 +55,7 @@ dependencies {
         "fabric-networking-api-v1",
         "fabric-particles-v1",
         "fabric-rendering-v1",
+        "fabric-renderer-indigo",
         "fabric-model-loading-api-v1",
         if (sc.current.parsed >= "26.1") "fabric-key-mapping-api-v1" else "fabric-key-binding-api-v1",
         if (sc.current.parsed >= "26.1") "fabric-creative-tab-api-v1" else "fabric-item-group-api-v1",

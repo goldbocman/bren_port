@@ -6,7 +6,14 @@
         "items": [
           {
             "items": "vgm:revolver"
-          },
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "revolver_netherite": {
+      "conditions": {
+        "items": [
           {
             "items": "vgm:netherite_revolver"
           }
@@ -28,7 +35,8 @@
   },
   "requirements": [
     [
-      "revolver"
+      "revolver",
+      "revolver_netherite"
     ]
   ],
   "sends_telemetry_event": true

@@ -193,7 +193,9 @@ public class VgmAdvancementProvider implements AdvancementSubProvider {
                         Component.translatable("advancements.vgm.adventure." + name + ".title"),
                         Component.translatable("advancements.vgm.adventure." + name + ".description"),
                         null, AdvancementType.TASK, true, true, false)
-                .addCriterion(name, InventoryChangeTrigger.TriggerInstance.hasItems(base, netherite))
+                .addCriterion(name, InventoryChangeTrigger.TriggerInstance.hasItems(base))
+                .addCriterion(name + "_netherite", InventoryChangeTrigger.TriggerInstance.hasItems(netherite))
+                .requirements(AdvancementRequirements.Strategy.OR)
                 .sendsTelemetryEvent()
                 .save(saver, Bren.MODID + ":adventure/" + name);
     }

@@ -6,7 +6,14 @@
         "items": [
           {
             "items": "vgm:shotgun"
-          },
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "shotgun_netherite": {
+      "conditions": {
+        "items": [
           {
             "items": "vgm:netherite_shotgun"
           }
@@ -28,7 +35,8 @@
   },
   "requirements": [
     [
-      "shotgun"
+      "shotgun",
+      "shotgun_netherite"
     ]
   ],
   "sends_telemetry_event": true
