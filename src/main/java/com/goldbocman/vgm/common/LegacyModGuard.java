@@ -67,7 +67,7 @@ public final class LegacyModGuard {
 		}
 		if (remaining.length() > 0) {
 			message.append("Could not automatically delete the following old mod file(s), likely because they're locked while the game is running. ")
-					.append("Please close the game and delete them manually, then restart:").append(remaining).append('\n');
+					.append("Please close the game and DELETE THOSE MODS BELOW MANUALLY, THEN RESTART:").append(remaining).append('\n');
 		}
 		if (deleted.length() == 0 && remaining.length() == 0) {
 			message.append("Please locate and delete the old \"bren\" mod jar from your mods folder, then restart.\n");

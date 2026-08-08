@@ -3,38 +3,40 @@
   "criteria": {
     "maxed_out": {
       "conditions": {
-        "item": {
-          "items": [
-            "vgm:netherite_auto_gun",
-            "vgm:netherite_rifle",
-            "vgm:netherite_shotgun",
-            "vgm:netherite_revolver"
-          ],
-          "predicates": {
-            "minecraft:enchantments": [
-              {
-                "enchantments": "minecraft:flame",
-                "levels": {
-                  "min": 1
+        "items": [
+          {
+            "items": [
+              "vgm:netherite_auto_gun",
+              "vgm:netherite_rifle",
+              "vgm:netherite_shotgun",
+              "vgm:netherite_revolver"
+            ],
+            "predicates": {
+              "minecraft:enchantments": [
+                {
+                  "enchantments": "minecraft:flame",
+                  "levels": {
+                    "min": 1
+                  }
+                },
+                {
+                  "enchantments": "minecraft:punch",
+                  "levels": {
+                    "min": 2
+                  }
+                },
+                {
+                  "enchantments": "minecraft:unbreaking",
+                  "levels": {
+                    "min": 3
+                  }
                 }
-              },
-              {
-                "enchantments": "minecraft:punch",
-                "levels": {
-                  "min": 2
-                }
-              },
-              {
-                "enchantments": "minecraft:unbreaking",
-                "levels": {
-                  "min": 3
-                }
-              }
-            ]
+              ]
+            }
           }
-        }
+        ]
       },
-      "trigger": "minecraft:enchanted_item"
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "display": {
