@@ -1,5 +1,6 @@
 package com.goldbocman.vgm.common.datagen;
 
+//? if >=1.21.11 {
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -174,3 +175,4 @@ public class VgmRecipeProvider extends RecipeProvider {
         }
     }
 }
+//?}

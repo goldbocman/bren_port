@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import com.goldbocman.vgm.common.Bren;
 import com.goldbocman.vgm.common.entity.IGunUser;
 import com.goldbocman.vgm.common.registry.SoundReg;
+import com.goldbocman.vgm.common.utils.GunApiCompat;
 import com.goldbocman.vgm.common.utils.GunHelper;
 
 public class AirGunItem extends BulletOnlyGun {
@@ -66,11 +67,11 @@ public class AirGunItem extends BulletOnlyGun {
     @Override
     public void reloadTick(ItemStack stack, Level world, Player player, IGunUser gunUser) {
         ItemCooldowns cooldownManager = player.getCooldowns();
-        float cooldownProgress = cooldownManager.getCooldownPercent(stack, 1.0F);
+        float cooldownProgress = GunApiCompat.getCooldownPercent(cooldownManager, stack, 1.0F);
 
 
         // 关键修复：确保只有在装弹状态下才执行装弹逻辑
-        if (!cooldownManager.isOnCooldown(stack) &&
+        if (!GunApiCompat.isOnCooldown(cooldownManager, stack) &&
                 gunUser.bren_1_21_1$getGunState().equals(GunHelper.GunStates.RELOADING)) {
 
             // 关键修复：使用当前枪械实例的compatibleBullet方法，确保调用子类重写的方法

@@ -34,7 +34,7 @@
       },
       "on_false": {
         "type": "minecraft:model",
-        "model": "vgm:item/netherite_rifle"
+        "model": "vgm:item/netherite_rifle_held"
       }
     }
   },

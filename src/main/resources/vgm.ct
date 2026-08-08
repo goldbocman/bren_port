@@ -1,1 +1,5 @@
 classTweaker v2 official
+
+# Projectile(EntityType, Level) is package-private pre-1.21.11 (BulletEntity extends it from a
+# different package) - already accessible on 26.2.x/1.21.11, so widening it there too is a no-op.
+accessible method net/minecraft/world/entity/projectile/Projectile <init> (Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/level/Level;)V

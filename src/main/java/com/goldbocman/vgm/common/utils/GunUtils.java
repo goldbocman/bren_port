@@ -243,7 +243,13 @@ public class GunUtils {
         bullet.shootFromRotation(entity, entity.getXRot() + spread.y, entity.getYHeadRot() + spread.x, 0.0F, speed, 0.0F);
 
         // 修复：移除velocityModified字段的赋值，只保留velocityDirty
+        //? if >=1.21.11 {
         bullet.needsSync = true;
+        //?} else {
+        /*// Entity.needsSync doesn't exist pre-1.21.11 - hurtMarked is the classic equivalent
+        // "resync this entity to tracking clients" flag.
+        bullet.hurtMarked = true;
+        *///?}
         bullet.setRemainingFireTicks(ticksOnFire);
 
         // Flame附魔：子弹自身着火，命中实体/方块时点燃目标（子弹是完全自定义实体，不会走原版projectile_spawned钩子，需要手动应用）

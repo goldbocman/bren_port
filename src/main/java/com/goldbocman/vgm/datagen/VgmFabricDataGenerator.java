@@ -10,7 +10,11 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.advancements.AdvancementProvider;
 import com.goldbocman.vgm.common.datagen.VgmAdvancementProvider;
 import com.goldbocman.vgm.common.datagen.VgmEnchantmentBootstrap;
+//? if >=1.21.11 {
 import com.goldbocman.vgm.common.datagen.VgmRecipeProvider;
+//?} else {
+/*import com.goldbocman.vgm.common.datagen.legacy.LegacyVgmRecipeProvider;
+*///?}
 
 import java.util.List;
 
@@ -18,7 +22,11 @@ public class VgmFabricDataGenerator implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
+        //? if >=1.21.11 {
         pack.addProvider(VgmRecipeProvider.Runner::new);
+        //?} else {
+        /*pack.addProvider(LegacyVgmRecipeProvider::new);
+        *///?}
         pack.addProvider((output, registries) ->
                 new AdvancementProvider(output, registries, List.of(new VgmAdvancementProvider())));
         pack.addProvider((output, registries) -> new FabricDynamicRegistryProvider(output, registries) {

@@ -29,8 +29,14 @@ public class NetworkUtils {
         //? if fabric {
         net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(payload);
         //?}
-        //? if neoforge
-        //net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(payload);
+        // 1.21.1's PacketDistributor has sendToServer(...) directly - no separate client-only class yet.
+        //? if neoforge {
+        /*//? if >=1.21.11 {
+        net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(payload);
+        //?} else {
+        /^net.neoforged.neoforge.network.PacketDistributor.sendToServer(payload);
+        ^///?}
+        *///?}
     }
 
     public static void sendShotEffect(Player player, Vec3 origin, Vec3 direction, boolean ejectCasing) {

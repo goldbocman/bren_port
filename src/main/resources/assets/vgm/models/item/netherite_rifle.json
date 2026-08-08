@@ -3,10 +3,10 @@
 	"credit": "Made with Blockbench",
 	"parent": "vgm:item/rifle_gun_handheld",
 	"textures": {
-		"layer0": "vgm:item/netherite_rifle"
+		"layer0": "vgm:item/netherite_rifle_gui"
 	},
 	"overrides": [
-		{"predicate": {"has_magazine": 1, "has_colorable_magazine": 0, "is_full": 0}, "model": "vgm:item/netherite_rifle_with_magazine"},
+		{"predicate": {"vgm:has_magazine": 1}, "model": "vgm:item/netherite_rifle_with_magazine_gui"},
 		{"predicate": {"custom_model_data": 1}, "model": "vgm:item/gun_reloading"}
 	]
 }

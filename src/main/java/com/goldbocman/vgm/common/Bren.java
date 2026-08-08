@@ -2,7 +2,11 @@ package com.goldbocman.vgm.common;
 
 //? if fabric {
 import net.fabricmc.api.ModInitializer;
+//? if >=26.1 {
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+//?} else {
+/*import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+*///?}
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -60,7 +64,12 @@ public class Bren
 			"bullet"), EntityType.Builder.<BulletEntity>of(
 					(type, level) -> new BulletEntity(type, level), MobCategory.MISC).clientTrackingRange(10)
 					.sized(0.35F, 0.35F).noSave().build(
-							ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, "bullet"))));
+							//? if >=1.21.11 {
+							ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, "bullet"))
+							//?} else {
+							/*"bullet"
+							*///?}
+					));
 	//?}
 	//? if neoforge
 	//public static EntityType<@org.jetbrains.annotations.NotNull BulletEntity> BULLET;
@@ -125,7 +134,13 @@ public class Bren
 
 		// 注册自定义创意标签页
 		//? if fabric {
-		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, BREN_TAB, FabricCreativeModeTab.builder()
+		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, BREN_TAB,
+			//? if >=26.1 {
+			FabricCreativeModeTab
+			//?} else {
+			/*FabricItemGroup
+			*///?}
+			.builder()
 			.title(Component.translatable("itemGroup." + MODID + ".bren_tab"))
 			.icon(() -> new ItemStack(ItemReg.NETHERITE_AUTO_GUN))
 			.displayItems((context, output) -> addTabItems(output))
@@ -145,7 +160,11 @@ public class Bren
 	// per matching registry's own RegisterEvent - calling them any earlier throws
 	// "Registry is already frozen". Vanilla's own registry bootstrap order fires ATTRIBUTE and
 	// DATA_COMPONENT_TYPE before ITEM, matching the ordering onInitialize() relies on for Fabric.
+	//? if >=1.21.9 {
 	@net.neoforged.fml.common.EventBusSubscriber(modid = MODID)
+	//?} else {
+	/^@net.neoforged.fml.common.EventBusSubscriber(modid = MODID, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
+	^///?}
 	public static class NeoForgeRegistration {
 		@net.neoforged.bus.api.SubscribeEvent
 		public static void onRegister(net.neoforged.neoforge.registries.RegisterEvent event) {
@@ -166,7 +185,13 @@ public class Bren
 				BULLET = Registry.register(BuiltInRegistries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, "bullet"),
 						EntityType.Builder.<BulletEntity>of((type, level) -> new BulletEntity(type, level), MobCategory.MISC)
 								.clientTrackingRange(10).sized(0.35F, 0.35F).noSave()
-								.build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, "bullet"))));
+								.build(
+										//? if >=1.21.11 {
+										ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, "bullet"))
+										//?} else {
+										/^"bullet"
+										^///?}
+								));
 			}
 		}
 	}

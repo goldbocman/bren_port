@@ -97,8 +97,12 @@ public class ItemReg {
     // 修复注册方法，正确设置RegistryKey
     public static Item register(String path, java.util.function.Function<Item.Properties, Item> factory, Item.Properties settings) {
         final ResourceKey<Item> registryKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(Bren.MODID, path));
+        //? if >=1.21.11 {
         // 只设置RegistryKey，不重复设置模型和翻译组件
         settings = settings.setId(registryKey);
+        //?}
+        // Item.Properties has no setId(...) pre-1.21.11 - the id comes purely from the
+        // Registry.register(...) key below, no separate properties step needed.
         return Registry.register(BuiltInRegistries.ITEM, registryKey, factory.apply(settings));
     }
 
@@ -128,7 +132,14 @@ public class ItemReg {
         LOGGER.info("Registering gun item with properties: {}", name);
         try {
             // 直接使用标准注册模式，durability() 需要 stacksTo(1) 才能生效；enchantable() 允许在附魔台/铁砧上附魔
+            //? if >=1.21.11 {
             Item registeredItem = register(name, factory, new Item.Properties().stacksTo(1).durability(properties.durability).enchantable(1));
+            //?} else {
+            /*// Item.Properties has no enchantable(...) pre-1.21.11 (DataComponents.ENCHANTABLE doesn't
+            // exist yet either) - guns simply aren't enchanting-table-enchantable on this version,
+            // rather than reintroducing per-item Item.getEnchantmentValue() overrides for one int.
+            Item registeredItem = register(name, factory, new Item.Properties().stacksTo(1).durability(properties.durability));
+            *///?}
             
             // 立即注册枪械属性
             GunItem.registerGunProperties(Identifier.fromNamespaceAndPath(Bren.MODID, name), properties);

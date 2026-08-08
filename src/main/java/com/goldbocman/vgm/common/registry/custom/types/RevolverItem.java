@@ -14,6 +14,7 @@ import com.goldbocman.vgm.common.entity.IGunUser;
 import com.goldbocman.vgm.common.registry.ItemReg;
 import com.goldbocman.vgm.common.registry.SoundReg;
 import com.goldbocman.vgm.common.registry.custom.PoseType;
+import com.goldbocman.vgm.common.utils.GunApiCompat;
 import com.goldbocman.vgm.common.utils.GunHelper;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -78,7 +79,7 @@ public class RevolverItem extends BulletOnlyGun {
                 float sin2 = (float) Math.sin((f1 * 2 - 0.5) * Math.PI) * 0.5F + 0.5F;
                 float sin3 = reloading ? sin2 : (float) Math.sin(1 - f);
 
-                float delta = client.getDeltaTracker().getGameTimeDeltaPartialTick(true);
+                float delta = GunApiCompat.getPartialTick(client);
 
                 double d = (Math.sin(((float) entity.tickCount + delta) / 6) * (reloading ? sin2 : f1)) * 2;
                 // 添加额外的平滑处理：使用缓动函数来减少动画的突变

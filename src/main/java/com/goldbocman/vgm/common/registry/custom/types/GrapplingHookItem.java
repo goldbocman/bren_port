@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import com.goldbocman.vgm.common.utils.GunApiCompat;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,55 +49,71 @@ public class GrapplingHookItem extends Item {
         LOGGER.info("Creating new GrapplingHookItem instance");
     }
     
+    //? if >=1.21.11 {
     @Override
     public @NotNull InteractionResult use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        
+        return bren$use(level, player, stack, hand) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+    }
+    //?} else {
+    /*@Override
+    public net.minecraft.world.@NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        return bren$use(level, player, stack, hand)
+                ? net.minecraft.world.InteractionResultHolder.success(stack)
+                : net.minecraft.world.InteractionResultHolder.fail(stack);
+    }
+    *///?}
+
+    // Shared by both use() overloads above - old and new Item.use() return different types
+    // (InteractionResult vs InteractionResultHolder<ItemStack>), so the actual logic lives here as a
+    // plain success/fail boolean and each version-specific override just wraps it.
+    private boolean bren$use(Level level, Player player, ItemStack stack, InteractionHand hand) {
         // 检查冷却时间
-        if (player.getCooldowns().isOnCooldown(stack)) {
-            return InteractionResult.FAIL;
+        if (GunApiCompat.isOnCooldown(player.getCooldowns(), stack)) {
+            return false;
         }
-        
+
         // 检查是否已经钩住
         if (isHooked(stack)) {
             // 释放钩索
             releaseHook(player, stack);
-            return InteractionResult.SUCCESS;
+            return true;
         }
-        
+
         // 检查是否有气体
         int gas = getGas(stack);
         if (gas <= 0) {
             // 没有气体，进行打气
             int pumps = getPumps(stack) + 1;
             setPumps(stack, pumps);
-            
+
             // 播放打气声音
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), 
+            level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.ARMOR_EQUIP_LEATHER, SoundSource.PLAYERS, 0.5F, 1.0F);
-            
+
             // 检查是否打气完成
             if (pumps >= PUMPS_TO_FILL) {
                 setGas(stack, MAX_GAS);
                 setPumps(stack, 0);
-                
+
                 // 播放完成声音
-                level.playSound(null, player.getX(), player.getY(), player.getZ(), 
+                level.playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 1.0F, 1.0F);
-                
+
                 LOGGER.debug("Grappling hook pumped and filled with gas");
             } else {
                 LOGGER.debug("Grappling hook pumped: {}/{}", pumps, PUMPS_TO_FILL);
             }
-            
-            return InteractionResult.SUCCESS;
+
+            return true;
         }
-        
+
         // 发射钩索
         return shootHook(level, player, stack, hand);
     }
-    
-    private InteractionResult shootHook(Level level, Player player, ItemStack stack, InteractionHand hand) {
+
+    private boolean shootHook(Level level, Player player, ItemStack stack, InteractionHand hand) {
         // 计算视线方向
         Vec3 lookVec = player.getLookAngle();
         Vec3 startPos = player.getEyePosition();
@@ -128,18 +145,17 @@ public class GrapplingHookItem extends Item {
                 SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F);
             
             // 设置冷却时间
-            var itemId = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem());
-            player.getCooldowns().addCooldown(itemId, COOLDOWN_TICKS);
-            
+            GunApiCompat.addCooldown(player.getCooldowns(), stack, COOLDOWN_TICKS);
+
             LOGGER.debug("Hook shot and hit block at: {}, gas remaining: {}", hookedPos, currentGas - 1);
-            return InteractionResult.SUCCESS;
+            return true;
         }
-        
+
         // 没有钩住任何东西
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), 
+        level.playSound(null, player.getX(), player.getY(), player.getZ(),
             SoundEvents.CROSSBOW_LOADING_MIDDLE, SoundSource.PLAYERS, 0.5F, 1.0F);
-        
-        return InteractionResult.FAIL;
+
+        return false;
     }
     
     private static void releaseHook(Player player, ItemStack stack) {
@@ -215,14 +231,10 @@ public class GrapplingHookItem extends Item {
         if (!nbt.contains(HOOKED_POS_KEY)) {
             return null;
         }
-        var posTagOptional = nbt.getCompound(HOOKED_POS_KEY);
-        if (posTagOptional.isEmpty()) {
-            return null;
-        }
-        CompoundTag posTag = posTagOptional.get();
-        double x = posTag.getDouble("x").orElse(0.0);
-        double y = posTag.getDouble("y").orElse(0.0);
-        double z = posTag.getDouble("z").orElse(0.0);
+        CompoundTag posTag = GunApiCompat.getCompound(nbt, HOOKED_POS_KEY);
+        double x = GunApiCompat.getDouble(posTag, "x");
+        double y = GunApiCompat.getDouble(posTag, "y");
+        double z = GunApiCompat.getDouble(posTag, "z");
         return new Vec3(x, y, z);
     }
 
@@ -241,19 +253,31 @@ public class GrapplingHookItem extends Item {
             return false;
         }
         var nbt = customData.copyTag();
-        return nbt.getBoolean(IS_HOOKED_KEY).orElse(false);
+        return GunApiCompat.getBoolean(nbt, IS_HOOKED_KEY);
     }
     
+    //? if >=1.21.11 {
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
-                               net.minecraft.world.item.component.@NotNull TooltipDisplay tooltipComponent, 
+                               net.minecraft.world.item.component.@NotNull TooltipDisplay tooltipComponent,
                                java.util.function.Consumer<Component> tooltipAdder, @NotNull TooltipFlag type) {
+        bren$appendHoverText(stack, tooltipAdder::accept);
+    }
+    //?} else {
+    /*@Override
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
+                               java.util.@NotNull List<Component> tooltipComponents, @NotNull TooltipFlag type) {
+        bren$appendHoverText(stack, tooltipComponents::add);
+    }
+    *///?}
+
+    private void bren$appendHoverText(ItemStack stack, java.util.function.Consumer<Component> tooltipAdder) {
         tooltipAdder.accept(Component.translatable("item.bren.grappling_hook.desc").withStyle(net.minecraft.ChatFormatting.GRAY));
-        
+
         // 显示气体信息
         int gas = getGas(stack);
         int pumps = getPumps(stack);
-        
+
         if (gas > 0) {
             tooltipAdder.accept(Component.translatable("item.bren.grappling_hook.gas", gas, MAX_GAS)
                 .withStyle(net.minecraft.ChatFormatting.AQUA));
@@ -264,7 +288,7 @@ public class GrapplingHookItem extends Item {
             tooltipAdder.accept(Component.translatable("item.bren.grappling_hook.empty")
                 .withStyle(net.minecraft.ChatFormatting.RED));
         }
-        
+
         if (isHooked(stack)) {
             tooltipAdder.accept(Component.translatable("item.bren.grappling_hook.hooked").withStyle(net.minecraft.ChatFormatting.GREEN));
         }
@@ -360,7 +384,7 @@ public class GrapplingHookItem extends Item {
             return 0;
         }
         var nbt = customData.copyTag();
-        return nbt.getInt(GAS_KEY).orElse(0);
+        return GunApiCompat.getInt(nbt, GAS_KEY);
     }
     
     private static void setPumps(ItemStack stack, int pumps) {
@@ -378,7 +402,7 @@ public class GrapplingHookItem extends Item {
             return 0;
         }
         var nbt = customData.copyTag();
-        return nbt.getInt(PUMPS_KEY).orElse(0);
+        return GunApiCompat.getInt(nbt, PUMPS_KEY);
     }
     
     /**
@@ -405,7 +429,11 @@ public class GrapplingHookItem extends Item {
             message = Component.literal("§cNeed Pumping");
         }
         
+        //? if >=1.21.11 {
         player.sendOverlayMessage(message);
+        //?} else {
+        /*player.displayClientMessage(message, true);
+        *///?}
     }
     
     /**

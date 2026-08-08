@@ -17,7 +17,7 @@
     ],
     "fallback": {
       "type": "minecraft:model",
-      "model": "vgm:item/shotgun"
+      "model": "vgm:item/shotgun_held"
     }
   },
   "components": {

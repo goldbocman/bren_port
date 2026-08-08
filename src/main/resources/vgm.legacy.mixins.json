@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "package": "com.goldbocman.vgm.common.mixin",
+  "compatibilityLevel": "${java}",
+  "mixins": [
+    "PlayerEntityMixin",
+    "StructurePoolAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "client.MinecraftClientMixin",
+    "client.legacy.LegacyItemPropertiesAccessor",
+    "client.legacy.LegacyBipedEntityModelMixin",
+    "client.legacy.LegacyPlayerRendererMixin",
+    "client.legacy.LegacyItemInHandRendererMixin",
+    "client.legacy.LegacyGameRendererMixin",
+    "client.legacy.LegacyGuiMixin"
+  ]
+}

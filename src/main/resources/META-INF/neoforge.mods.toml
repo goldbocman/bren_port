@@ -17,7 +17,7 @@ displayURL = "https://modrinth.com/mod/vanilla-guns-mod"
 issueTrackerUrl = "https://github.com/goldbocman/bren_port/issues"
 
 [[mixins]]
-config = "vgm.mixins.json"
+config = "${mixinsConfig}"
 
 [[dependencies.${id}]]
 modId = "minecraft"

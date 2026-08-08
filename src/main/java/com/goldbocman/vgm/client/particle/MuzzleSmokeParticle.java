@@ -8,7 +8,11 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.util.RandomSource;
+//? if >=26.1 {
 import org.jspecify.annotations.Nullable;
+//?} else {
+/*import org.jetbrains.annotations.Nullable;
+*///?}
 
 public class MuzzleSmokeParticle extends BaseAshSmokeParticle {
 
@@ -25,7 +29,11 @@ public class MuzzleSmokeParticle extends BaseAshSmokeParticle {
     }
 
     public ParticleRenderType getType() {
+        //? if >=1.21.11 {
         return ParticleRenderType.SINGLE_QUADS;
+        //?} else {
+        /*return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+        *///?}
     }
 
     public int getLightColor(float tint) {
@@ -41,9 +49,16 @@ public class MuzzleSmokeParticle extends BaseAshSmokeParticle {
             this.spriteProvider = spriteProvider;
         }
 
+        //? if >=1.21.11 {
         @Override
         public @Nullable Particle createParticle(ParticleOptions parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, RandomSource random) {
             return new MuzzleSmokeParticle(world, x, y, z, velocityX, velocityY, velocityZ, 3.0F, this.spriteProvider);
         }
+        //?} else {
+        /*@Override
+        public @Nullable Particle createParticle(ParticleOptions parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+            return new MuzzleSmokeParticle(world, x, y, z, velocityX, velocityY, velocityZ, 3.0F, this.spriteProvider);
+        }
+        *///?}
     }
 }

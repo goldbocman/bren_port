@@ -1,0 +1,6 @@
+{
+  "parent": "vgm:item/shotgun_handheld",
+  "textures": {
+    "layer0": "vgm:item/netherite_shotgun"
+  }
+}

@@ -13,7 +13,8 @@ public class DataComponentReg {
     // 声明数据组件类型（先不初始化）
     public static DataComponentType<Boolean> HAS_MAGAZINE;
     public static DataComponentType<Integer> GUN_MODEL_TYPE;
-    
+    public static DataComponentType<Boolean> HAS_AMMO;
+
     /**
      * 注册所有数据组件类型
      */
@@ -27,7 +28,17 @@ public class DataComponentReg {
                 .networkSynchronized(net.minecraft.network.codec.ByteBufCodecs.BOOL)
                 .build()
         );
-        
+
+        // Register the HAS_AMMO component - used for toggling the full/empty texture of the magazine item itself.
+        HAS_AMMO = Registry.register(
+            BuiltInRegistries.DATA_COMPONENT_TYPE,
+            ResourceKey.create(BuiltInRegistries.DATA_COMPONENT_TYPE.key(), Identifier.fromNamespaceAndPath(Bren.MODID, "has_ammo")),
+            DataComponentType.<Boolean>builder()
+                .persistent(com.mojang.serialization.Codec.BOOL)
+                .networkSynchronized(net.minecraft.network.codec.ByteBufCodecs.BOOL)
+                .build()
+        );
+
         // 注册 GUN_MODEL_TYPE 组件
         GUN_MODEL_TYPE = Registry.register(
             BuiltInRegistries.DATA_COMPONENT_TYPE,

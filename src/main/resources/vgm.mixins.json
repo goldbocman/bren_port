@@ -16,11 +16,10 @@
     "client.DrawContextMixin",
     "client.EntityRenderStateMixin",
     "client.FirstPersonItemRendererMixin",
-    "client.ItemRendererMixin",
+    "client.ItemInHandLayerMixin",
     "client.LivingEntityRendererMixin",
     "client.MinecraftClientMixin",
     "client.GameRendererMixin",
-    "client.MinecraftClientHudMixin",
-    "client.SimpleAnimationMixin"
+    "client.MinecraftClientHudMixin"
   ]
 }

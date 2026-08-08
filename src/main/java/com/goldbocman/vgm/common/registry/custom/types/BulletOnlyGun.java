@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 import com.goldbocman.vgm.common.Bren;
 import com.goldbocman.vgm.common.entity.IGunUser;
 import com.goldbocman.vgm.common.registry.ItemReg;
+import com.goldbocman.vgm.common.utils.GunApiCompat;
 import com.goldbocman.vgm.common.utils.GunHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +39,7 @@ public abstract class BulletOnlyGun extends GunItem {
         var nbtComponent = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA);
 
         if (nbtComponent != null) {
-            return nbtComponent.copyTag().getInt(BULLET_COUNT_KEY).orElse(0);
+            return GunApiCompat.getInt(nbtComponent.copyTag(), BULLET_COUNT_KEY);
         } else {
             return 0; // 默认值，直接返回int
         }
@@ -83,9 +84,9 @@ public abstract class BulletOnlyGun extends GunItem {
         ItemCooldowns cooldownManager = player.getCooldowns();
 
         LOGGER.info("onReload called for player: {}, item: {}, cooling down: {}",
-                player.getName().getString(), stack.getItem().toString(), cooldownManager.isOnCooldown(stack));
+                player.getName().getString(), stack.getItem().toString(), GunApiCompat.isOnCooldown(cooldownManager, stack));
 
-        if (player instanceof IGunUser gunUser && !cooldownManager.isOnCooldown(stack)) {
+        if (player instanceof IGunUser gunUser && !GunApiCompat.isOnCooldown(cooldownManager, stack)) {
             ItemStack bullets = Bren.getItemFromPlayer(player, compatibleBullet(player));
 
             // 修复：使用更通用的弹药术语
@@ -110,16 +111,15 @@ public abstract class BulletOnlyGun extends GunItem {
             gunUser.bren_1_21_1$setCanReload(false);
             gunUser.bren_1_21_1$setGunState(GunHelper.GunStates.RELOADING);
             gunUser.bren_1_21_1$setReloadingGun(stack);
-            // 修复：在Minecraft 1.21.4中，set方法需要Identifier而不是Item
             var itemId = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem());
-            cooldownManager.addCooldown(itemId, this.reloadSpeed());
+            GunApiCompat.addCooldown(cooldownManager, stack, this.reloadSpeed());
             onInsert(stack, player);
 
             LOGGER.info("Single bullet reload started for player {}, cooldown set for item: {}, speed: {}",
                     player.getName().getString(), itemId, this.reloadSpeed());
         } else {
             LOGGER.info("Player {} cannot reload: is IGunUser: {}, cooling down: {}",
-                    player.getName().getString(), player instanceof IGunUser, cooldownManager.isOnCooldown(stack));
+                    player.getName().getString(), player instanceof IGunUser, GunApiCompat.isOnCooldown(cooldownManager, stack));
         }
     }
 
@@ -143,7 +143,7 @@ public abstract class BulletOnlyGun extends GunItem {
     public void reloadTick(ItemStack stack, Level world, Player player, IGunUser gunUser) {
         ItemCooldowns cooldownManager = player.getCooldowns();
 
-        if (!cooldownManager.isOnCooldown(stack) &&
+        if (!GunApiCompat.isOnCooldown(cooldownManager, stack) &&
                 gunUser.bren_1_21_1$getGunState().equals(GunHelper.GunStates.RELOADING)) {
 
             Item compatibleBulletItem = this.compatibleBullet(player);

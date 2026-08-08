@@ -17,6 +17,7 @@ import com.goldbocman.vgm.common.entity.BulletEntity;
 import com.goldbocman.vgm.common.entity.IGunUser;
 import com.goldbocman.vgm.common.registry.ItemReg;
 import com.goldbocman.vgm.common.registry.SoundReg;
+import com.goldbocman.vgm.common.utils.GunApiCompat;
 import com.goldbocman.vgm.common.utils.GunHelper;
 
 public class ShotgunItem extends BulletOnlyGun {
@@ -36,7 +37,7 @@ public class ShotgunItem extends BulletOnlyGun {
     // 获取当前使用的子弹类型
     public int getCurrentBulletType(ItemStack stack) {
         var customData = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY);
-        return customData.copyTag().getInt("CurrentBulletType").orElse(BulletEntity.TYPE_NORMAL);
+        return GunApiCompat.getInt(customData.copyTag(), "CurrentBulletType", BulletEntity.TYPE_NORMAL);
     }
 
     // 设置当前使用的子弹类型
@@ -89,10 +90,10 @@ public class ShotgunItem extends BulletOnlyGun {
     @Override
     public void reloadTick(ItemStack stack, Level world, Player player, IGunUser gunUser) {
         ItemCooldowns cooldownManager = player.getCooldowns();
-        float cooldownProgress = cooldownManager.getCooldownPercent(stack, 1.0F);
+        float cooldownProgress = GunApiCompat.getCooldownPercent(cooldownManager, stack, 1.0F);
 
         // 关键修复：确保只有在装弹状态下才执行装弹逻辑
-        if (!cooldownManager.isOnCooldown(stack) &&
+        if (!GunApiCompat.isOnCooldown(cooldownManager, stack) &&
                 gunUser.bren_1_21_1$getGunState().equals(GunHelper.GunStates.RELOADING)) {
 
             // 检查玩家是否有兼容的弹药（SHELL 或 DRAGONBREATH_SHELL）

@@ -1,5 +1,6 @@
 package com.goldbocman.vgm.client;
 
+//? if >=1.21.11 {
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.state.gui.GuiRenderState;
@@ -54,8 +55,9 @@ public class HudOverlay {
             float u0 = (float) textureOffset / textureWidth;
             float u1_uv = (float) (textureOffset + baseIconSize) / textureWidth;
             
-            graphics.blit(BULLET_ICONS, x1, y1, x1 + iconSize, y1 + iconSize, 
+            graphics.blit(BULLET_ICONS, x1, y1, x1 + iconSize, y1 + iconSize,
                          u0, u1_uv, v0, v1);
         }
     }
 }
+//?}

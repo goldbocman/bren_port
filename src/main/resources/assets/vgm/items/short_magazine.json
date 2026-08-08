@@ -1,7 +1,16 @@
 {
   "model": {
-    "type": "model",
-    "model": "vgm:item/short_magazine"
+    "type": "minecraft:condition",
+    "property": "minecraft:has_component",
+    "component": "vgm:has_ammo",
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "vgm:item/short_magazine_full"
+    },
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "vgm:item/short_magazine"
+    }
   },
   "components": {
     "minecraft:item_model": "vgm:item/short_magazine"

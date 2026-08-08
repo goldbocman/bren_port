@@ -1,5 +1,6 @@
 package com.goldbocman.vgm.client.renderer;
 
+//? if >=1.21.11 {
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -42,3 +43,4 @@ public class BulletRenderer<T extends BulletEntity> extends EntityRenderer<T, ne
         // 在这里更新renderState中的数据
     }
 }
+//?}

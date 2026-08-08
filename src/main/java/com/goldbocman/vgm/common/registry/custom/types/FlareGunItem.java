@@ -14,6 +14,7 @@ import com.goldbocman.vgm.common.entity.IGunUser;
 import com.goldbocman.vgm.common.registry.TagReg;
 import com.goldbocman.vgm.common.registry.custom.MagazineItem;
 import com.goldbocman.vgm.common.registry.custom.PoseType;
+import com.goldbocman.vgm.common.utils.GunApiCompat;
 import com.goldbocman.vgm.common.utils.GunHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,10 +47,10 @@ public class FlareGunItem extends GunWithMagItem  {
         ItemCooldowns cooldownManager = player.getCooldowns();
 
         LOGGER.info("onReload called for player: {}, item: {}, cooling down: {}",
-                player.getName().getString(), stack.getItem().toString(), cooldownManager.isOnCooldown(stack));
+                player.getName().getString(), stack.getItem().toString(), GunApiCompat.isOnCooldown(cooldownManager, stack));
 
         if (stack.getItem() instanceof GunWithMagItem gunItem) {
-            if (player instanceof IGunUser gunUser && !cooldownManager.isOnCooldown(stack)) {
+            if (player instanceof IGunUser gunUser && !GunApiCompat.isOnCooldown(cooldownManager, stack)) {
                 ItemStack mag = Bren.getMagazineFromPlayer(player, gunItem.compatibleMagazines());
 
                 LOGGER.info("Player {} has magazine: {}, current magazine in gun: {}",
@@ -78,15 +79,14 @@ public class FlareGunItem extends GunWithMagItem  {
                 gunUser.bren_1_21_1$setCanReload(false);
                 gunUser.bren_1_21_1$setGunState(GunHelper.GunStates.RELOADING);
                 gunUser.bren_1_21_1$setReloadingGun(stack); // 关键修复：设置reloadingGun
-                // 修复：在Minecraft 1.21.4中，set方法需要Identifier而不是Item
                 var itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
-                cooldownManager.addCooldown(itemId, this.reloadSpeed());
+                GunApiCompat.addCooldown(cooldownManager, stack, this.reloadSpeed());
 
                 LOGGER.info("Reload started for player {}, cooldown set for item: {}, speed: {}",
                         player.getName().getString(), itemId, this.reloadSpeed());
             } else {
                 LOGGER.info("Player {} cannot reload: is IGunUser: {}, cooling down: {}",
-                        player.getName().getString(), player instanceof IGunUser, cooldownManager.isOnCooldown(stack));
+                        player.getName().getString(), player instanceof IGunUser, GunApiCompat.isOnCooldown(cooldownManager, stack));
             }
         } else {
             LOGGER.info("Main hand item is not GunWithMagItem: {}", stack.getItem().toString());

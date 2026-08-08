@@ -1,0 +1,6 @@
+{
+  "parent": "vgm:item/rifle_gun_handheld",
+  "textures": {
+    "layer0": "vgm:item/rifle"
+  }
+}

@@ -21,6 +21,7 @@ import com.goldbocman.vgm.common.registry.AttributeReg;
 import com.goldbocman.vgm.common.registry.NetworkReg;
 import com.goldbocman.vgm.common.registry.custom.types.GunItem;
 import com.goldbocman.vgm.common.registry.custom.types.GunProperties;
+import com.goldbocman.vgm.common.utils.GunApiCompat;
 import com.goldbocman.vgm.common.utils.GunHelper;
 import com.goldbocman.vgm.common.utils.GunUtils;
 import org.slf4j.Logger;
@@ -66,7 +67,12 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
     private static final float MAX_AIM_PROGRESS = 1.0f;
 
     public PlayerEntityMixin(Level world, BlockPos ignoredPos, float ignoredYaw, GameProfile ignoredGameProfile) {
+        //? if >=1.21.11 {
         super((EntityType<? extends LivingEntity>) BuiltInRegistries.ENTITY_TYPE.get(Identifier.fromNamespaceAndPath("minecraft", "player")).orElseThrow().value(), world);
+        //?} else {
+        /*// Registry.get(Identifier) returns T directly pre-1.21.11, not Optional<Holder<T>>.
+        super((EntityType<? extends LivingEntity>) BuiltInRegistries.ENTITY_TYPE.get(Identifier.fromNamespaceAndPath("minecraft", "player")), world);
+        *///?}
     }
 
     // 新增瞄准相关方法实现
@@ -203,7 +209,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
         }
 
         // 修复：检查冷却时间（使用ItemStack而不是Item）
-        if (c.isOnCooldown(mainHandStack)) {
+        if (GunApiCompat.isOnCooldown(c, mainHandStack)) {
             return;
         }
 
@@ -226,8 +232,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
             return;
         }
 
-        // 修复：在Minecraft 1.21.4中，set方法需要Identifier而不是Item
-        c.addCooldown(BuiltInRegistries.ITEM.getKey(mainHandStack.getItem()), fireRate);
+        GunApiCompat.addCooldown(c, mainHandStack, fireRate);
 
         Player player = (Player) (Object) this;
 
@@ -440,12 +445,12 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
         if (hasMagazine) {
             var nbt = gunStack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
                     net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
-            String magItemId = nbt.getString("MagazineItem").orElse("");
+            String magItemId = GunApiCompat.getString(nbt, "MagazineItem");
 
             if (!magItemId.isEmpty()) {
                 var itemId = Identifier.tryParse(magItemId);
                 if (itemId != null) {
-                    var item = BuiltInRegistries.ITEM.getValue(itemId);
+                    var item = GunApiCompat.getItem(itemId);
                     if (item instanceof com.goldbocman.vgm.common.registry.custom.ColorableMagazineItem) {
                         hasColorableMagazine = true;
                     }

@@ -1,22 +1,14 @@
 {
   "parent": "vgm:item/assault_gun_handheld",
   "textures": {
-    "layer0": "vgm:item/netherite_auto_gun"
+    "layer0": "vgm:item/netherite_auto_gun_gui"
   },
   "overrides": [
     {
       "predicate": {
-        "has_magazine": 1,
-        "has_colorable_magazine": 0
+        "vgm:has_magazine": 1
       },
-      "model": "vgm:item/netherite_auto_gun_with_magazine"
-    },
-    {
-      "predicate": {
-        "has_magazine": 1,
-        "has_colorable_magazine": 1
-      },
-      "model": "vgm:item/netherite_auto_gun_with_clothed_magazine"
+      "model": "vgm:item/netherite_auto_gun_with_magazine_gui"
     },
     {
       "predicate": {

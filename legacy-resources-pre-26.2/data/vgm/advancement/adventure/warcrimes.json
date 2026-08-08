@@ -1,0 +1,44 @@
+{
+  "parent": "vgm:adventure/root",
+  "criteria": {
+    "killed_villager": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "minecraft:villager"
+            }
+          }
+        ],
+        "killing_blow": {
+          "tags": [
+            {
+              "expected": true,
+              "id": "vgm:is_bullet"
+            }
+          ]
+        }
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.vgm.adventure.warcrimes.description"
+    },
+    "icon": {
+      "id": "vgm:bullet"
+    },
+    "title": {
+      "translate": "advancements.vgm.adventure.warcrimes.title"
+    }
+  },
+  "requirements": [
+    [
+      "killed_villager"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

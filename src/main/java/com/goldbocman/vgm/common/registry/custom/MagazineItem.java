@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 import com.goldbocman.vgm.common.Bren;
+import com.goldbocman.vgm.common.utils.GunApiCompat;
 
 public class MagazineItem extends Item {
     private final int capacity;
@@ -17,6 +18,7 @@ public class MagazineItem extends Item {
         super(settings);
         this.capacity = capacity;
     }
+    //? if >=1.21.11 {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, net.minecraft.world.item.component.TooltipDisplay tooltipComponent, java.util.function.Consumer<Component> tooltipAdder, TooltipFlag type) {
         ChatFormatting formatting = ChatFormatting.GRAY;
@@ -26,6 +28,17 @@ public class MagazineItem extends Item {
 
         super.appendHoverText(stack, context, tooltipComponent, tooltipAdder, type);
     }
+    //?} else {
+    /*@Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, java.util.List<Component> tooltipComponents, TooltipFlag type) {
+        ChatFormatting formatting = ChatFormatting.GRAY;
+
+        tooltipComponents.add(Component.translatable(String.format("desc.%s.item.magazine.content", Bren.MODID))
+                .append(Component.literal(" " + getContents(stack) + "/" + getMaxCapacity(stack))).withStyle(formatting));
+
+        super.appendHoverText(stack, context, tooltipComponents, type);
+    }
+    *///?}
 
 
     public static int getMaxCapacity(ItemStack stack) {
@@ -59,7 +72,7 @@ public class MagazineItem extends Item {
         if (contents != null) {
             CompoundTag nbt = contents.copyTag();
             if (nbt != null && nbt.contains("Contents")) {
-                return nbt.getInt("Contents").orElse(0);
+                return GunApiCompat.getInt(nbt, "Contents");
             }
         }
         return 0;
@@ -89,6 +102,12 @@ public class MagazineItem extends Item {
             nbt.putInt("Contents", newContents);
             mag.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
 
+            // Keep the HAS_AMMO component synchronized with the actual ammunition quantity, driving the full/empty texture switching.
+            if (newContents > 0) {
+                mag.set(com.goldbocman.vgm.common.registry.DataComponentReg.HAS_AMMO, true);
+            } else {
+                mag.remove(com.goldbocman.vgm.common.registry.DataComponentReg.HAS_AMMO);
+            }
 
             // 返回实际填充的子弹数量
             return newContents - original;

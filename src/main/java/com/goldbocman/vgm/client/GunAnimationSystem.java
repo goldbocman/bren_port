@@ -1,5 +1,6 @@
 package com.goldbocman.vgm.client;
 
+//? if >=1.21.11 {
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.world.entity.HumanoidArm;
@@ -207,3 +208,4 @@ public class GunAnimationSystem {
         // fixes the jerkiness seen on remote players.
     }
 }
+//?}

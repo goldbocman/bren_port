@@ -34,7 +34,7 @@
       },
       "on_false": {
         "type": "minecraft:model",
-        "model": "vgm:item/auto_gun"
+        "model": "vgm:item/auto_gun_held"
       }
     }
   },

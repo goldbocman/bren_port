@@ -67,6 +67,7 @@ public class NetworkReg {
         LOGGER.info("Registering all network packets");
 
         // 注册所有数据包类型
+        //? if >=1.21.11 {
         // 客户端接收的数据包（S2C - Server to Client）
         PayloadTypeRegistry.clientboundPlay().register(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC);
         PayloadTypeRegistry.clientboundPlay().register(SHOOT_CLIENT_PACKET_ID, ShootClientPayload.PACKET_CODEC);
@@ -76,6 +77,17 @@ public class NetworkReg {
         // 服务器端接收的数据包（C2S - Client to Server）
         PayloadTypeRegistry.serverboundPlay().register(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.serverboundPlay().register(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC);
+        //?} else {
+        /*// Pre-1.21.11 fabric-networking-api-v1 names these playS2C()/playC2S() instead of the newer
+        // clientboundPlay()/serverboundPlay().
+        PayloadTypeRegistry.playS2C().register(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC);
+        PayloadTypeRegistry.playS2C().register(SHOOT_CLIENT_PACKET_ID, ShootClientPayload.PACKET_CODEC);
+        PayloadTypeRegistry.playS2C().register(SHOOT_ANIMATION_PACKET_ID, ShootAnimationPayload.PACKET_CODEC);
+        PayloadTypeRegistry.playS2C().register(SHOOT_PARTICLE_PACKET_ID, ShootParticlePayload.PACKET_CODEC);
+        PayloadTypeRegistry.playS2C().register(ITEM_COMPONENT_SYNC_PACKET_ID, ItemComponentSyncPayload.PACKET_CODEC);
+        PayloadTypeRegistry.playC2S().register(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC);
+        PayloadTypeRegistry.playC2S().register(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC);
+        *///?}
 //        PayloadTypeRegistry.serverboundPlay().register(GRENADE_LEFT_CLICK_PACKET_ID, GrenadeLeftClickPayload.PACKET_CODEC);
 
         ServerPlayNetworking.registerGlobalReceiver(RELOAD_PACKET_ID, (payload, context) -> handleReload(context.player()));
@@ -264,7 +276,11 @@ public class NetworkReg {
 //    }
 
     //? if neoforge {
-    /*@net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID)
+    /*//? if >=1.21.9 {
+    @net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID)
+    //?} else {
+    /^@net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
+    ^///?}
     public static class NeoForgePayloads {
         @net.neoforged.bus.api.SubscribeEvent
         public static void register(net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent event) {

@@ -22,6 +22,7 @@ import com.goldbocman.vgm.common.Bren;
 import com.goldbocman.vgm.common.entity.IGunUser;
 import com.goldbocman.vgm.common.registry.ParticleReg;
 import com.goldbocman.vgm.common.registry.custom.PoseType;
+import com.goldbocman.vgm.common.utils.GunApiCompat;
 import com.goldbocman.vgm.common.utils.GunHelper;
 import com.goldbocman.vgm.common.utils.GunUtils;
 import org.jetbrains.annotations.NotNull;
@@ -44,8 +45,21 @@ public class GunItem extends Item {
         LOGGER.info("Creating new GunItem instance with custom settings");
     }
 
+    //? if >=1.21.11 {
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, net.minecraft.world.item.component.@NotNull TooltipDisplay tooltipComponent, java.util.function.Consumer<Component> tooltipAdder, @NotNull TooltipFlag type) {
+        bren$appendHoverText(stack, tooltipAdder::accept);
+        super.appendHoverText(stack, context, tooltipComponent, tooltipAdder, type);
+    }
+    //?} else {
+    /*@Override
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, java.util.@NotNull List<Component> tooltipComponents, @NotNull TooltipFlag type) {
+        bren$appendHoverText(stack, tooltipComponents::add);
+        super.appendHoverText(stack, context, tooltipComponents, type);
+    }
+    *///?}
+
+    private void bren$appendHoverText(ItemStack stack, java.util.function.Consumer<Component> tooltipAdder) {
         ChatFormatting formatting = ChatFormatting.AQUA;
 
         tooltipAdder.accept(Component.translatable(String.format("desc.%s.item.magazine.content",Bren.MODID))
@@ -62,8 +76,6 @@ public class GunItem extends Item {
             tooltipAdder.accept(Component.literal("§eFire Rate: " + properties.fireRate).withStyle(ChatFormatting.GRAY));
             tooltipAdder.accept(Component.literal("§aRecoil: " + properties.recoil).withStyle(ChatFormatting.GRAY));
         }
-
-        super.appendHoverText(stack, context, tooltipComponent, tooltipAdder, type);
     }
 
     protected Component getAmmoDescription() {
@@ -131,43 +143,67 @@ public class GunItem extends Item {
     public void reloadTick(ItemStack stack, Level world, Player player, IGunUser gunUser) {
     }
 
+    //? if >=1.21.11 {
     @Override
     public InteractionResult use(Level world, Player user, InteractionHand hand) {
+        return switch (bren$use(user, hand)) {
+            case PASS -> InteractionResult.PASS;
+            case FAIL -> InteractionResult.FAIL;
+        };
+    }
+    //?} else {
+    /*@Override
+    public net.minecraft.world.InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
         ItemStack stack = user.getItemInHand(hand);
-    
+        return switch (bren$use(user, hand)) {
+            case PASS -> net.minecraft.world.InteractionResultHolder.pass(stack);
+            case FAIL -> net.minecraft.world.InteractionResultHolder.fail(stack);
+        };
+    }
+    *///?}
+
+    private enum UseResult { PASS, FAIL }
+
+    // Shared by both use() overloads above - old and new Item.use() return different types
+    // (InteractionResultHolder<ItemStack> vs InteractionResult), and this item deliberately never
+    // reports success (see the 1.21.4 vanilla-swing-animation comment below), so PASS/FAIL is all
+    // that's needed either way.
+    private UseResult bren$use(Player user, InteractionHand hand) {
+        ItemStack stack = user.getItemInHand(hand);
+
         // 右键检查：只有主手右键才触发
         if (hand == InteractionHand.OFF_HAND) {
-            return InteractionResult.PASS;
+            return UseResult.PASS;
         }
-    
+
         if (user instanceof IGunUser gunUser) {
             // 移除setCurrentHand调用以避免触发挥动画
             // user.setCurrentHand(hand);
-            
+
             // 子弹检查和冷却时间检查
             ItemCooldowns cooldownManager = user.getCooldowns();
-            if (cooldownManager.isOnCooldown(stack) || this.isEmpty(stack)) {
-                return InteractionResult.FAIL;
+            if (GunApiCompat.isOnCooldown(cooldownManager, stack) || this.isEmpty(stack)) {
+                return UseResult.FAIL;
             }
-            
+
             // 状态检查：只有在正常状态下才射击
             if (gunUser.bren_1_21_1$getGunState().equals(GunHelper.GunStates.NORMAL)) {
                 // 完整射击逻辑
                 int fireRate = GunUtils.fire(user);
-                
+
                 // 设置冷却时间
                 if (fireRate > 0) {
-                    cooldownManager.addCooldown(BuiltInRegistries.ITEM.getKey(stack.getItem()), fireRate);
+                    GunApiCompat.addCooldown(cooldownManager, stack, fireRate);
                 }
-                
+
                 // 关键修复：在Minecraft 1.21.4中，需要更明确地阻止原版动画
                 // 返回FAIL而不是CONSUME，因为CONSUME在某些情况下仍可能触发挥动画
-                return InteractionResult.FAIL;
+                return UseResult.FAIL;
             }
         }
 
-    return InteractionResult.PASS;
-}
+        return UseResult.PASS;
+    }
 
     public boolean isEmpty(ItemStack stack) {
         return getContents(stack) <= 0;

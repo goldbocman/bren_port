@@ -1,0 +1,38 @@
+{
+  "criteria": {
+    "in_world": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {}
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "translate": "advancements.vgm.adventure.root.description"
+    },
+    "icon": {
+      "id": "vgm:auto_pistol"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.vgm.adventure.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "in_world"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "vgm:item/full_magazine"
+    "layer0": "vgm:item/empty_magazine"
   },
   "overrides": [
     {
       "predicate": {
-        "is_full": 1
+        "vgm:has_ammo": 1
       },
       "model": "vgm:item/magazine_full"
     }

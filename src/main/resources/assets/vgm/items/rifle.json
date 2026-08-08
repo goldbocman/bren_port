@@ -34,7 +34,7 @@
       },
       "on_false": {
         "type": "minecraft:model",
-        "model": "vgm:item/rifle"
+        "model": "vgm:item/rifle_held"
       }
     }
   },

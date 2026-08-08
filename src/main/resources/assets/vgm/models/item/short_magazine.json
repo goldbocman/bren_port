@@ -6,7 +6,7 @@
   "overrides": [
     {
       "predicate": {
-        "is_full": 1
+        "vgm:has_ammo": 1
       },
       "model": "vgm:item/short_magazine_full"
     }

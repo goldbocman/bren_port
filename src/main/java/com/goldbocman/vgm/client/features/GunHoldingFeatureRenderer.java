@@ -2,6 +2,7 @@ package com.goldbocman.vgm.client.features;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+//? if >=1.21.11 {
 //? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -79,3 +80,4 @@ public class GunHoldingFeatureRenderer<S extends HumanoidRenderState, M extends 
         return ItemStack.EMPTY;
     }
 }
+//?}

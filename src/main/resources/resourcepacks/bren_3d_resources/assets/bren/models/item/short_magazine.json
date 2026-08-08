@@ -6,7 +6,7 @@
   "overrides": [
     {
       "predicate": {
-        "is_full": 1
+        "has_ammo": 1
       },
       "model": "bren:item/short_magazine_full"
     }

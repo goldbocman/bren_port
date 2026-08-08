@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "M": {
+      "item": "vgm:auto_loader_contraption"
+    },
+    "P": {
+      "tag": "minecraft:logs"
+    },
+    "T": {
+      "item": "vgm:metal_tube"
+    }
+  },
+  "pattern": [
+    "T  ",
+    "II ",
+    "IMP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "vgm:revolver"
+  }
+}

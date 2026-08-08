@@ -1,7 +1,7 @@
 {
   "parent": "vgm:item/shotgun_handheld",
   "textures": {
-    "layer0": "vgm:item/shotgun"
+    "layer0": "vgm:item/shotgun_gui"
   },
   "overrides": [
     {

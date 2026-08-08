@@ -185,7 +185,11 @@ public class BulletEntity extends Projectile {
 
         // 对所有实体类型应用伤害，包括末影水晶、末影龙等
         if (this.level() instanceof ServerLevel serverWorld) {
+            //? if >=1.21.11 {
             entity.hurtServer(serverWorld, damageSource, finalDamage);
+            //?} else {
+            /*entity.hurt(damageSource, finalDamage);
+            *///?}
         }
         
         this.discard();

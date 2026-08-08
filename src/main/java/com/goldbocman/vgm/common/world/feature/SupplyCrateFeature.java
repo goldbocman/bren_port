@@ -174,7 +174,12 @@ public class SupplyCrateFeature extends Feature<@org.jetbrains.annotations.NotNu
             
             // 寻找地表
             BlockPos pos = new BlockPos(x, level.getHeight(), z);
+            //? if >=1.21.11 {
             while (pos.getY() > level.getMinY()) {
+            //?} else {
+            /*// LevelHeightAccessor.getMinY() is named getMinBuildHeight() pre-1.21.11.
+            while (pos.getY() > level.getMinBuildHeight()) {
+            *///?}
                 pos = pos.below();
                 BlockState state = level.getBlockState(pos);
                 if (!state.isAir() && state.blocksMotion()) {
