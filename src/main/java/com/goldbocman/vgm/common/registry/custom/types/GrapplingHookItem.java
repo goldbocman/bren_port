@@ -1,7 +1,6 @@
 package com.goldbocman.vgm.common.registry.custom.types;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -100,10 +99,6 @@ public class GrapplingHookItem extends Item {
                 // 播放完成声音
                 level.playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 1.0F, 1.0F);
-
-                LOGGER.debug("Grappling hook pumped and filled with gas");
-            } else {
-                LOGGER.debug("Grappling hook pumped: {}/{}", pumps, PUMPS_TO_FILL);
             }
 
             return true;
@@ -129,7 +124,6 @@ public class GrapplingHookItem extends Item {
         
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             // 钩住方块
-            BlockPos hookedPos = hitResult.getBlockPos();
             Vec3 hookedVec = hitResult.getLocation();
             
             // 保存钩住的位置
@@ -147,7 +141,6 @@ public class GrapplingHookItem extends Item {
             // 设置冷却时间
             GunApiCompat.addCooldown(player.getCooldowns(), stack, COOLDOWN_TICKS);
 
-            LOGGER.debug("Hook shot and hit block at: {}, gas remaining: {}", hookedPos, currentGas - 1);
             return true;
         }
 
@@ -162,10 +155,8 @@ public class GrapplingHookItem extends Item {
         setIsHooked(stack, false);
         
         // 播放释放声音
-        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), 
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
             SoundEvents.CROSSBOW_LOADING_START, SoundSource.PLAYERS, 0.5F, 1.0F);
-        
-        LOGGER.debug("Hook released");
     }
     
     /**

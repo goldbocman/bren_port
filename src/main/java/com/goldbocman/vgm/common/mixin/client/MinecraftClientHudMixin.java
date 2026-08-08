@@ -53,8 +53,6 @@ public class MinecraftClientHudMixin {
             return;
         }
 
-        LOGGER.info("Rendering {} bullet icons", max);
-
         // 使用 GameRenderState 进行渲染
         if (gameRenderState != null) {
             try {
@@ -67,8 +65,7 @@ public class MinecraftClientHudMixin {
                   );
                 HUD_OVERLAY.renderWithTexture(graphics, gameRenderState.guiRenderState, deltaTracker, i, max, gunItem.ammoIconOffset());
             } catch (Exception e) {
-                LOGGER.error("Failed to create GuiGraphicsExtractor: {}", e.getMessage());
-                e.printStackTrace();
+                LOGGER.error("Failed to create GuiGraphicsExtractor", e);
             }
         }
     }

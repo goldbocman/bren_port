@@ -45,7 +45,6 @@ public class GameRendererMixin {
             if (isAiming) {
                 if (originalFov == -1.0f) {
                     originalFov = getCurrentFov(client);
-                    System.out.println("[Bren FOV] Original FOV saved: " + originalFov);
                 }
 
                 float aimProgress = gunUser.bren_1_21_1$getAimProgress();
@@ -58,23 +57,15 @@ public class GameRendererMixin {
                 // 确保FOV在有效范围内 (通常30-110)
                 smoothedFov = Math.max(30, Math.min(110, smoothedFov));
 
-                System.out.println("[Bren FOV] Aiming: progress=" + aimProgress +
-                        ", modifier=" + fovModifier +
-                        ", target=" + targetFov +
-                        ", setting=" + smoothedFov);
-
-                // 设置FOV
                 setFov(client, smoothedFov);
                 wasAiming = true;
             } else {
                 if (wasAiming) {
-                    System.out.println("[Bren FOV] Stopped aiming, resetting FOV to: " + originalFov);
                     resetFovIfNeeded(client);
                 }
             }
         } else {
             if (wasAiming) {
-                System.out.println("[Bren FOV] No gun in hand, resetting FOV to: " + originalFov);
                 resetFovIfNeeded(client);
             }
         }

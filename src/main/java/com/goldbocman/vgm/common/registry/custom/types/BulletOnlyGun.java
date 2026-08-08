@@ -14,12 +14,9 @@ import com.goldbocman.vgm.common.entity.IGunUser;
 import com.goldbocman.vgm.common.registry.ItemReg;
 import com.goldbocman.vgm.common.utils.GunApiCompat;
 import com.goldbocman.vgm.common.utils.GunHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class BulletOnlyGun extends GunItem {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger("Bren/BulletOnlyGun");
     private static final String BULLET_COUNT_KEY = "BulletCount";
 
     public BulletOnlyGun(Item.Properties settings) {
@@ -49,9 +46,6 @@ public abstract class BulletOnlyGun extends GunItem {
         int currentCount = getContents(stack); // 修复：直接使用int值，不需要.orElse(0)
         int newCount = Math.min(currentCount + 1, getMaxCapacity(stack)); // 修复：直接使用int值，不需要.orElse(0)
 
-        LOGGER.info("Adding bullet to gun: current={}, new={}, max={}",
-                currentCount, newCount, getMaxCapacity(stack));
-
         var nbt = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
                 net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
         nbt.putInt(BULLET_COUNT_KEY, newCount);
@@ -63,8 +57,6 @@ public abstract class BulletOnlyGun extends GunItem {
     public void useBullet(ItemStack stack) {
         int currentCount = getContents(stack);
         int newCount = Math.max(currentCount - 1, 0);
-
-        LOGGER.info("Using bullet from gun: current={}, new={}", currentCount, newCount);
 
         var nbt = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
                 net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
@@ -83,56 +75,33 @@ public abstract class BulletOnlyGun extends GunItem {
         ItemStack stack = player.getMainHandItem();
         ItemCooldowns cooldownManager = player.getCooldowns();
 
-        LOGGER.info("onReload called for player: {}, item: {}, cooling down: {}",
-                player.getName().getString(), stack.getItem().toString(), GunApiCompat.isOnCooldown(cooldownManager, stack));
-
         if (player instanceof IGunUser gunUser && !GunApiCompat.isOnCooldown(cooldownManager, stack)) {
             ItemStack bullets = Bren.getItemFromPlayer(player, compatibleBullet(player));
 
-            // 修复：使用更通用的弹药术语
-            LOGGER.info("Player {} has ammunition: {}, current ammo count: {}, max capacity: {}",
-                    player.getName().getString(), !bullets.isEmpty(), getContents(stack), getMaxCapacity(stack));
-
             // 修改：允许在枪械未满且有弹药时继续装填，即使之前已经装填过
             if (bullets.isEmpty() || getContents(stack) >= getMaxCapacity(stack)) {
-                LOGGER.info("Cannot reload: ammunition empty={}, gun full={}",
-                        bullets.isEmpty(), getContents(stack) >= getMaxCapacity(stack));
                 return;
             }
 
             if (!gunUser.bren_1_21_1$canReload()) {
-                LOGGER.info("Player {} cannot reload (canReload=false)", player.getName().getString());
                 return;
             }
-
-            LOGGER.info("Starting single bullet reload process for player {}, gun state: {}",
-                    player.getName().getString(), gunUser.bren_1_21_1$getGunState());
 
             gunUser.bren_1_21_1$setCanReload(false);
             gunUser.bren_1_21_1$setGunState(GunHelper.GunStates.RELOADING);
             gunUser.bren_1_21_1$setReloadingGun(stack);
-            var itemId = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem());
             GunApiCompat.addCooldown(cooldownManager, stack, this.reloadSpeed());
             onInsert(stack, player);
-
-            LOGGER.info("Single bullet reload started for player {}, cooldown set for item: {}, speed: {}",
-                    player.getName().getString(), itemId, this.reloadSpeed());
-        } else {
-            LOGGER.info("Player {} cannot reload: is IGunUser: {}, cooling down: {}",
-                    player.getName().getString(), player instanceof IGunUser, GunApiCompat.isOnCooldown(cooldownManager, stack));
         }
     }
 
     protected void onInsert(ItemStack stack, LivingEntity player) {
-        LOGGER.debug("onInsert called for player {}", player.getName().getString());
     }
 
     protected void afterInserted(ItemStack stack, LivingEntity player) {
-        LOGGER.debug("afterInserted called for player {}", player.getName().getString());
     }
 
     protected void onFullyLoaded(ItemStack stack, LivingEntity player) {
-        LOGGER.info("Gun fully loaded for player {}", player.getName().getString());
     }
 
     public Item compatibleBullet(Player Player) {

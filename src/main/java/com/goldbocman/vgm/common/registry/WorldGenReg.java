@@ -36,7 +36,7 @@ public class WorldGenReg {
             // 初始化补给箱配置池
             SupplyCrateFeature.initPools();
             
-            LOGGER.info("§a[WorldGen] Successfully registered supply crate feature: {}", SUPPLY_CRATE_FEATURE_KEY);
+            LOGGER.info("[WorldGen] Successfully registered supply crate feature: {}", SUPPLY_CRATE_FEATURE_KEY);
         } catch (Exception e) {
             LOGGER.error("Failed to register world generation features", e);
             throw e;

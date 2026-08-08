@@ -8,8 +8,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import com.goldbocman.vgm.common.registry.custom.PoseType;
 import com.goldbocman.vgm.common.utils.GunHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LeverGunItem extends RevolverItem {
+    private static final Logger LOGGER = LoggerFactory.getLogger("Bren/LeverGunItem");
+
     public LeverGunItem(Item.Properties settings) {
         super(settings);
     }
@@ -66,8 +70,7 @@ public class LeverGunItem extends RevolverItem {
             
             return false;
         } catch (Exception e) {
-            // 如果动画应用失败，记录错误但不中断游戏
-            System.err.println("[Bren Debug] Failed to apply lever gun animation: " + e.getMessage());
+            LOGGER.error("Failed to apply lever gun animation", e);
             return false;
         }
     }

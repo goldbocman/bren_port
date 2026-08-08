@@ -46,15 +46,9 @@ public class FlareGunItem extends GunWithMagItem  {
         ItemStack stack = player.getMainHandItem();
         ItemCooldowns cooldownManager = player.getCooldowns();
 
-        LOGGER.info("onReload called for player: {}, item: {}, cooling down: {}",
-                player.getName().getString(), stack.getItem().toString(), GunApiCompat.isOnCooldown(cooldownManager, stack));
-
         if (stack.getItem() instanceof GunWithMagItem gunItem) {
             if (player instanceof IGunUser gunUser && !GunApiCompat.isOnCooldown(cooldownManager, stack)) {
                 ItemStack mag = Bren.getMagazineFromPlayer(player, gunItem.compatibleMagazines());
-
-                LOGGER.info("Player {} has magazine: {}, current magazine in gun: {}",
-                        player.getName().getString(), !mag.isEmpty(), hasMagazine(stack));
 
                 // 修复：正确判断是否可以操作
                 // 情况1：枪械有弹匣 → 允许卸下（无论玩家是否有新弹匣）
@@ -64,32 +58,18 @@ public class FlareGunItem extends GunWithMagItem  {
                 boolean hasNewMagazine = !mag.isEmpty() && MagazineItem.getContents(mag) > 0;
 
                 if (!hasCurrentMagazine && !hasNewMagazine) {
-                    LOGGER.info("No magazine available and no magazine to unload for player {}", player.getName().getString());
                     return; // 既没有弹匣可装，也没有弹匣可卸
                 }
 
                 if (!gunUser.bren_1_21_1$canReload()) {
-                    LOGGER.info("Player {} cannot reload (canReload=false)", player.getName().getString());
                     return;
                 }
-
-                LOGGER.info("Starting reload process for player {}, gun state: {}",
-                        player.getName().getString(), gunUser.bren_1_21_1$getGunState());
 
                 gunUser.bren_1_21_1$setCanReload(false);
                 gunUser.bren_1_21_1$setGunState(GunHelper.GunStates.RELOADING);
                 gunUser.bren_1_21_1$setReloadingGun(stack); // 关键修复：设置reloadingGun
-                var itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
                 GunApiCompat.addCooldown(cooldownManager, stack, this.reloadSpeed());
-
-                LOGGER.info("Reload started for player {}, cooldown set for item: {}, speed: {}",
-                        player.getName().getString(), itemId, this.reloadSpeed());
-            } else {
-                LOGGER.info("Player {} cannot reload: is IGunUser: {}, cooling down: {}",
-                        player.getName().getString(), player instanceof IGunUser, GunApiCompat.isOnCooldown(cooldownManager, stack));
             }
-        } else {
-            LOGGER.info("Main hand item is not GunWithMagItem: {}", stack.getItem().toString());
         }
     }
 
@@ -102,9 +82,6 @@ public class FlareGunItem extends GunWithMagItem  {
         int magContents = MagazineItem.getContents(mag);
         int magCapacity = MagazineItem.getMaxCapacity(mag);
         String magItemId = BuiltInRegistries.ITEM.getKey(mag.getItem()).toString();
-
-        LOGGER.info("Putting magazine into gun: item={}, capacity={}, contents={}",
-                magItemId, magCapacity, magContents);
 
         var nbt = stack.getOrDefault(DataComponents.CUSTOM_DATA,
                 CustomData.EMPTY).copyTag();

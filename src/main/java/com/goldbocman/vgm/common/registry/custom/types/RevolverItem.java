@@ -16,10 +16,13 @@ import com.goldbocman.vgm.common.registry.SoundReg;
 import com.goldbocman.vgm.common.registry.custom.PoseType;
 import com.goldbocman.vgm.common.utils.GunApiCompat;
 import com.goldbocman.vgm.common.utils.GunHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.Unique;
 
 public class RevolverItem extends BulletOnlyGun {
-    // 修改构造函数，接收Item.Settings参数
+    private static final Logger LOGGER = LoggerFactory.getLogger("Bren/RevolverItem");
+
     public RevolverItem(Item.Properties settings) {
         super(settings);
     }
@@ -106,8 +109,7 @@ public class RevolverItem extends BulletOnlyGun {
                 
                 return true;
             } catch (Exception e) {
-                // 如果动画应用失败，记录错误但不中断游戏
-                System.err.println("[Bren Debug] Failed to apply revolver animation: " + e.getMessage());
+                LOGGER.error("Failed to apply revolver animation", e);
                 return false;
             }
         }

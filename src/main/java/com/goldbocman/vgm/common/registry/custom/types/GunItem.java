@@ -44,7 +44,6 @@ public class GunItem extends Item {
     // 修改构造函数，接收Item.Settings参数
     public GunItem(Properties settings) {
         super(settings.stacksTo(1));
-        LOGGER.info("Creating new GunItem instance with custom settings");
     }
 
     //? if >=1.21.11 {

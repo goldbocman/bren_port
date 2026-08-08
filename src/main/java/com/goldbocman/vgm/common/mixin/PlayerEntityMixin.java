@@ -121,7 +121,6 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
         if (shouldAim != this.isAiming) {
             this.isAiming = shouldAim;
-            LOGGER.debug("Aiming state changed: {}", this.isAiming);
         }
 
         // 更新瞄准进度
@@ -380,8 +379,6 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
                 // 清除所有临时修改器，然后应用新的值
                 attributeInstance.removeModifiers();
                 attributeInstance.setBaseValue(value);
-                // 添加日志记录以便调试
-                LOGGER.debug("Applied attribute {} with value {}", attributeEntry.getRegisteredName(), value);
             }
             // 移除警告日志，因为GunUtils.fire方法已经直接使用GunItem属性
             // 属性实例可能不存在是正常的，因为GunUtils.fire不依赖属性实例
@@ -402,15 +399,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
         this.updateAimingState();
 
         ItemStack reloadingGun = gunUser.bren_1_21_1$getReloadingGun();
-        LOGGER.debug("PlayerEntityMixin reloadTick: player={}, reloadingGun={}, state={}, aiming={}, aimProgress={}",
-                player.getName().getString(),
-                reloadingGun.isEmpty() ? "EMPTY" : reloadingGun.getItem().toString(),
-                gunUser.bren_1_21_1$getGunState(),
-                gunUser.bren_1_21_1$isAiming(),
-                gunUser.bren_1_21_1$getAimProgress());
 
         if (!reloadingGun.isEmpty() && reloadingGun.getItem() instanceof GunItem gunItem) {
-            LOGGER.debug("Calling reloadTick for gun: {}", reloadingGun.getItem().toString());
             gunItem.reloadTick(reloadingGun, player.level(), player, gunUser);
         }
 
@@ -473,8 +463,5 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
         // 设置更新后的自定义数据
         gunStack.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
                 net.minecraft.world.item.component.CustomData.of(nbt));
-
-        LOGGER.debug("Updated magazine components for gun: hasMagazine={}, hasColorableMagazine={}",
-                hasMagazine, hasColorableMagazine);
     }
 }
