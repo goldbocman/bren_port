@@ -136,8 +136,8 @@ public class ItemReg {
             Item registeredItem = register(name, factory, new Item.Properties().stacksTo(1).durability(properties.durability).enchantable(1));
             //?} else {
             /*// Item.Properties has no enchantable(...) pre-1.21.11 (DataComponents.ENCHANTABLE doesn't
-            // exist yet either) - guns simply aren't enchanting-table-enchantable on this version,
-            // rather than reintroducing per-item Item.getEnchantmentValue() overrides for one int.
+            // exist yet either) - GunItem.getEnchantmentValue() (pre-1.21.11 branch) provides the
+            // equivalent enchantability value instead, see that class.
             Item registeredItem = register(name, factory, new Item.Properties().stacksTo(1).durability(properties.durability));
             *///?}
             

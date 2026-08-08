@@ -157,6 +157,17 @@ public class GunItem extends Item {
     }
 
 
+    // Pre-1.21.11 has no Item.Properties.enchantable(...)/DataComponents.ENCHANTABLE - eligibility
+    // there is instead gated by this per-item Java method (ItemStack.isEnchantable() only checks
+    // stacksTo(1)+durability, but EnchantmentHelper.getEnchantmentCost() returns 0 - hiding every
+    // enchanting-table slot - whenever getEnchantmentValue() is <= 0, which is Item's default).
+    //? if <1.21.11 {
+    /*@Override
+    public int getEnchantmentValue() {
+        return 1;
+    }
+    *///?}
+
     public boolean hasGUIModel() {
         return true;
     }

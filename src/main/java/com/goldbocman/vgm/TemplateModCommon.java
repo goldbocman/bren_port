@@ -10,7 +10,7 @@ public class TemplateModCommon {
      * That way, it's clear which mod wrote info, warnings, and errors.
      */
     public static final Logger LOGGER = LoggerFactory.getLogger("vgm");
-    public static final String VERSION = /*$ mod_version*/ "0.1.0";
+    public static final String VERSION = /*$ mod_version*/ "0.1.1";
     public static final String MINECRAFT = /*$ minecraft*/ "26.2";
 
     /**
