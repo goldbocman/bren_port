@@ -304,10 +304,10 @@ public class NetworkReg {
 
     //? if neoforge {
     /*//? if >=1.21.9 {
-    /^@net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID)
-    ^///?} else {
-    @net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
-    //?}
+    @net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID)
+    //?} else {
+    /^@net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
+    ^///?}
     public static class NeoForgePayloads {
         @net.neoforged.bus.api.SubscribeEvent
         public static void register(net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent event) {

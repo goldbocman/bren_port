@@ -77,6 +77,8 @@ public class Bren
 	//? if fabric
 	@Override
 	public void onInitialize() {
+		LegacyModGuard.checkForLegacyMod();
+
 		// 在1.21.4中，必须先注册属性，然后再注册物品
 		// 属性注册必须在物品注册之前
 
@@ -161,10 +163,10 @@ public class Bren
 	// "Registry is already frozen". Vanilla's own registry bootstrap order fires ATTRIBUTE and
 	// DATA_COMPONENT_TYPE before ITEM, matching the ordering onInitialize() relies on for Fabric.
 	//? if >=1.21.9 {
-	/^@net.neoforged.fml.common.EventBusSubscriber(modid = MODID)
-	^///?} else {
-	@net.neoforged.fml.common.EventBusSubscriber(modid = MODID, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
-	//?}
+	@net.neoforged.fml.common.EventBusSubscriber(modid = MODID)
+	//?} else {
+	/^@net.neoforged.fml.common.EventBusSubscriber(modid = MODID, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
+	^///?}
 	public static class NeoForgeRegistration {
 		@net.neoforged.bus.api.SubscribeEvent
 		public static void onRegister(net.neoforged.neoforge.registries.RegisterEvent event) {
@@ -187,10 +189,10 @@ public class Bren
 								.clientTrackingRange(10).sized(0.35F, 0.35F).noSave()
 								.build(
 										//? if >=1.21.11 {
-										/^ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, "bullet"))
-										^///?} else {
-										"bullet"
-										//?}
+										ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, "bullet"))
+										//?} else {
+										/^"bullet"
+										^///?}
 								));
 			}
 		}

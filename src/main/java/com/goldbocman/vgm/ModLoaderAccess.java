@@ -34,11 +34,11 @@ public sealed interface ModLoaderAccess {
     //?} elif neoforge {
     /*final class NeoForgeLoaderAccess implements ModLoaderAccess {
         private net.neoforged.api.distmarker.Dist dist =
-            /^? if >=1.21.9 {^//^net.neoforged.fml.loading.FMLEnvironment.getDist();
-            ^//^?} else^/net.neoforged.fml.loading.FMLEnvironment.dist;
+            /^? if >=1.21.9 {^/net.neoforged.fml.loading.FMLEnvironment.getDist();
+            /^?} else^///net.neoforged.fml.loading.FMLEnvironment.dist;
         private net.neoforged.fml.loading.LoadingModList mods =
-            /^? if >=1.21.9 {^//^net.neoforged.fml.loading.FMLLoader.getCurrent().getLoadingModList();
-            ^//^?} else^/net.neoforged.fml.loading.FMLLoader.getLoadingModList();
+            /^? if >=1.21.9 {^/net.neoforged.fml.loading.FMLLoader.getCurrent().getLoadingModList();
+            /^?} else^///net.neoforged.fml.loading.FMLLoader.getLoadingModList();
 
         @Override
         public boolean isClient() {
