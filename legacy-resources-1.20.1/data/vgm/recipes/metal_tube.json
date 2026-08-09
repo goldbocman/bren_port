@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "T": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "TTT",
+    "   ",
+    "TTT"
+  ],
+  "result": {
+    "item": "vgm:metal_tube"
+  },
+  "show_notification": true
+}

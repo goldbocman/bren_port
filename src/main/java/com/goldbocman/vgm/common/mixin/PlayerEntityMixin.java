@@ -3,7 +3,7 @@ package com.goldbocman.vgm.common.mixin;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -20,6 +20,7 @@ import com.goldbocman.vgm.common.registry.AttributeReg;
 import com.goldbocman.vgm.common.registry.NetworkReg;
 import com.goldbocman.vgm.common.registry.custom.types.GunItem;
 import com.goldbocman.vgm.common.registry.custom.types.GunProperties;
+import com.goldbocman.vgm.common.registry.custom.types.GunWithMagItem;
 import com.goldbocman.vgm.common.utils.GunApiCompat;
 import com.goldbocman.vgm.common.utils.GunHelper;
 import com.goldbocman.vgm.common.utils.GunUtils;
@@ -67,11 +68,11 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
     public PlayerEntityMixin(Level world, BlockPos ignoredPos, float ignoredYaw, GameProfile ignoredGameProfile) {
         //? if >=1.21.11 {
-        super((EntityType<? extends LivingEntity>) BuiltInRegistries.ENTITY_TYPE.get(Identifier.fromNamespaceAndPath("minecraft", "player")).orElseThrow().value(), world);
-        //?} else {
-        /*// Registry.get(Identifier) returns T directly pre-1.21.11, not Optional<Holder<T>>.
-        super((EntityType<? extends LivingEntity>) BuiltInRegistries.ENTITY_TYPE.get(Identifier.fromNamespaceAndPath("minecraft", "player")), world);
-        *///?}
+        /*super((EntityType<? extends LivingEntity>) BuiltInRegistries.ENTITY_TYPE.get(com.goldbocman.vgm.TemplateModCommon.id("minecraft", "player")).orElseThrow().value(), world);
+        *///?} else {
+        // Registry.get(ResourceLocation) returns T directly pre-1.21.11, not Optional<Holder<T>>.
+        super((EntityType<? extends LivingEntity>) BuiltInRegistries.ENTITY_TYPE.get(com.goldbocman.vgm.TemplateModCommon.id("minecraft", "player")), world);
+        //?}
     }
 
     // 新增瞄准相关方法实现
@@ -142,7 +143,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
     @Unique
     private boolean isRifle(ItemStack stack) {
         // 检查是否为Rifle类型的枪械
-        Identifier itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         return itemId != null && itemId.getPath().toLowerCase().contains("rifle");
     }
 
@@ -261,14 +262,28 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
         var builder = cir.getReturnValue();
 
         // 修复：使用RegistryEntry包装EntityAttribute
+        // AttributeSupplier.Builder.add takes a plain Attribute pre-1.20.5, not a Holder<Attribute> -
+        // confirmed via javap on the real 1.20.1 merged jar.
         if (AttributeReg.RANGED_DAMAGE != null) {
-            builder.add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AttributeReg.RANGED_DAMAGE), 5d); // 默认伤害值
+            //? if >=1.20.5 {
+            /*builder.add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AttributeReg.RANGED_DAMAGE), 5d); // 默认伤害值
+            *///?} else {
+            builder.add(AttributeReg.RANGED_DAMAGE, 5d); // 默认伤害值
+            //?}
         }
         if (AttributeReg.FIRE_RATE != null) {
-            builder.add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AttributeReg.FIRE_RATE), 3d); // 默认射速
+            //? if >=1.20.5 {
+            /*builder.add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AttributeReg.FIRE_RATE), 3d); // 默认射速
+            *///?} else {
+            builder.add(AttributeReg.FIRE_RATE, 3d); // 默认射速
+            //?}
         }
         if (AttributeReg.RECOIL != null) {
-            builder.add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AttributeReg.RECOIL), 1d); // 默认后坐力
+            //? if >=1.20.5 {
+            /*builder.add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AttributeReg.RECOIL), 1d); // 默认后坐力
+            *///?} else {
+            builder.add(AttributeReg.RECOIL, 1d); // 默认后坐力
+            //?}
         }
     }
 
@@ -378,7 +393,13 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
         Player player = (Player) (Object) this;
 
         // 修复：使用RegistryEntry包装EntityAttribute进行检查和操作
-        var attributeEntry = BuiltInRegistries.ATTRIBUTE.wrapAsHolder(attribute);
+        // LivingEntity.getAttribute takes a plain Attribute pre-1.20.5, not a Holder<Attribute> -
+        // confirmed via javap on the real 1.20.1 merged jar.
+        //? if >=1.20.5 {
+        /*var attributeEntry = BuiltInRegistries.ATTRIBUTE.wrapAsHolder(attribute);
+        *///?} else {
+        var attributeEntry = attribute;
+        //?}
         if (attributeEntry != null) {
             // 获取属性实例并设置值
             var attributeInstance = player.getAttribute(attributeEntry);
@@ -410,8 +431,33 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
         ItemStack reloadingGun = gunUser.bren_1_21_1$getReloadingGun();
 
-        if (!reloadingGun.isEmpty() && reloadingGun.getItem() instanceof GunItem gunItem) {
-            gunItem.reloadTick(reloadingGun, player.level(), player, gunUser);
+        // reloadTick() physically moves/creates items (unloadMagazine/putMagazine, bullet insertion) -
+        // it must run server-authoritative only. This mixin targets the base Player class, so it also
+        // fires on the client's own LocalPlayer every tick; gunState now syncs to the client (see
+        // setGunState below), which lets bren$inventoryTick populate the CLIENT's own reloadingGun
+        // field too. Since the client's ItemCooldowns for the gun was never actually put on cooldown
+        // (addCooldown only happens inside the server-only-invoked onReload()), an ungated call here
+        // let the client complete the "reload" near-instantly on its own predicted inventory, racing
+        // ahead of the server's real ~20-tick completion - the two independent runs of
+        // unloadMagazine/putMagazine (one per side) is what produced the duplicated magazine.
+        if (!player.level().isClientSide() && !reloadingGun.isEmpty() && reloadingGun.getItem() instanceof GunItem gunItem) {
+            // Magazine-swap reloads (GunWithMagItem: rifle/auto_gun/flare gun/machine gun) must cancel
+            // if the player switches active slot away from the reloading gun - otherwise it kept
+            // completing silently in the background even though it was no longer held. Reference
+            // equality is safe here: reloadingGun is the literal ItemStack instance captured by
+            // onReload(), and switching hotbar slots doesn't replace inventory slot objects, only which
+            // one is selected. BulletOnlyGun (revolver/shotgun/...) is intentionally excluded, matching
+            // NetworkReg.handleCancelReload's release-cancel exclusion - those reloads are meant to be
+            // spam-clickable and finish regardless of what's currently held.
+            if (gunItem instanceof GunWithMagItem
+                    && reloadingGun != player.getMainHandItem() && reloadingGun != player.getOffhandItem()) {
+                GunApiCompat.removeCooldown(player.getCooldowns(), reloadingGun);
+                gunUser.bren_1_21_1$setGunState(GunHelper.GunStates.NORMAL);
+                gunUser.bren_1_21_1$setCanReload(true);
+                gunUser.bren_1_21_1$setReloadingGun(ItemStack.EMPTY);
+            } else {
+                gunItem.reloadTick(reloadingGun, player.level(), player, gunUser);
+            }
         }
 
         // 更新弹匣相关的组件
@@ -447,12 +493,11 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
         // 检查弹匣是否是可染色的
         boolean hasColorableMagazine = false;
         if (hasMagazine) {
-            var nbt = gunStack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
-                    net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
+            var nbt = GunApiCompat.getTag(gunStack);
             String magItemId = GunApiCompat.getString(nbt, "MagazineItem");
 
             if (!magItemId.isEmpty()) {
-                var itemId = Identifier.tryParse(magItemId);
+                var itemId = ResourceLocation.tryParse(magItemId);
                 if (itemId != null) {
                     var item = GunApiCompat.getItem(itemId);
                     if (item instanceof com.goldbocman.vgm.common.registry.custom.ColorableMagazineItem) {
@@ -463,15 +508,13 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
         }
 
         // 更新弹匣相关的NBT数据
-        var nbt = gunStack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
-                net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
+        var nbt = GunApiCompat.getTag(gunStack);
 
         // 更新弹匣状态信息
         nbt.putBoolean("bren_has_magazine", hasMagazine);
         nbt.putBoolean("bren_has_colorable_magazine", hasColorableMagazine);
 
         // 设置更新后的自定义数据
-        gunStack.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
-                net.minecraft.world.item.component.CustomData.of(nbt));
+        GunApiCompat.setTag(gunStack, nbt);
     }
 }

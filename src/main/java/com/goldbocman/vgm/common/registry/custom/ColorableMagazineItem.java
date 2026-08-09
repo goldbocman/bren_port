@@ -1,9 +1,8 @@
 package com.goldbocman.vgm.common.registry.custom;
 
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
+import com.goldbocman.vgm.common.utils.GunApiCompat;
 
 public class ColorableMagazineItem extends MagazineItem {
     public ColorableMagazineItem(Properties settings, int capacity) {
@@ -27,9 +26,8 @@ public class ColorableMagazineItem extends MagazineItem {
 
     public static void setColor(ItemStack stack, int color) {
         // 使用数据组件系统设置颜色
-        var nbt = stack.getOrDefault(DataComponents.CUSTOM_DATA, 
-            CustomData.EMPTY).copyTag();
-        
+        var nbt = GunApiCompat.getTag(stack);
+
         // 获取或创建display标签
         CompoundTag displayNbt;
         if (nbt.contains("display")) {
@@ -38,8 +36,8 @@ public class ColorableMagazineItem extends MagazineItem {
             displayNbt = new CompoundTag();
             nbt.put("display", displayNbt);
         }
-        
+
         displayNbt.putInt("color", color);
-        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
+        GunApiCompat.setTag(stack, nbt);
     }
 }

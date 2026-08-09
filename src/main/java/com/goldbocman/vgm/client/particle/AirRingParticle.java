@@ -9,10 +9,10 @@ import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.util.RandomSource;
 //? if >=26.1 {
-import org.jspecify.annotations.Nullable;
-//?} else {
-/*import org.jetbrains.annotations.Nullable;
-*///?}
+/*import org.jspecify.annotations.Nullable;
+*///?} else {
+import org.jetbrains.annotations.Nullable;
+//?}
 
 public class AirRingParticle extends BaseAshSmokeParticle {
 
@@ -24,10 +24,10 @@ public class AirRingParticle extends BaseAshSmokeParticle {
 
     public ParticleRenderType getType() {
         //? if >=1.21.11 {
-        return ParticleRenderType.SINGLE_QUADS;
-        //?} else {
-        /*return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
-        *///?}
+        /*return ParticleRenderType.SINGLE_QUADS;
+        *///?} else {
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+        //?}
     }
 
     public int getLightColor(float tint) {
@@ -44,15 +44,15 @@ public class AirRingParticle extends BaseAshSmokeParticle {
         }
 
         //? if >=1.21.11 {
-        @Override
+        /*@Override
         public @Nullable Particle createParticle(ParticleOptions parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, RandomSource random) {
             return new AirRingParticle(world, x, y, z, velocityX, velocityY, velocityZ, 1.8F, this.spriteProvider);
         }
-        //?} else {
-        /*@Override
+        *///?} else {
+        @Override
         public @Nullable Particle createParticle(ParticleOptions parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             return new AirRingParticle(world, x, y, z, velocityX, velocityY, velocityZ, 1.8F, this.spriteProvider);
         }
-        *///?}
+        //?}
     }
 }

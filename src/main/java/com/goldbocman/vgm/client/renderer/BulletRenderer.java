@@ -1,19 +1,19 @@
 package com.goldbocman.vgm.client.renderer;
 
 //? if >=1.21.11 {
-import com.mojang.blaze3d.vertex.PoseStack;
+/*import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import com.goldbocman.vgm.common.Bren;
 import com.goldbocman.vgm.common.entity.BulletEntity;
 
 public class BulletRenderer<T extends BulletEntity> extends EntityRenderer<T, net.minecraft.client.renderer.entity.state.@org.jetbrains.annotations.NotNull EntityRenderState> {
 
-    public static final Identifier BULLET_TEXTURE = Identifier.fromNamespaceAndPath(Bren.MODID, "textures/entity/bullet.png");
-    public static final Identifier SHELL_TEXTURE = Identifier.fromNamespaceAndPath(Bren.MODID, "textures/entity/shell.png"); // 新增霰弹纹理
+    public static final ResourceLocation BULLET_TEXTURE = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "textures/entity/bullet.png");
+    public static final ResourceLocation SHELL_TEXTURE = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "textures/entity/shell.png"); // 新增霰弹纹理
 
     public BulletRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -26,7 +26,7 @@ public class BulletRenderer<T extends BulletEntity> extends EntityRenderer<T, ne
         super.submit(renderState, matrices, commandQueue, cameraRenderState);
     }
 
-    public Identifier getTexture(BulletEntity entity) {
+    public ResourceLocation getTexture(BulletEntity entity) {
         // 新增：根据子弹类型返回不同纹理
         // 这里可以根据子弹的某些属性来判断，暂时先返回默认纹理
         // 后续可以扩展BulletEntity以支持子弹类型字段
@@ -43,4 +43,4 @@ public class BulletRenderer<T extends BulletEntity> extends EntityRenderer<T, ne
         // 在这里更新renderState中的数据
     }
 }
-//?}
+*///?}

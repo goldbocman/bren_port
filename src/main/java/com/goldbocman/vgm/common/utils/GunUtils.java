@@ -68,10 +68,16 @@ public class GunUtils {
             if (user.isAlwaysTicking()) {
                 // 使用EquipmentSlot参数的正确damage方法
                 // Flame附魔额外消耗耐久：着火子弹对枪械本身也是负担
-                int flameLevel = EnchantmentHelper.getItemEnchantmentLevel(
-                        world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FLAME), stack);
+                int flameLevel = GunApiCompat.getFlameLevel(world, stack);
                 int durabilityLoss = 1 + flameLevel * MConfig.flameDurabilityPenalty.get();
-                stack.hurtAndBreak(durabilityLoss, user, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
+                //? if >=1.20.5 {
+                /*stack.hurtAndBreak(durabilityLoss, user, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
+                *///?} else {
+                // hurtAndBreak(int, T, EquipmentSlot) doesn't exist before 1.20.5 - the classic
+                // signature takes a break callback instead (confirmed via javap).
+                stack.hurtAndBreak(durabilityLoss, user, (java.util.function.Consumer<LivingEntity>)
+                        livingEntity -> livingEntity.broadcastBreakEvent(net.minecraft.world.entity.EquipmentSlot.MAINHAND));
+                //?}
             }
 
             List<Vec3> position = GunUtils.calculatePositionBasedOnAngle(user);
@@ -244,23 +250,21 @@ public class GunUtils {
 
         // 修复：移除velocityModified字段的赋值，只保留velocityDirty
         //? if >=1.21.11 {
-        bullet.needsSync = true;
-        //?} else {
-        /*// Entity.needsSync doesn't exist pre-1.21.11 - hurtMarked is the classic equivalent
+        /*bullet.needsSync = true;
+        *///?} else {
+        // Entity.needsSync doesn't exist pre-1.21.11 - hurtMarked is the classic equivalent
         // "resync this entity to tracking clients" flag.
         bullet.hurtMarked = true;
-        *///?}
+        //?}
         bullet.setRemainingFireTicks(ticksOnFire);
 
         // Flame附魔：子弹自身着火，命中实体/方块时点燃目标（子弹是完全自定义实体，不会走原版projectile_spawned钩子，需要手动应用）
-        int flameLevel = EnchantmentHelper.getItemEnchantmentLevel(
-                world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FLAME), stack);
+        int flameLevel = GunApiCompat.getFlameLevel(world, stack);
         if (flameLevel > 0) {
             bullet.setRemainingFireTicks(100);
         }
 
-        int punchLevel = EnchantmentHelper.getItemEnchantmentLevel(
-                world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.PUNCH), stack);
+        int punchLevel = GunApiCompat.getPunchLevel(world, stack);
         if (punchLevel > 0) {
             bullet.setPunchLevel(punchLevel);
         }

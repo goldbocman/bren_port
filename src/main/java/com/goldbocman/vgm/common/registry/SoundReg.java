@@ -2,7 +2,7 @@ package com.goldbocman.vgm.common.registry;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import com.goldbocman.vgm.common.Bren;
 
@@ -26,7 +26,7 @@ public class SoundReg {
     public static SoundEvent PARTICLE_CASING_BOUNCE = register("particle.casing.bounce");
 
     private static SoundEvent register(String name) {
-        Identifier id = Identifier.fromNamespaceAndPath(Bren.MODID, name);
+        ResourceLocation id = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, name);
         SoundEvent sound = SoundEvent.createVariableRangeEvent(id);
         Registry.register(BuiltInRegistries.SOUND_EVENT, id, sound);
         return sound;

@@ -3,11 +3,12 @@ package com.goldbocman.vgm.common.registry.custom.types;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.component.DataComponents;
+//? if >=1.20.5 {
+/*import net.minecraft.core.component.DataComponentType;
+*///?}
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -20,10 +21,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.CustomData;
 //? if >=1.21.11 {
-import net.minecraft.world.item.component.TooltipDisplay;
-//?}
+/*import net.minecraft.world.item.component.TooltipDisplay;
+*///?}
 import net.minecraft.world.level.Level;
 import com.goldbocman.vgm.common.Bren;
 import com.goldbocman.vgm.common.entity.IGunUser;
@@ -41,8 +41,10 @@ import org.slf4j.LoggerFactory;
 import java.util.function.Consumer;
 
 public class GunWithMagItem extends GunItem {
-    public static DataComponentType<Boolean> HAS_MAGAZINE;
+    //? if >=1.20.5 {
+    /*public static DataComponentType<Boolean> HAS_MAGAZINE;
     public static DataComponentType<Integer> GUN_MODEL_TYPE;
+    *///?}
 
     private static final Logger LOGGER = LoggerFactory.getLogger("Bren/GunWithMagItem");
     private final TagKey<Item> compatibleMagazines;
@@ -51,27 +53,34 @@ public class GunWithMagItem extends GunItem {
 
     // 弹药类型显示方法
     //? if >=1.21.11 {
-    @Override
+    /*@Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull TooltipDisplay tooltipComponent, Consumer<Component> tooltipAdder, @NotNull TooltipFlag type) {
         super.appendHoverText(stack, context, tooltipComponent, tooltipAdder, type);
         bren$appendHoverText(stack, tooltipAdder::accept);
     }
-    //?} else {
+    *///?} else {
+    //? if >=1.20.5 {
     /*@Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, java.util.@NotNull List<Component> tooltipComponents, @NotNull TooltipFlag type) {
         super.appendHoverText(stack, context, tooltipComponents, type);
         bren$appendHoverText(stack, tooltipComponents::add);
     }
-    *///?}
+    *///?} else {
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, Level level, java.util.@NotNull List<Component> tooltipComponents, @NotNull TooltipFlag type) {
+        super.appendHoverText(stack, level, tooltipComponents, type);
+        bren$appendHoverText(stack, tooltipComponents::add);
+    }
+    //?}
+    //?}
 
     private void bren$appendHoverText(ItemStack stack, Consumer<Component> tooltipAdder) {
         // 显示当前弹匣信息
         if (hasMagazine(stack)) {
-            var nbt = stack.getOrDefault(DataComponents.CUSTOM_DATA,
-                    CustomData.EMPTY).copyTag();
+            var nbt = GunApiCompat.getTag(stack);
             String magItemId = GunApiCompat.getString(nbt, MAGAZINE_ITEM_KEY);
             if (!magItemId.isEmpty()) {
-                var itemId = Identifier.tryParse(magItemId);
+                var itemId = ResourceLocation.tryParse(magItemId);
                 if (itemId != null) {
                     var item = GunApiCompat.getItem(itemId);
                     if (item != null) {
@@ -140,14 +149,12 @@ public class GunWithMagItem extends GunItem {
         int magCapacity = MagazineItem.getMaxCapacity(mag);
         String magItemId = BuiltInRegistries.ITEM.getKey(mag.getItem()).toString();
 
-        var nbt = stack.getOrDefault(DataComponents.CUSTOM_DATA,
-                CustomData.EMPTY).copyTag();
+        var nbt = GunApiCompat.getTag(stack);
         nbt.putBoolean(HAS_MAGAZINE_KEY, true);
         nbt.putInt(MAGAZINE_CAPACITY_KEY, magCapacity);
         nbt.putInt(MAGAZINE_CONTENTS_KEY, magContents);
         nbt.putString(MAGAZINE_ITEM_KEY, magItemId);
-        stack.set(DataComponents.CUSTOM_DATA,
-                CustomData.of(nbt));
+        GunApiCompat.setTag(stack, nbt);
 
         if (stack.getItem() instanceof GunWithMagItem) {
             GunWithMagItem gunItem = (GunWithMagItem) stack.getItem();
@@ -164,15 +171,13 @@ public class GunWithMagItem extends GunItem {
     }
 
     public static boolean hasMagazine(ItemStack stack){
-        var nbt = stack.getOrDefault(DataComponents.CUSTOM_DATA,
-                CustomData.EMPTY).copyTag();
+        var nbt = GunApiCompat.getTag(stack);
         return GunApiCompat.getBoolean(nbt, HAS_MAGAZINE_KEY);
     }
 
     @Override
     public int getMaxCapacity(ItemStack stack) {
-        var nbt = stack.getOrDefault(DataComponents.CUSTOM_DATA,
-                CustomData.EMPTY).copyTag();
+        var nbt = GunApiCompat.getTag(stack);
         int stored = GunApiCompat.getInt(nbt, MAGAZINE_CAPACITY_KEY);
         if (stored > 0) return stored;
         // No magazine loaded — return the capacity of this gun's compatible magazine type
@@ -206,17 +211,110 @@ public class GunWithMagItem extends GunItem {
     @Override
     public int getContents(ItemStack stack) {
         if (hasMagazine(stack)) {
-            var nbt = stack.getOrDefault(DataComponents.CUSTOM_DATA,
-                    CustomData.EMPTY).copyTag();
+            var nbt = GunApiCompat.getTag(stack);
             return GunApiCompat.getInt(nbt, MAGAZINE_CONTENTS_KEY);
         }
         return 0;
     }
 
+    // Completes the reload started in onReload() once the reload cooldown finishes - restored from
+    // commit 51853f2, where this file had the real implementation (unload-or-load semantics, magazine
+    // sounds, empty-magazine cleanup). It was accidentally dropped during the CUSTOM_DATA ->
+    // GunApiCompat migration for the 1.20.1 port, which regressed reload on every version/loader (not
+    // just 1.20.1) since GunWithMagItem then silently inherited GunItem's no-op reloadTick() default -
+    // canReload/gunState (set false/RELOADING in onReload) were never reset, permanently locking the
+    // player out of firing or reloading ANY gun after the very first reload press.
+    @Override
+    public void reloadTick(ItemStack stack, Level world, Player player, IGunUser gunUser) {
+        ItemCooldowns cooldownManager = player.getCooldowns();
+        float cooldownProgress = GunApiCompat.getCooldownPercent(cooldownManager, stack, 1.0F);
+
+        if (!GunApiCompat.isOnCooldown(cooldownManager, stack) &&
+                gunUser.bren_1_21_1$getGunState().equals(GunHelper.GunStates.RELOADING)) {
+
+            boolean reloadSuccess = false;
+
+            ItemStack newMag = Bren.getMagazineFromPlayer(player, ((GunWithMagItem) stack.getItem()).compatibleMagazines());
+            boolean hasNewMagazine = !newMag.isEmpty() && MagazineItem.getContents(newMag) > 0;
+            boolean hasCurrentMagazine = GunWithMagItem.hasMagazine(stack);
+
+            // Case 1: gun has a magazine -> unload it (regardless of whether player has a new one)
+            if (hasCurrentMagazine) {
+                ItemStack removedMag = GunWithMagItem.unloadMagazine(stack, player);
+                if (!removedMag.isEmpty()) {
+                    world.playSound(null,
+                            player.getX(),
+                            player.getY(),
+                            player.getZ(),
+                            SoundReg.ITEM_MAGAZINE_REMOVE,
+                            SoundSource.PLAYERS, 1.0F, 1.0F - (player.getRandom().nextFloat() - 0.5F) / 4);
+                    reloadSuccess = true;
+                } else {
+                    LOGGER.warn("Failed to unload magazine for player {}", player.getName().getString());
+                }
+            }
+            // Case 2: gun has no magazine and player has one -> load it
+            else if (hasNewMagazine) {
+                GunWithMagItem.putMagazine(stack, newMag, player);
+                newMag.shrink(1);
+                reloadSuccess = true;
+
+                world.playSound(null,
+                        player.getX(),
+                        player.getY(),
+                        player.getZ(),
+                        SoundReg.ITEM_MAGAZINE_INSERT,
+                        SoundSource.PLAYERS, 1.0F, 1.0F - (player.getRandom().nextFloat() - 0.5F) / 4);
+            }
+            // Case 3: neither -> nothing to do
+
+            if (!reloadSuccess) {
+                LOGGER.warn("Reload failed for player {}, resetting state to NORMAL to prevent stuck",
+                        player.getName().getString());
+            }
+            gunUser.bren_1_21_1$setGunState(GunHelper.GunStates.NORMAL);
+            gunUser.bren_1_21_1$setCanReload(true);
+            gunUser.bren_1_21_1$setReloadingGun(ItemStack.EMPTY);
+        } else if (cooldownProgress == 0.75F &&
+                gunUser.bren_1_21_1$getGunState().equals(GunHelper.GunStates.RELOADING)) {
+            world.playSound(null,
+                    player.getX(),
+                    player.getY(),
+                    player.getZ(),
+                    SoundReg.ITEM_MAGAZINE_INSERT,
+                    SoundSource.PLAYERS, 1.0F, 1.0F - (player.getRandom().nextFloat() - 0.5F) / 4);
+        }
+
+        checkAndUnloadEmptyMagazine(stack, player);
+    }
+
+    private void checkAndUnloadEmptyMagazine(ItemStack stack, Player player) {
+        var nbt = GunApiCompat.getTag(stack);
+
+        if (nbt.contains("EmptyMagazineItem")) {
+            String magItemId = GunApiCompat.getString(nbt, "EmptyMagazineItem");
+            if (!magItemId.isEmpty()) {
+                var itemId = ResourceLocation.tryParse(magItemId);
+                if (itemId != null) {
+                    var item = GunApiCompat.getItem(itemId);
+                    if (item instanceof MagazineItem) {
+                        ItemStack emptyMag = new ItemStack(item);
+
+                        if (!player.getInventory().add(emptyMag)) {
+                            player.drop(emptyMag, false);
+                        }
+
+                        nbt.remove("EmptyMagazineItem");
+                        GunApiCompat.setTag(stack, nbt);
+                    }
+                }
+            }
+        }
+    }
+
     public static ItemStack unloadMagazine(ItemStack stack, Player player) {
         if (hasMagazine(stack)) {
-            var nbt = stack.getOrDefault(DataComponents.CUSTOM_DATA,
-                    CustomData.EMPTY).copyTag();
+            var nbt = GunApiCompat.getTag(stack);
 
             // 修复：正确获取弹匣物品ID
             String magItemId = GunApiCompat.getString(nbt, MAGAZINE_ITEM_KEY);
@@ -227,8 +325,7 @@ public class GunWithMagItem extends GunItem {
             nbt.putInt(MAGAZINE_CAPACITY_KEY, 0);
             nbt.putInt(MAGAZINE_CONTENTS_KEY, 0);
             nbt.remove(MAGAZINE_ITEM_KEY);
-            stack.set(DataComponents.CUSTOM_DATA,
-                    CustomData.of(nbt));
+            GunApiCompat.setTag(stack, nbt);
             // 更新模型状态
             if (stack.getItem() instanceof GunWithMagItem && player instanceof ServerPlayer serverPlayer) {
                 ((GunWithMagItem) stack.getItem()).updateReloadState(stack, false, serverPlayer); // 不是装弹状态，而是根据弹匣状态更新
@@ -237,7 +334,7 @@ public class GunWithMagItem extends GunItem {
 
             // 返回空弹匣给玩家（如果有剩余子弹则保留）
             if (!magItemId.isEmpty()) {
-                var itemId = Identifier.tryParse(magItemId);
+                var itemId = ResourceLocation.tryParse(magItemId);
                 if (itemId != null) {
                     var item = GunApiCompat.getItem(itemId);
                     if (item instanceof MagazineItem) {
@@ -273,15 +370,13 @@ public class GunWithMagItem extends GunItem {
     @Override
     public void useBullet(ItemStack stack) {
         if (hasMagazine(stack)) {
-            var nbt = stack.getOrDefault(DataComponents.CUSTOM_DATA,
-                    CustomData.EMPTY).copyTag();
+            var nbt = GunApiCompat.getTag(stack);
             int currentContents = GunApiCompat.getInt(nbt, MAGAZINE_CONTENTS_KEY);
             int newContents = Math.max(currentContents - 1, 0);
             nbt.putInt(MAGAZINE_CONTENTS_KEY, newContents);
 
             // 修复：即使弹匣空了，也保持HAS_MAGAZINE_KEY为true，允许玩家卸下空弹匣
-            stack.set(DataComponents.CUSTOM_DATA,
-                    CustomData.of(nbt));
+            GunApiCompat.setTag(stack, nbt);
         }
     }
 
@@ -293,121 +388,18 @@ public class GunWithMagItem extends GunItem {
         return getContents(stack) <= 0;
     }
 
-    @Override
-    public void reloadTick(ItemStack stack, Level world, Player player, IGunUser gunUser) {
-        ItemCooldowns cooldownManager = player.getCooldowns();
-        float cooldownProgress = GunApiCompat.getCooldownPercent(cooldownManager, stack, 1.0F);
-
-        // 关键修复：确保只有在装弹状态下才执行装弹逻辑
-        if (!GunApiCompat.isOnCooldown(cooldownManager, stack) &&
-                gunUser.bren_1_21_1$getGunState().equals(GunHelper.GunStates.RELOADING)) {
-
-            boolean reloadSuccess = false;
-
-            // 检查玩家是否有新弹匣
-            ItemStack newMag = Bren.getMagazineFromPlayer(player, ((GunWithMagItem) stack.getItem()).compatibleMagazines());
-            boolean hasNewMagazine = !newMag.isEmpty() && MagazineItem.getContents(newMag) > 0;
-            boolean hasCurrentMagazine = GunWithMagItem.hasMagazine(stack);
-
-            // 情况1：枪械有弹匣 → 卸下弹匣（无论玩家是否有新弹匣）
-            if (hasCurrentMagazine) {
-                // 卸下弹匣
-                ItemStack removedMag = GunWithMagItem.unloadMagazine(stack, player);
-                if (!removedMag.isEmpty()) {
-                    world.playSound(null,
-                            player.getX(),
-                            player.getY(),
-                            player.getZ(),
-                            SoundReg.ITEM_MAGAZINE_REMOVE,
-                            SoundSource.PLAYERS, 1.0F, 1.0F - (player.getRandom().nextFloat() - 0.5F) / 4);
-                    reloadSuccess = true;
-                } else {
-                    LOGGER.warn("Failed to unload magazine for player {}", player.getName().getString());
-                }
-            }
-            // 情况2：枪械无弹匣且物品栏有弹匣 → 装填弹匣
-            else if (!hasCurrentMagazine && hasNewMagazine) {
-                GunWithMagItem.putMagazine(stack, newMag, player);
-                newMag.shrink(1);
-                reloadSuccess = true;
-
-                world.playSound(null,
-                        player.getX(),
-                        player.getY(),
-                        player.getZ(),
-                        SoundReg.ITEM_MAGAZINE_INSERT,
-                        SoundSource.PLAYERS, 1.0F, 1.0F - (player.getRandom().nextFloat() - 0.5F) / 4);
-            }
-            // 情况3：枪械无弹匣且物品栏无弹匣 → 无法操作
-
-            // 关键修复：确保状态重置逻辑正确
-            if (!reloadSuccess) {
-                // 如果装弹失败，也需要重置状态以避免卡死
-                LOGGER.warn("Reload failed for player {}, resetting state to NORMAL to prevent stuck",
-                        player.getName().getString());
-            }
-            gunUser.bren_1_21_1$setGunState(GunHelper.GunStates.NORMAL);
-            gunUser.bren_1_21_1$setCanReload(true);
-            gunUser.bren_1_21_1$setReloadingGun(ItemStack.EMPTY);
-        } else if (cooldownProgress == 0.75F &&
-                gunUser.bren_1_21_1$getGunState().equals(GunHelper.GunStates.RELOADING)) {
-            // 修复：在冷却进度达到75%时播放装弹声音
-            world.playSound(null,
-                    player.getX(),
-                    player.getY(),
-                    player.getZ(),
-                    SoundReg.ITEM_MAGAZINE_INSERT,
-                    SoundSource.PLAYERS, 1.0F, 1.0F - (player.getRandom().nextFloat() - 0.5F) / 4);
-        }
-
-        // 在装弹逻辑执行完成后，再检查是否有标记为需要卸下的空弹匣
-        checkAndUnloadEmptyMagazine(stack, player);
-    }
-
-    /**
-     * 检查并卸下标记为空的弹匣
-     */
-    private void checkAndUnloadEmptyMagazine(ItemStack stack, Player player) {
-        var nbt = stack.getOrDefault(DataComponents.CUSTOM_DATA,
-                CustomData.EMPTY).copyTag();
-
-        if (nbt.contains("EmptyMagazineItem")) {
-            String magItemId = GunApiCompat.getString(nbt, "EmptyMagazineItem");
-            if (!magItemId.isEmpty()) {
-                var itemId = Identifier.tryParse(magItemId);
-                if (itemId != null) {
-                    var item = GunApiCompat.getItem(itemId);
-                    if (item instanceof MagazineItem) {
-                        ItemStack emptyMag = new ItemStack(item);
-                        // 空弹匣没有子弹
-
-                        if (!player.getInventory().add(emptyMag)) {
-                            // 如果无法放入物品栏，则掉落在地上
-                            player.drop(emptyMag, false);
-                        }
-
-                        // 清除标记
-                        nbt.remove("EmptyMagazineItem");
-                        stack.set(DataComponents.CUSTOM_DATA,
-                                CustomData.of(nbt));
-                    }
-                }
-            }
-        }
-    }
-
     //? if >=1.21.11 {
-    public void inventoryTick(ItemStack stack, ServerLevel world, Entity entity, EquipmentSlot slot) {
+    /*public void inventoryTick(ItemStack stack, ServerLevel world, Entity entity, EquipmentSlot slot) {
         bren$inventoryTick(stack, entity);
         super.inventoryTick(stack, world, entity, slot);
     }
-    //?} else {
-    /*@Override
+    *///?} else {
+    @Override
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean selected) {
         bren$inventoryTick(stack, entity);
         super.inventoryTick(stack, world, entity, slot, selected);
     }
-    *///?}
+    //?}
 
     // Old and new inventoryTick overloads report the ticking slot differently (EquipmentSlot enum vs
     // raw index + "selected" boolean) - checking whether stack is actually the held item works
@@ -415,7 +407,15 @@ public class GunWithMagItem extends GunItem {
     private void bren$inventoryTick(ItemStack stack, Entity entity) {
         if (entity instanceof IGunUser gunUser && entity instanceof Player player
                 && (stack == player.getMainHandItem() || stack == player.getOffhandItem())) {
-            if (gunUser.bren_1_21_1$getGunState().equals(GunHelper.GunStates.RELOADING)) {
+            // Only re-affirm the reference to the gun that's ALREADY reloading (stack identity is
+            // normally stable tick-to-tick for the same held item, so this is a safe no-op in the
+            // common case) - must not blindly redirect to whatever is now held. If the player swaps
+            // active hotbar slot to a different mag-gun while gunState is still RELOADING (leftover
+            // from the first gun's in-flight reload), this used to overwrite reloadingGun with the
+            // newly-held gun, so once the cooldown expired server-side, reloadTick() ran against the
+            // WRONG gun - one that was never actually put on cooldown, firing instantly.
+            if (gunUser.bren_1_21_1$getGunState().equals(GunHelper.GunStates.RELOADING)
+                    && stack == gunUser.bren_1_21_1$getReloadingGun()) {
                 gunUser.bren_1_21_1$setReloadingGun(stack);
             }
         }
@@ -429,7 +429,13 @@ public class GunWithMagItem extends GunItem {
         // GUN_MODEL_TYPE = 1: 有弹匣状态，显示 ak47 模型
         // GUN_MODEL_TYPE = 0 或不存在：无弹匣状态，显示 ak47_empty 模型
 
-        boolean hasMagazine = GunWithMagItem.hasMagazine(stack);
+        // HAS_MAGAZINE (the DataComponentType) doesn't exist before 1.20.5 - and is only actually read
+        // for display purposes on >=1.21.11's Item Model Definition select-tree anyway (<1.21.11,
+        // including 1.20.1, already reads magazine state straight from NBT via
+        // LegacyItemPropertiesAccessor - see claude/gun-rendering.md), so this is a genuine no-op on
+        // 1.20.1, not a partial reimplementation.
+        //? if >=1.20.5 {
+        /*boolean hasMagazine = GunWithMagItem.hasMagazine(stack);
 
         if (hasMagazine) {
             // 有弹匣时设置 GUN_MODEL_TYPE 为 1，显示 ak47 模型
@@ -446,6 +452,7 @@ public class GunWithMagItem extends GunItem {
                 LOGGER.error("Failed to remove GUN_MODEL_TYPE", e);
             }
         }
+        *///?}
     }
 
     // 重载版本，带有玩家信息，用于发送网络同步包

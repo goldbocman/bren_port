@@ -1,7 +1,7 @@
 package com.goldbocman.vgm.common.mixin.client;
 
 //? if >=1.21.11 {
-import com.mojang.blaze3d.vertex.PoseStack;
+/*import com.mojang.blaze3d.vertex.PoseStack;
 //? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -28,10 +28,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ItemInHandRenderer.class)
 public abstract class FirstPersonItemRendererMixin {
 
-    /**
+    /^*
      * 注入到第一人称物品渲染方法
      * 这是Minecraft 26.1中处理第一人称物品渲染的主要方法
-     */
+     ^/
     @Inject(at = @At("HEAD"), method = "renderItem")
     private void bren$renderFirstPersonGunAnimation(
             LivingEntity entity, ItemStack stack, ItemDisplayContext displayContext,
@@ -89,4 +89,4 @@ public abstract class FirstPersonItemRendererMixin {
                itemDisplayContext == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND;
     }
 }
-//?}
+*///?}

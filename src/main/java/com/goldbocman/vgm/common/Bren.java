@@ -3,10 +3,10 @@ package com.goldbocman.vgm.common;
 //? if fabric {
 import net.fabricmc.api.ModInitializer;
 //? if >=26.1 {
-import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
-//?} else {
-/*import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-*///?}
+/*import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+*///?} else {
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+//?}
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -16,7 +16,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
@@ -41,7 +41,7 @@ public class Bren
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 	public static final int UNIVERSAL_AMMO_COLOR = 0xFFAE00;
 
-	public static final ResourceKey<CreativeModeTab> BREN_TAB = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(MODID, "bren_tab"));
+	public static final ResourceKey<CreativeModeTab> BREN_TAB = ResourceKey.create(Registries.CREATIVE_MODE_TAB, com.goldbocman.vgm.TemplateModCommon.id(MODID, "bren_tab"));
 
 	//? if neoforge {
 	/*public static final net.neoforged.neoforge.registries.DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
@@ -70,15 +70,15 @@ public class Bren
 	// and register eagerly here as a `final` field; NeoForge builds+registers it lazily in
 	// onRegister() below, so BULLET can't be `final` on that branch.
 	//? if fabric {
-	public static final EntityType<@org.jetbrains.annotations.NotNull BulletEntity> BULLET = Registry.register(BuiltInRegistries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID,
+	public static final EntityType<@org.jetbrains.annotations.NotNull BulletEntity> BULLET = Registry.register(BuiltInRegistries.ENTITY_TYPE, com.goldbocman.vgm.TemplateModCommon.id(MODID,
 			"bullet"), EntityType.Builder.<BulletEntity>of(
 					(type, level) -> new BulletEntity(type, level), MobCategory.MISC).clientTrackingRange(10)
 					.sized(0.35F, 0.35F).noSave().build(
 							//? if >=1.21.11 {
-							ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, "bullet"))
-							//?} else {
-							/*"bullet"
-							*///?}
+							/*ResourceKey.create(Registries.ENTITY_TYPE, com.goldbocman.vgm.TemplateModCommon.id(MODID, "bullet"))
+							*///?} else {
+							"bullet"
+							//?}
 					));
 	//?}
 	//? if neoforge
@@ -103,7 +103,7 @@ public class Bren
 		// 第二个参数: 模组容器
 		// 第三个参数: 资源包激活类型 (ALWAYS_ENABLED 强制启用, DEFAULT_ENABLED 默认启用但允许关闭)
 		boolean added2 = ResourceManagerHelper.registerBuiltinResourcePack(
-				Identifier.fromNamespaceAndPath(MODID, "bren_3d_resources_2"), // 资源包ID
+				com.goldbocman.vgm.TemplateModCommon.id(MODID, "bren_3d_resources_2"), // 资源包ID
 				container,
 				ResourcePackActivationType.NORMAL  // 玩家可以手动关闭
 		);
@@ -150,10 +150,10 @@ public class Bren
 		//? if fabric {
 		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, BREN_TAB,
 			//? if >=26.1 {
-			FabricCreativeModeTab
-			//?} else {
-			/*FabricItemGroup
-			*///?}
+			/*FabricCreativeModeTab
+			*///?} else {
+			FabricItemGroup
+			//?}
 			.builder()
 			.title(Component.translatable("itemGroup." + MODID + ".bren_tab"))
 			.icon(() -> new ItemStack(ItemReg.NETHERITE_AUTO_GUN))
@@ -175,10 +175,10 @@ public class Bren
 	// "Registry is already frozen". Vanilla's own registry bootstrap order fires ATTRIBUTE and
 	// DATA_COMPONENT_TYPE before ITEM, matching the ordering onInitialize() relies on for Fabric.
 	//? if >=1.21.9 {
-	@net.neoforged.fml.common.EventBusSubscriber(modid = MODID)
-	//?} else {
-	/^@net.neoforged.fml.common.EventBusSubscriber(modid = MODID, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
-	^///?}
+	/^@net.neoforged.fml.common.EventBusSubscriber(modid = MODID)
+	^///?} else {
+	@net.neoforged.fml.common.EventBusSubscriber(modid = MODID, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
+	//?}
 	public static class NeoForgeRegistration {
 		@net.neoforged.bus.api.SubscribeEvent
 		public static void onRegister(net.neoforged.neoforge.registries.RegisterEvent event) {
@@ -196,15 +196,15 @@ public class Bren
 			} else if (key == Registries.FEATURE) {
 				WorldGenReg.init();
 			} else if (key == Registries.ENTITY_TYPE) {
-				BULLET = Registry.register(BuiltInRegistries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, "bullet"),
+				BULLET = Registry.register(BuiltInRegistries.ENTITY_TYPE, com.goldbocman.vgm.TemplateModCommon.id(MODID, "bullet"),
 						EntityType.Builder.<BulletEntity>of((type, level) -> new BulletEntity(type, level), MobCategory.MISC)
 								.clientTrackingRange(10).sized(0.35F, 0.35F).noSave()
 								.build(
 										//? if >=1.21.11 {
-										ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, "bullet"))
-										//?} else {
-										/^"bullet"
-										^///?}
+										/^ResourceKey.create(Registries.ENTITY_TYPE, com.goldbocman.vgm.TemplateModCommon.id(MODID, "bullet"))
+										^///?} else {
+										"bullet"
+										//?}
 								));
 			}
 		}
@@ -237,7 +237,7 @@ public class Bren
 				// Forge phase 1 only targets 1.21.1 (<1.21.11) so far - see settings.gradle.kts - hence
 				// the plain-string build() overload, not ResourceKey.create(...) (that's >=1.21.11 only,
 				// see NeoForgeRegistration above for the version-gated form once 26.2-forge is added).
-				BULLET = Registry.register(BuiltInRegistries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, "bullet"),
+				BULLET = Registry.register(BuiltInRegistries.ENTITY_TYPE, com.goldbocman.vgm.TemplateModCommon.id(MODID, "bullet"),
 						EntityType.Builder.<BulletEntity>of((type, level) -> new BulletEntity(type, level), MobCategory.MISC)
 								.clientTrackingRange(10).sized(0.35F, 0.35F).noSave()
 								.build("bullet"));

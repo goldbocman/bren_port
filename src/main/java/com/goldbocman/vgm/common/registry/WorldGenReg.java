@@ -17,13 +17,13 @@ public class WorldGenReg {
     
     // 特征注册
     public static final ResourceKey<Feature<?>> SUPPLY_CRATE_FEATURE_KEY = 
-        ResourceKey.create(Registries.FEATURE, net.minecraft.resources.Identifier.fromNamespaceAndPath(Bren.MODID, "supply_crate"));
+        ResourceKey.create(Registries.FEATURE, com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "supply_crate"));
     
     public static Feature<@org.jetbrains.annotations.NotNull NoneFeatureConfiguration> SUPPLY_CRATE_FEATURE;
     
     // 放置修饰器注册 - 使用数据包中定义的放置特征
     public static final ResourceKey<PlacedFeature> SUPPLY_CRATE_PLACED_KEY = 
-        ResourceKey.create(Registries.PLACED_FEATURE, net.minecraft.resources.Identifier.fromNamespaceAndPath(Bren.MODID, "supply_crate"));
+        ResourceKey.create(Registries.PLACED_FEATURE, com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "supply_crate"));
 
     public static void registerFeatures() {
         LOGGER.info("Registering world generation features");

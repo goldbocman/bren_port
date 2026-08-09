@@ -1,7 +1,15 @@
 package com.goldbocman.vgm.common.registry;
 
-import net.minecraft.network.RegistryFriendlyByteBuf;
+//? if >=1.20.5 {
+/*import net.minecraft.network.RegistryFriendlyByteBuf;
+*///?} else {
+import net.minecraft.network.FriendlyByteBuf;
+//?}
 
 public interface GrenadeLeftClickPayload {
-    void write(RegistryFriendlyByteBuf buf);
+    //? if >=1.20.5 {
+    /*void write(RegistryFriendlyByteBuf buf);
+    *///?} else {
+    void write(FriendlyByteBuf buf);
+    //?}
 }

@@ -2,7 +2,7 @@ package com.goldbocman.vgm.common.registry;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import com.goldbocman.vgm.common.Bren;
@@ -23,15 +23,15 @@ public class AttributeReg {
             Bren.LOGGER.info("AttributeReg: starting attribute registration");
 
             RANGED_DAMAGE = new RangedAttribute("attribute.name.ranged_damage", 0d, 0d, 2048d).setSyncable(true);
-            Registry.register(BuiltInRegistries.ATTRIBUTE, Identifier.fromNamespaceAndPath(Bren.MODID, "ranged_damage"), RANGED_DAMAGE);
+            Registry.register(BuiltInRegistries.ATTRIBUTE, com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "ranged_damage"), RANGED_DAMAGE);
             Bren.LOGGER.info("AttributeReg: successfully registered ranged_damage");
 
             FIRE_RATE = new RangedAttribute("attribute.name.fire_rate", 0d, 0d, 2048d).setSyncable(true);
-            Registry.register(BuiltInRegistries.ATTRIBUTE, Identifier.fromNamespaceAndPath(Bren.MODID, "fire_rate"), FIRE_RATE);
+            Registry.register(BuiltInRegistries.ATTRIBUTE, com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "fire_rate"), FIRE_RATE);
             Bren.LOGGER.info("AttributeReg: successfully registered fire_rate");
 
             RECOIL = new RangedAttribute("attribute.name.recoil", 0d, -360d, 360d).setSyncable(true);
-            Registry.register(BuiltInRegistries.ATTRIBUTE, Identifier.fromNamespaceAndPath(Bren.MODID, "recoil"), RECOIL);
+            Registry.register(BuiltInRegistries.ATTRIBUTE, com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "recoil"), RECOIL);
             Bren.LOGGER.info("AttributeReg: successfully registered recoil");
 
             Bren.LOGGER.info("AttributeReg: all custom attributes registered successfully!");

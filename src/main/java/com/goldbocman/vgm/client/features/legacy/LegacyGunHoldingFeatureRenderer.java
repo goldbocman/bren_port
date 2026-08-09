@@ -1,7 +1,7 @@
 package com.goldbocman.vgm.client.features.legacy;
 
 //? if <1.21.11 {
-/*import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 //? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -31,4 +31,4 @@ public class LegacyGunHoldingFeatureRenderer<S extends LivingEntity, M extends E
                         float ageInTicks, float netHeadYaw, float headPitch) {
     }
 }
-*///?}
+//?}

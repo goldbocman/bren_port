@@ -1,6 +1,5 @@
 package com.goldbocman.vgm.common.registry.custom.types;
 
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
@@ -8,7 +7,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import com.goldbocman.vgm.common.Bren;
 import com.goldbocman.vgm.common.entity.IGunUser;
 import com.goldbocman.vgm.common.registry.TagReg;
@@ -83,14 +81,12 @@ public class FlareGunItem extends GunWithMagItem  {
         int magCapacity = MagazineItem.getMaxCapacity(mag);
         String magItemId = BuiltInRegistries.ITEM.getKey(mag.getItem()).toString();
 
-        var nbt = stack.getOrDefault(DataComponents.CUSTOM_DATA,
-                CustomData.EMPTY).copyTag();
+        var nbt = GunApiCompat.getTag(stack);
         nbt.putBoolean(HAS_MAGAZINE_KEY, true);
         nbt.putInt(MAGAZINE_CAPACITY_KEY, magCapacity);
         nbt.putInt(MAGAZINE_CONTENTS_KEY, magContents);
         nbt.putString(MAGAZINE_ITEM_KEY, magItemId);
-        stack.set(DataComponents.CUSTOM_DATA,
-                CustomData.of(nbt));
+        GunApiCompat.setTag(stack, nbt);
 
         if (stack.getItem() instanceof GunWithMagItem) {
             GunWithMagItem gunItem = (GunWithMagItem) stack.getItem();

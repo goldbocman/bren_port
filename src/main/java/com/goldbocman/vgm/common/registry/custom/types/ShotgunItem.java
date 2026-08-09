@@ -36,16 +36,15 @@ public class ShotgunItem extends BulletOnlyGun {
 
     // 获取当前使用的子弹类型
     public int getCurrentBulletType(ItemStack stack) {
-        var customData = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY);
-        return GunApiCompat.getInt(customData.copyTag(), "CurrentBulletType", BulletEntity.TYPE_NORMAL);
+        var nbt = GunApiCompat.getTag(stack);
+        return GunApiCompat.getInt(nbt, "CurrentBulletType", BulletEntity.TYPE_NORMAL);
     }
 
     // 设置当前使用的子弹类型
     public void setCurrentBulletType(ItemStack stack, int bulletType) {
-        var customData = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY);
-        var updatedTag = customData.copyTag();
-        updatedTag.putInt("CurrentBulletType", bulletType);
-        stack.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(updatedTag));
+        var nbt = GunApiCompat.getTag(stack);
+        nbt.putInt("CurrentBulletType", bulletType);
+        GunApiCompat.setTag(stack, nbt);
     }
 
     @Override

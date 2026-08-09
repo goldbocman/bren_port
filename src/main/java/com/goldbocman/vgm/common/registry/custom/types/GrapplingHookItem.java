@@ -49,20 +49,20 @@ public class GrapplingHookItem extends Item {
     }
     
     //? if >=1.21.11 {
-    @Override
+    /*@Override
     public @NotNull InteractionResult use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         return bren$use(level, player, stack, hand) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
     }
-    //?} else {
-    /*@Override
+    *///?} else {
+    @Override
     public net.minecraft.world.@NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         return bren$use(level, player, stack, hand)
                 ? net.minecraft.world.InteractionResultHolder.success(stack)
                 : net.minecraft.world.InteractionResultHolder.fail(stack);
     }
-    *///?}
+    //?}
 
     // Shared by both use() overloads above - old and new Item.use() return different types
     // (InteractionResult vs InteractionResultHolder<ItemStack>), so the actual logic lives here as a
@@ -201,24 +201,17 @@ public class GrapplingHookItem extends Item {
 
     // 数据组件存储方法
     private static void setHookedPos(ItemStack stack, Vec3 pos) {
-        var customData = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
-            net.minecraft.world.item.component.CustomData.EMPTY);
-        var nbt = customData.copyTag();
+        var nbt = GunApiCompat.getTag(stack);
         CompoundTag posTag = new CompoundTag();
         posTag.putDouble("x", pos.x);
         posTag.putDouble("y", pos.y);
         posTag.putDouble("z", pos.z);
         nbt.put(HOOKED_POS_KEY, posTag);
-        stack.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
-            net.minecraft.world.item.component.CustomData.of(nbt));
+        GunApiCompat.setTag(stack, nbt);
     }
 
     private static Vec3 getHookedPos(ItemStack stack) {
-        var customData = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA);
-        if (customData == null) {
-            return null;
-        }
-        var nbt = customData.copyTag();
+        var nbt = GunApiCompat.getTag(stack);
         if (!nbt.contains(HOOKED_POS_KEY)) {
             return null;
         }
@@ -230,37 +223,38 @@ public class GrapplingHookItem extends Item {
     }
 
     private static void setIsHooked(ItemStack stack, boolean isHooked) {
-        var customData = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
-            net.minecraft.world.item.component.CustomData.EMPTY);
-        var nbt = customData.copyTag();
+        var nbt = GunApiCompat.getTag(stack);
         nbt.putBoolean(IS_HOOKED_KEY, isHooked);
-        stack.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
-            net.minecraft.world.item.component.CustomData.of(nbt));
+        GunApiCompat.setTag(stack, nbt);
     }
 
     private static boolean isHooked(ItemStack stack) {
-        var customData = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA);
-        if (customData == null) {
-            return false;
-        }
-        var nbt = customData.copyTag();
+        var nbt = GunApiCompat.getTag(stack);
         return GunApiCompat.getBoolean(nbt, IS_HOOKED_KEY);
     }
     
     //? if >=1.21.11 {
-    @Override
+    /*@Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
                                net.minecraft.world.item.component.@NotNull TooltipDisplay tooltipComponent,
                                java.util.function.Consumer<Component> tooltipAdder, @NotNull TooltipFlag type) {
         bren$appendHoverText(stack, tooltipAdder::accept);
     }
-    //?} else {
+    *///?} else {
+    //? if >=1.20.5 {
     /*@Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
                                java.util.@NotNull List<Component> tooltipComponents, @NotNull TooltipFlag type) {
         bren$appendHoverText(stack, tooltipComponents::add);
     }
-    *///?}
+    *///?} else {
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, net.minecraft.world.level.Level level,
+                               java.util.@NotNull List<Component> tooltipComponents, @NotNull TooltipFlag type) {
+        bren$appendHoverText(stack, tooltipComponents::add);
+    }
+    //?}
+    //?}
 
     private void bren$appendHoverText(ItemStack stack, java.util.function.Consumer<Component> tooltipAdder) {
         tooltipAdder.accept(Component.translatable("item.bren.grappling_hook.desc").withStyle(net.minecraft.ChatFormatting.GRAY));
@@ -361,38 +355,24 @@ public class GrapplingHookItem extends Item {
     
     // 气体数据存储方法
     private static void setGas(ItemStack stack, int gas) {
-        var customData = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
-            net.minecraft.world.item.component.CustomData.EMPTY);
-        var nbt = customData.copyTag();
+        var nbt = GunApiCompat.getTag(stack);
         nbt.putInt(GAS_KEY, gas);
-        stack.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
-            net.minecraft.world.item.component.CustomData.of(nbt));
+        GunApiCompat.setTag(stack, nbt);
     }
-    
+
     private static int getGas(ItemStack stack) {
-        var customData = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA);
-        if (customData == null) {
-            return 0;
-        }
-        var nbt = customData.copyTag();
+        var nbt = GunApiCompat.getTag(stack);
         return GunApiCompat.getInt(nbt, GAS_KEY);
     }
-    
+
     private static void setPumps(ItemStack stack, int pumps) {
-        var customData = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
-            net.minecraft.world.item.component.CustomData.EMPTY);
-        var nbt = customData.copyTag();
+        var nbt = GunApiCompat.getTag(stack);
         nbt.putInt(PUMPS_KEY, pumps);
-        stack.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
-            net.minecraft.world.item.component.CustomData.of(nbt));
+        GunApiCompat.setTag(stack, nbt);
     }
-    
+
     private static int getPumps(ItemStack stack) {
-        var customData = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA);
-        if (customData == null) {
-            return 0;
-        }
-        var nbt = customData.copyTag();
+        var nbt = GunApiCompat.getTag(stack);
         return GunApiCompat.getInt(nbt, PUMPS_KEY);
     }
     
@@ -421,10 +401,10 @@ public class GrapplingHookItem extends Item {
         }
         
         //? if >=1.21.11 {
-        player.sendOverlayMessage(message);
-        //?} else {
-        /*player.displayClientMessage(message, true);
-        *///?}
+        /*player.sendOverlayMessage(message);
+        *///?} else {
+        player.displayClientMessage(message, true);
+        //?}
     }
     
     /**

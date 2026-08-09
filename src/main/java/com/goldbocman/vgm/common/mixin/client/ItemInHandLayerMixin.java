@@ -1,7 +1,7 @@
 package com.goldbocman.vgm.common.mixin.client;
 
 //? if >=1.21.11 {
-import com.mojang.blaze3d.vertex.PoseStack;
+/*import com.mojang.blaze3d.vertex.PoseStack;
 //? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -67,4 +67,4 @@ public abstract class ItemInHandLayerMixin {
         gunItem.applyCustomMatrix(player, gunState, poseStack, stack, cooldownProgress, leftHanded);
     }
 }
-//?}
+*///?}

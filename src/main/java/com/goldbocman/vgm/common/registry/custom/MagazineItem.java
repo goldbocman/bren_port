@@ -1,13 +1,11 @@
 package com.goldbocman.vgm.common.registry.custom;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.CustomData;
 import com.goldbocman.vgm.common.Bren;
 import com.goldbocman.vgm.common.utils.GunApiCompat;
 
@@ -19,7 +17,7 @@ public class MagazineItem extends Item {
         this.capacity = capacity;
     }
     //? if >=1.21.11 {
-    @Override
+    /*@Override
     public void appendHoverText(ItemStack stack, TooltipContext context, net.minecraft.world.item.component.TooltipDisplay tooltipComponent, java.util.function.Consumer<Component> tooltipAdder, TooltipFlag type) {
         ChatFormatting formatting = ChatFormatting.GRAY;
 
@@ -28,7 +26,8 @@ public class MagazineItem extends Item {
 
         super.appendHoverText(stack, context, tooltipComponent, tooltipAdder, type);
     }
-    //?} else {
+    *///?} else {
+    //? if >=1.20.5 {
     /*@Override
     public void appendHoverText(ItemStack stack, TooltipContext context, java.util.List<Component> tooltipComponents, TooltipFlag type) {
         ChatFormatting formatting = ChatFormatting.GRAY;
@@ -38,7 +37,18 @@ public class MagazineItem extends Item {
 
         super.appendHoverText(stack, context, tooltipComponents, type);
     }
-    *///?}
+    *///?} else {
+    @Override
+    public void appendHoverText(ItemStack stack, net.minecraft.world.level.Level level, java.util.List<Component> tooltipComponents, TooltipFlag type) {
+        ChatFormatting formatting = ChatFormatting.GRAY;
+
+        tooltipComponents.add(Component.translatable(String.format("desc.%s.item.magazine.content", Bren.MODID))
+                .append(Component.literal(" " + getContents(stack) + "/" + getMaxCapacity(stack))).withStyle(formatting));
+
+        super.appendHoverText(stack, level, tooltipComponents, type);
+    }
+    //?}
+    //?}
 
 
     public static int getMaxCapacity(ItemStack stack) {
@@ -68,12 +78,9 @@ public class MagazineItem extends Item {
     }
 
     public static int getContents(ItemStack itemStack) {
-        CustomData contents = itemStack.get(DataComponents.CUSTOM_DATA);
-        if (contents != null) {
-            CompoundTag nbt = contents.copyTag();
-            if (nbt != null && nbt.contains("Contents")) {
-                return GunApiCompat.getInt(nbt, "Contents");
-            }
+        CompoundTag nbt = GunApiCompat.getTag(itemStack);
+        if (nbt.contains("Contents")) {
+            return GunApiCompat.getInt(nbt, "Contents");
         }
         return 0;
     }
@@ -97,17 +104,22 @@ public class MagazineItem extends Item {
 
 
             // 使用数据组件系统设置内容
-            var nbt = mag.getOrDefault(DataComponents.CUSTOM_DATA,
-                    CustomData.EMPTY).copyTag();
+            var nbt = GunApiCompat.getTag(mag);
             nbt.putInt("Contents", newContents);
-            mag.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
+            GunApiCompat.setTag(mag, nbt);
 
-            // Keep the HAS_AMMO component synchronized with the actual ammunition quantity, driving the full/empty texture switching.
-            if (newContents > 0) {
+            // Keep the HAS_AMMO component synchronized with the actual ammunition quantity, driving
+            // the full/empty texture switching. HAS_AMMO doesn't exist before 1.20.5 and is only read
+            // for display on >=1.21.11 anyway (<1.21.11 reads the same NBT above directly via
+            // LegacyItemPropertiesAccessor - see claude/gun-rendering.md), so this is a real no-op on
+            // 1.20.1, not a partial reimplementation.
+            //? if >=1.20.5 {
+            /*if (newContents > 0) {
                 mag.set(com.goldbocman.vgm.common.registry.DataComponentReg.HAS_AMMO, true);
             } else {
                 mag.remove(com.goldbocman.vgm.common.registry.DataComponentReg.HAS_AMMO);
             }
+            *///?}
 
             // 返回实际填充的子弹数量
             return newContents - original;

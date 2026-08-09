@@ -5,16 +5,24 @@ import net.minecraft.world.item.AxeItem;
 public class FireAxeItem extends AxeItem {
 
     //? if >=1.21.11 {
-    public FireAxeItem(net.minecraft.world.item.ToolMaterial toolMaterial, float f, float g, Properties properties) {
+    /*public FireAxeItem(net.minecraft.world.item.ToolMaterial toolMaterial, float f, float g, Properties properties) {
         super(toolMaterial, f, g, properties);
     }
-    //?} else {
+    *///?} else {
+    //? if >=1.20.5 {
     /*// 1.21.1's AxeItem(Tier, Properties) has no separate attack-damage/speed override - f/g are kept
     // in the signature for API parity but unused, since this item is currently unregistered anyway.
     public FireAxeItem(net.minecraft.world.item.Tier tier, float f, float g, Properties properties) {
         super(tier, properties);
     }
-    *///?}
+    *///?} else {
+    // 1.20.1's AxeItem constructor is (Tier, float, float, Properties) again - confirmed via javap -
+    // so f/g are actually used here, unlike the 1.21.1 branch above.
+    public FireAxeItem(net.minecraft.world.item.Tier tier, float f, float g, Properties properties) {
+        super(tier, f, g, properties);
+    }
+    //?}
+    //?}
 
     public FireAxeItem(Properties properties) {
         this(VanillaToolMaterials.NETHERITE, 6.0F, -3.0F, properties);

@@ -1,19 +1,29 @@
 package com.goldbocman.vgm.common.registry;
 
 //? if fabric {
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+//? if >=1.20.5 {
+/*import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+*///?}
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 //?}
-import net.minecraft.network.RegistryFriendlyByteBuf;
+//? if >=1.20.5 {
+/*import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
+*///?} else {
+import net.minecraft.network.FriendlyByteBuf;
+//?}
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import com.goldbocman.vgm.common.Bren;
+import com.goldbocman.vgm.common.entity.IGunUser;
 import com.goldbocman.vgm.common.registry.custom.MagazineItem;
 import com.goldbocman.vgm.common.registry.custom.types.GunItem;
+import com.goldbocman.vgm.common.registry.custom.types.GunWithMagItem;
+import com.goldbocman.vgm.common.utils.GunApiCompat;
+import com.goldbocman.vgm.common.utils.GunHelper;
 import com.goldbocman.vgm.common.utils.GunUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -21,17 +31,36 @@ import org.slf4j.LoggerFactory;
 
 public class NetworkReg {
     private static final Logger LOGGER = LoggerFactory.getLogger("Bren/NetworkReg");
-    
-    public static final CustomPacketPayload.Type<ReloadPayload> RELOAD_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "reload"));
-    public static final CustomPacketPayload.Type<RecoilPayload> RECOIL_CLIENT_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "recoil_client"));
-    public static final CustomPacketPayload.Type<ShootClientPayload> SHOOT_CLIENT_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "shoot_client"));
-    public static final CustomPacketPayload.Type<ShootPayload> SHOOT_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "shoot"));
-    public static final CustomPacketPayload.Type<ShootAnimationPayload> SHOOT_ANIMATION_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "shoot_animation"));
-    public static final CustomPacketPayload.Type<ItemComponentSyncPayload> ITEM_COMPONENT_SYNC_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "item_component_sync"));
-    public static final CustomPacketPayload.Type<GunStatePayload> GUN_STATE_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "gun_state"));
-    // 添加新的射击粒子效果数据包（S2C）
-    public static final CustomPacketPayload.Type<ShootParticlePayload> SHOOT_PARTICLE_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "shoot_particle"));
-//    public static final CustomPacketPayload.Type<GrenadeLeftClickPayload> GRENADE_LEFT_CLICK_PACKET_ID = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Bren.MODID, "grenade_left_click"));
+
+    // CustomPacketPayload.Type doesn't exist before 1.20.5 - old Fabric networking (and the loaders
+    // that only ever targeted <1.20.5) identify channels by a plain ResourceLocation instead. Every
+    // ID constant below keeps the same name across both branches so every call site elsewhere in the
+    // mod (NeoForgePayloads, ForgeNetwork, ClientNetworkReg, this file's own registerAllPackets())
+    // compiles unchanged regardless of version - only the constant's own type differs.
+    //? if >=1.20.5 {
+    /*public static final CustomPacketPayload.Type<ReloadPayload> RELOAD_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "reload"));
+    public static final CustomPacketPayload.Type<CancelReloadPayload> CANCEL_RELOAD_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "cancel_reload"));
+    public static final CustomPacketPayload.Type<RecoilPayload> RECOIL_CLIENT_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "recoil_client"));
+    public static final CustomPacketPayload.Type<ShootClientPayload> SHOOT_CLIENT_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot_client"));
+    public static final CustomPacketPayload.Type<ShootPayload> SHOOT_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot"));
+    public static final CustomPacketPayload.Type<ShootAnimationPayload> SHOOT_ANIMATION_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot_animation"));
+    public static final CustomPacketPayload.Type<ItemComponentSyncPayload> ITEM_COMPONENT_SYNC_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "item_component_sync"));
+    public static final CustomPacketPayload.Type<GunStatePayload> GUN_STATE_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "gun_state"));
+    public static final CustomPacketPayload.Type<ShootParticlePayload> SHOOT_PARTICLE_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot_particle"));
+    *///?} else {
+    // ResourceLocation.fromNamespaceAndPath doesn't exist before 1.21 either (confirmed via javap -
+    // only the old two-arg constructor does) - TemplateModCommon.id(...) already bridges exactly
+    // this gap.
+    public static final ResourceLocation RELOAD_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "reload");
+    public static final ResourceLocation CANCEL_RELOAD_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "cancel_reload");
+    public static final ResourceLocation RECOIL_CLIENT_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "recoil_client");
+    public static final ResourceLocation SHOOT_CLIENT_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot_client");
+    public static final ResourceLocation SHOOT_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot");
+    public static final ResourceLocation SHOOT_ANIMATION_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot_animation");
+    public static final ResourceLocation ITEM_COMPONENT_SYNC_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "item_component_sync");
+    public static final ResourceLocation GUN_STATE_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "gun_state");
+    public static final ResourceLocation SHOOT_PARTICLE_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot_particle");
+    //?}
 
     private static void handleReload(ServerPlayer player) {
         MinecraftServer server = player.level().getServer();
@@ -42,13 +71,40 @@ public class NetworkReg {
 
                 if (stack.getItem() instanceof GunItem gunItem) {
                     gunItem.onReload(player);
-                    // If onReload started a reload, tell all nearby clients
-//                        if (player instanceof IGunUser gunUser &&
-//                                gunUser.bren_1_21_1$getGunState() == GunHelper.GunStates.RELOADING) {
-//                            broadcastGunState(player, true);
-//                        }
                 } else if (stack.getItem() instanceof MagazineItem) {
                     GunUtils.fillMagazine(stack, player);
+                }
+            });
+        }
+    }
+
+    // Aborts an in-progress reload (hold-R-to-reload, release-early-to-cancel - see
+    // KeyBindingReg.consumeReloadClicks). Runs entirely upstream of any gun-specific reloadTick()
+    // completion logic, so it only needs to unwind the shared IGunUser state - no per-gun-type
+    // dispatch needed beyond the BulletOnlyGun exclusion below. Guarding on gunState==RELOADING makes
+    // this self-safe: if the cancel packet arrives after the reload already finished naturally
+    // (network latency), it's a no-op. Uses the tracked reloadingGun field rather than the player's
+    // current mainhand item so this stays correct even if the player already swapped away from the
+    // reloading gun before releasing R.
+    private static void handleCancelReload(ServerPlayer player) {
+        MinecraftServer server = player.level().getServer();
+
+        if (server != null) {
+            server.execute(() -> {
+                IGunUser gunUser = (IGunUser) player;
+                if (gunUser.bren_1_21_1$getGunState().equals(GunHelper.GunStates.RELOADING)) {
+                    ItemStack reloadingGun = gunUser.bren_1_21_1$getReloadingGun();
+                    // BulletOnlyGun (revolver/shotgun/air gun/...) reloads are meant to be
+                    // spam-clickable - a single bullet insertion gated only by the existing cooldown,
+                    // not cancellable. Only magazine-swap guns (GunWithMagItem: rifle/auto_gun/flare
+                    // gun/machine gun), whose reload takes a full ~20 ticks, honor cancel-on-release.
+                    if (reloadingGun.isEmpty() || !(reloadingGun.getItem() instanceof GunWithMagItem)) {
+                        return;
+                    }
+                    GunApiCompat.removeCooldown(player.getCooldowns(), reloadingGun);
+                    gunUser.bren_1_21_1$setGunState(GunHelper.GunStates.NORMAL);
+                    gunUser.bren_1_21_1$setCanReload(true);
+                    gunUser.bren_1_21_1$setReloadingGun(ItemStack.EMPTY);
                 }
             });
         }
@@ -64,12 +120,13 @@ public class NetworkReg {
     }
 
     //? if fabric {
-    public static void registerAllPackets() {
+    //? if >=1.20.5 {
+    /*public static void registerAllPackets() {
         LOGGER.info("Registering all network packets");
 
         // 注册所有数据包类型
         //? if >=1.21.11 {
-        // 客户端接收的数据包（S2C - Server to Client）
+        /^// 客户端接收的数据包（S2C - Server to Client）
         PayloadTypeRegistry.clientboundPlay().register(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC);
         PayloadTypeRegistry.clientboundPlay().register(SHOOT_CLIENT_PACKET_ID, ShootClientPayload.PACKET_CODEC);
         PayloadTypeRegistry.clientboundPlay().register(SHOOT_ANIMATION_PACKET_ID, ShootAnimationPayload.PACKET_CODEC);
@@ -78,9 +135,10 @@ public class NetworkReg {
         PayloadTypeRegistry.clientboundPlay().register(GUN_STATE_PACKET_ID, GunStatePayload.PACKET_CODEC);
         // 服务器端接收的数据包（C2S - Client to Server）
         PayloadTypeRegistry.serverboundPlay().register(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(CANCEL_RELOAD_PACKET_ID, CancelReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.serverboundPlay().register(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC);
-        //?} else {
-        /*// Pre-1.21.11 fabric-networking-api-v1 names these playS2C()/playC2S() instead of the newer
+        ^///?} else {
+        // Pre-1.21.11 fabric-networking-api-v1 names these playS2C()/playC2S() instead of the newer
         // clientboundPlay()/serverboundPlay().
         PayloadTypeRegistry.playS2C().register(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC);
         PayloadTypeRegistry.playS2C().register(SHOOT_CLIENT_PACKET_ID, ShootClientPayload.PACKET_CODEC);
@@ -89,36 +147,48 @@ public class NetworkReg {
         PayloadTypeRegistry.playS2C().register(ITEM_COMPONENT_SYNC_PACKET_ID, ItemComponentSyncPayload.PACKET_CODEC);
         PayloadTypeRegistry.playS2C().register(GUN_STATE_PACKET_ID, GunStatePayload.PACKET_CODEC);
         PayloadTypeRegistry.playC2S().register(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC);
+        PayloadTypeRegistry.playC2S().register(CANCEL_RELOAD_PACKET_ID, CancelReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.playC2S().register(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC);
-        *///?}
-//        PayloadTypeRegistry.serverboundPlay().register(GRENADE_LEFT_CLICK_PACKET_ID, GrenadeLeftClickPayload.PACKET_CODEC);
+        //?}
 
         ServerPlayNetworking.registerGlobalReceiver(RELOAD_PACKET_ID, (payload, context) -> handleReload(context.player()));
-
+        ServerPlayNetworking.registerGlobalReceiver(CANCEL_RELOAD_PACKET_ID, (payload, context) -> handleCancelReload(context.player()));
         ServerPlayNetworking.registerGlobalReceiver(SHOOT_PACKET_ID, (payload, context) -> handleShoot(context.player()));
-
-//        ServerPlayNetworking.registerGlobalReceiver(GRENADE_LEFT_CLICK_PACKET_ID, (payload, context) -> {
-//            ServerPlayer player = context.player();
-//            MinecraftServer server = player.level().getServer();
-//
-//            if (server != null) {
-//                server.execute(() -> {
-//                    ItemStack stack = player.getMainHandItem();
-//                    com.goldbocman.vgm.common.registry.custom.types.GrenadeItem.onLeftClick(player, stack);
-//                });
-//            }
-//        });
 
         LOGGER.info("All network packets registered successfully");
     }
+    *///?} else {
+    // 1.20.1 predates CustomPacketPayload/StreamCodec/the payload-type-registry system entirely -
+    // channels are identified by a bare ResourceLocation and receivers get the raw FriendlyByteBuf
+    // directly (confirmed via javap against the real fabric-networking-api-v1 1.3.15+0caff8d077 jar,
+    // the exact submodule version fabric-api 0.92.11+1.20.1 pins). Reuses the same
+    // handleReload/handleShoot methods as every other version - only the registration mechanics differ.
+    public static void registerAllPackets() {
+        LOGGER.info("Registering all network packets (legacy pre-1.20.5 networking)");
+
+        ServerPlayNetworking.registerGlobalReceiver(RELOAD_PACKET_ID, (server, player, handler, buf, sender) -> handleReload(player));
+        ServerPlayNetworking.registerGlobalReceiver(CANCEL_RELOAD_PACKET_ID, (server, player, handler, buf, sender) -> handleCancelReload(player));
+        ServerPlayNetworking.registerGlobalReceiver(SHOOT_PACKET_ID, (server, player, handler, buf, sender) -> handleShoot(player));
+
+        LOGGER.info("All network packets registered successfully");
+    }
+    //?}
     //?}
     //? if neoforge
     //public static void registerAllPackets() {} // NeoForge registers via NeoForgePayloads (RegisterPayloadHandlersEvent) below instead.
     //? if forge
     //public static void registerAllPackets() {} // Forge registers via ForgeNetwork's static CHANNEL field below instead.
-    
+
+    // Every payload record below keeps the same name/fields/constructor across both branches (so the
+    // ~7 call sites elsewhere in the mod that do `new NetworkReg.XPayload(...)` compile unchanged
+    // regardless of version) and keeps read(buf)/write(buf) methods with the same names too (so
+    // registerAllPackets()/NetworkUtils's send helpers can call them uniformly) - only the buffer
+    // type (RegistryFriendlyByteBuf vs plain FriendlyByteBuf, the latter being all that exists
+    // pre-1.20.5) and whether the record implements CustomPacketPayload differ.
+
     // 重装包数据类
-    public record ReloadPayload() implements CustomPacketPayload {
+    //? if >=1.20.5 {
+    /*public record ReloadPayload() implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, ReloadPayload> PACKET_CODEC = StreamCodec.unit(new ReloadPayload());
 
         @Override
@@ -126,9 +196,42 @@ public class NetworkReg {
             return RELOAD_PACKET_ID;
         }
     }
-    
+    *///?} else {
+    public record ReloadPayload() {
+        public static ReloadPayload read(FriendlyByteBuf buf) {
+            return new ReloadPayload();
+        }
+
+        public void write(FriendlyByteBuf buf) {
+        }
+    }
+    //?}
+
+    // Sent when the reload key is released before the reload cooldown finishes - see
+    // KeyBindingReg.consumeReloadClicks / NetworkReg.handleCancelReload.
+    //? if >=1.20.5 {
+    /*public record CancelReloadPayload() implements CustomPacketPayload {
+        public static final StreamCodec<RegistryFriendlyByteBuf, CancelReloadPayload> PACKET_CODEC = StreamCodec.unit(new CancelReloadPayload());
+
+        @Override
+        public @NotNull Type<? extends CustomPacketPayload> type() {
+            return CANCEL_RELOAD_PACKET_ID;
+        }
+    }
+    *///?} else {
+    public record CancelReloadPayload() {
+        public static CancelReloadPayload read(FriendlyByteBuf buf) {
+            return new CancelReloadPayload();
+        }
+
+        public void write(FriendlyByteBuf buf) {
+        }
+    }
+    //?}
+
     // 后坐力数据包
-    public record RecoilPayload(float recoil) implements CustomPacketPayload {
+    //? if >=1.20.5 {
+    /*public record RecoilPayload(float recoil) implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, RecoilPayload> PACKET_CODEC = StreamCodec.ofMember(
             RecoilPayload::write,
             RecoilPayload::read
@@ -147,12 +250,24 @@ public class NetworkReg {
             return RECOIL_CLIENT_PACKET_ID;
         }
     }
+    *///?} else {
+    public record RecoilPayload(float recoil) {
+        public static RecoilPayload read(FriendlyByteBuf buf) {
+            return new RecoilPayload(buf.readFloat());
+        }
+
+        public void write(FriendlyByteBuf buf) {
+            buf.writeFloat(recoil);
+        }
+    }
+    //?}
 
     // Syncs the owning player's GunHelper.GunStates (NORMAL/RELOADING) to their own client - the
     // state itself only ever changes server-side (onReload/reloadTick), and without this the
     // client's IGunUser copy never leaves NORMAL, so applyCustomMatrix's reload-specific animation
     // branch was permanently dead code.
-    public record GunStatePayload(int state) implements CustomPacketPayload {
+    //? if >=1.20.5 {
+    /*public record GunStatePayload(int state) implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, GunStatePayload> PACKET_CODEC = StreamCodec.ofMember(
             GunStatePayload::write,
             GunStatePayload::read
@@ -171,9 +286,21 @@ public class NetworkReg {
             return GUN_STATE_PACKET_ID;
         }
     }
+    *///?} else {
+    public record GunStatePayload(int state) {
+        public static GunStatePayload read(FriendlyByteBuf buf) {
+            return new GunStatePayload(buf.readVarInt());
+        }
+
+        public void write(FriendlyByteBuf buf) {
+            buf.writeVarInt(state);
+        }
+    }
+    //?}
 
     // 客户端射击声音数据包
-    public record ShootClientPayload(float volume) implements CustomPacketPayload {
+    //? if >=1.20.5 {
+    /*public record ShootClientPayload(float volume) implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, ShootClientPayload> PACKET_CODEC = StreamCodec.ofMember(
             ShootClientPayload::write,
             ShootClientPayload::read
@@ -192,9 +319,21 @@ public class NetworkReg {
             return SHOOT_CLIENT_PACKET_ID;
         }
     }
-    
+    *///?} else {
+    public record ShootClientPayload(float volume) {
+        public static ShootClientPayload read(FriendlyByteBuf buf) {
+            return new ShootClientPayload(buf.readFloat());
+        }
+
+        public void write(FriendlyByteBuf buf) {
+            buf.writeFloat(volume);
+        }
+    }
+    //?}
+
     // 射击动画数据包（无数据）
-    public record ShootAnimationPayload() implements CustomPacketPayload {
+    //? if >=1.20.5 {
+    /*public record ShootAnimationPayload() implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, ShootAnimationPayload> PACKET_CODEC = StreamCodec.unit(new ShootAnimationPayload());
 
         @Override
@@ -202,10 +341,21 @@ public class NetworkReg {
             return SHOOT_ANIMATION_PACKET_ID;
         }
     }
-    
+    *///?} else {
+    public record ShootAnimationPayload() {
+        public static ShootAnimationPayload read(FriendlyByteBuf buf) {
+            return new ShootAnimationPayload();
+        }
+
+        public void write(FriendlyByteBuf buf) {
+        }
+    }
+    //?}
+
     // 射击粒子效果数据包
-    public record ShootPayload(float originX, float originY, float originZ, 
-                              float directionX, float directionY, float directionZ, 
+    //? if >=1.20.5 {
+    /*public record ShootPayload(float originX, float originY, float originZ,
+                              float directionX, float directionY, float directionZ,
                               boolean casing) implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, ShootPayload> PACKET_CODEC = StreamCodec.ofMember(
             ShootPayload::write,
@@ -235,16 +385,40 @@ public class NetworkReg {
             return SHOOT_PACKET_ID;
         }
     }
-    
+    *///?} else {
+    public record ShootPayload(float originX, float originY, float originZ,
+                              float directionX, float directionY, float directionZ,
+                              boolean casing) {
+        public static ShootPayload read(FriendlyByteBuf buf) {
+            return new ShootPayload(
+                buf.readFloat(), buf.readFloat(), buf.readFloat(),
+                buf.readFloat(), buf.readFloat(), buf.readFloat(),
+                buf.readBoolean()
+            );
+        }
+
+        public void write(FriendlyByteBuf buf) {
+            buf.writeFloat(originX);
+            buf.writeFloat(originY);
+            buf.writeFloat(originZ);
+            buf.writeFloat(directionX);
+            buf.writeFloat(directionY);
+            buf.writeFloat(directionZ);
+            buf.writeBoolean(casing);
+        }
+    }
+    //?}
+
     // 射击粒子效果数据包（S2C）
-    public record ShootParticlePayload(float originX, float originY, float originZ, 
-                                      float directionX, float directionY, float directionZ, 
+    //? if >=1.20.5 {
+    /*public record ShootParticlePayload(float originX, float originY, float originZ,
+                                      float directionX, float directionY, float directionZ,
                                       boolean casing) implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, ShootParticlePayload> PACKET_CODEC = StreamCodec.ofMember(
             ShootParticlePayload::write,
             ShootParticlePayload::read
         );
-    
+
         public static ShootParticlePayload read(RegistryFriendlyByteBuf buf) {
             return new ShootParticlePayload(
                 buf.readFloat(), buf.readFloat(), buf.readFloat(),
@@ -252,7 +426,7 @@ public class NetworkReg {
                 buf.readBoolean()
             );
         }
-    
+
         public void write(RegistryFriendlyByteBuf buf) {
             buf.writeFloat(originX);
             buf.writeFloat(originY);
@@ -262,13 +436,38 @@ public class NetworkReg {
             buf.writeFloat(directionZ);
             buf.writeBoolean(casing);
         }
-    
+
         @Override
         public @NotNull Type<? extends CustomPacketPayload> type() {
             return SHOOT_PARTICLE_PACKET_ID;
         }
     }
-    public record ItemComponentSyncPayload(int slot, boolean hasMagazine) implements CustomPacketPayload {
+    *///?} else {
+    public record ShootParticlePayload(float originX, float originY, float originZ,
+                                      float directionX, float directionY, float directionZ,
+                                      boolean casing) {
+        public static ShootParticlePayload read(FriendlyByteBuf buf) {
+            return new ShootParticlePayload(
+                buf.readFloat(), buf.readFloat(), buf.readFloat(),
+                buf.readFloat(), buf.readFloat(), buf.readFloat(),
+                buf.readBoolean()
+            );
+        }
+
+        public void write(FriendlyByteBuf buf) {
+            buf.writeFloat(originX);
+            buf.writeFloat(originY);
+            buf.writeFloat(originZ);
+            buf.writeFloat(directionX);
+            buf.writeFloat(directionY);
+            buf.writeFloat(directionZ);
+            buf.writeBoolean(casing);
+        }
+    }
+    //?}
+
+    //? if >=1.20.5 {
+    /*public record ItemComponentSyncPayload(int slot, boolean hasMagazine) implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, ItemComponentSyncPayload> PACKET_CODEC = StreamCodec.ofMember(
                 ItemComponentSyncPayload::write,
                 ItemComponentSyncPayload::read
@@ -290,26 +489,27 @@ public class NetworkReg {
             return ITEM_COMPONENT_SYNC_PACKET_ID;
         }
     }
+    *///?} else {
+    public record ItemComponentSyncPayload(int slot, boolean hasMagazine) {
+        public static ItemComponentSyncPayload read(FriendlyByteBuf buf) {
+            int slot = buf.readInt();
+            boolean hasMagazine = buf.readBoolean();
+            return new ItemComponentSyncPayload(slot, hasMagazine);
+        }
 
-//    public record GrenadeLeftClickPayload() implements CustomPacketPayload, com.goldbocman.vgm.common.registry.GrenadeLeftClickPayload {
-//        public static final StreamCodec<RegistryFriendlyByteBuf, GrenadeLeftClickPayload> PACKET_CODEC = StreamCodec.unit(new GrenadeLeftClickPayload());
-//
-//        @Override
-//        public void write(RegistryFriendlyByteBuf buf) {
-//        }
-//
-//        @Override
-//        public @NotNull Type<? extends CustomPacketPayload> type() {
-//            return GRENADE_LEFT_CLICK_PACKET_ID;
-//        }
-//    }
+        public void write(FriendlyByteBuf buf) {
+            buf.writeInt(slot);
+            buf.writeBoolean(hasMagazine);
+        }
+    }
+    //?}
 
     //? if neoforge {
     /*//? if >=1.21.9 {
-    @net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID)
-    //?} else {
-    /^@net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
-    ^///?}
+    /^@net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID)
+    ^///?} else {
+    @net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
+    //?}
     public static class NeoForgePayloads {
         @net.neoforged.bus.api.SubscribeEvent
         public static void register(net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent event) {
@@ -320,6 +520,8 @@ public class NetworkReg {
             // 服务器端接收的数据包（C2S - Client to Server）
             registrar.playToServer(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC,
                     (payload, context) -> handleReload((net.minecraft.server.level.ServerPlayer) context.player()));
+            registrar.playToServer(CANCEL_RELOAD_PACKET_ID, CancelReloadPayload.PACKET_CODEC,
+                    (payload, context) -> handleCancelReload((net.minecraft.server.level.ServerPlayer) context.player()));
             registrar.playToServer(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC,
                     (payload, context) -> handleShoot((net.minecraft.server.level.ServerPlayer) context.player()));
 
@@ -350,12 +552,13 @@ public class NetworkReg {
     //? if forge {
     /*public static class ForgeNetwork {
         public static final net.minecraftforge.network.Channel<CustomPacketPayload> CHANNEL = net.minecraftforge.network.ChannelBuilder
-                .named(Identifier.fromNamespaceAndPath(Bren.MODID, "main"))
+                .named(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "main"))
                 .networkProtocolVersion(1)
                 .payloadChannel()
                 .play()
                 .serverbound()
                     .addMain(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC, (payload, ctx) -> handleReload(ctx.getSender()))
+                    .addMain(CANCEL_RELOAD_PACKET_ID, CancelReloadPayload.PACKET_CODEC, (payload, ctx) -> handleCancelReload(ctx.getSender()))
                     .addMain(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC, (payload, ctx) -> handleShoot(ctx.getSender()))
                 .clientbound()
                     .addMain(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC,

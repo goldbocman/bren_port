@@ -1,17 +1,17 @@
 package com.goldbocman.vgm.client;
 
 //? if >=1.21.11 {
-import net.minecraft.client.DeltaTracker;
+/*import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.state.gui.GuiRenderState;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import com.goldbocman.vgm.common.Bren;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HudOverlay {
     private static final Logger LOGGER = LoggerFactory.getLogger("Bren/HudOverlay");
-    private static final Identifier BULLET_ICONS = Identifier.fromNamespaceAndPath(Bren.MODID,
+    private static final ResourceLocation BULLET_ICONS = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID,
             "textures/gui/bullet_icons.png");
 
     public void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, int currentAmmo, int maxAmmo, int uOffset) {
@@ -60,4 +60,4 @@ public class HudOverlay {
         }
     }
 }
-//?}
+*///?}

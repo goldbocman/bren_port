@@ -1,0 +1,52 @@
+{
+  "parent": "vgm:adventure/auto_loader_contraption",
+  "criteria": {
+    "rifle": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "vgm:rifle"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "rifle_netherite": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "vgm:netherite_rifle"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.vgm.adventure.rifle.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "vgm:rifle",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.vgm.adventure.rifle.title"
+    }
+  },
+  "requirements": [
+    [
+      "rifle",
+      "rifle_netherite"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

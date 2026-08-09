@@ -11,10 +11,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import com.goldbocman.vgm.common.registry.SoundReg;
 //? if >=26.1 {
-import org.jspecify.annotations.Nullable;
-//?} else {
-/*import org.jetbrains.annotations.Nullable;
-*///?}
+/*import org.jspecify.annotations.Nullable;
+*///?} else {
+import org.jetbrains.annotations.Nullable;
+//?}
 
 public class CasingParticle extends BaseAshSmokeParticle {
 
@@ -46,10 +46,10 @@ public class CasingParticle extends BaseAshSmokeParticle {
 
     public ParticleRenderType getType() {
         //? if >=1.21.11 {
-        return ParticleRenderType.SINGLE_QUADS;
-        //?} else {
-        /*return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
-        *///?}
+        /*return ParticleRenderType.SINGLE_QUADS;
+        *///?} else {
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+        //?}
     }
 
     //? if fabric
@@ -62,15 +62,15 @@ public class CasingParticle extends BaseAshSmokeParticle {
         }
         
         //? if >=1.21.11 {
-        @Override
+        /*@Override
         public @Nullable Particle createParticle(ParticleOptions parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, RandomSource random) {
             return new CasingParticle(world, x, y, z, velocityX, velocityY, velocityZ, .75F, this.spriteProvider);
         }
-        //?} else {
-        /*@Override
+        *///?} else {
+        @Override
         public @Nullable Particle createParticle(ParticleOptions parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             return new CasingParticle(world, x, y, z, velocityX, velocityY, velocityZ, .75F, this.spriteProvider);
         }
-        *///?}
+        //?}
     }
 }

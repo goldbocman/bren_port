@@ -7,10 +7,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 //? if >=1.21.11 {
-import net.minecraft.world.item.ToolMaterial;
-//?} else {
-/*import net.minecraft.world.item.Tier;
-*///?}
+/*import net.minecraft.world.item.ToolMaterial;
+*///?} else {
+import net.minecraft.world.item.Tier;
+//?}
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -33,39 +33,39 @@ public class ExplosiveSpearItem extends Item {
      * The tier of this spear.
      */
     //? if >=1.21.11 {
-    private final ToolMaterial tier;
-    //?} else {
-    /*private final Tier tier;
-    *///?}
+    /*private final ToolMaterial tier;
+    *///?} else {
+    private final Tier tier;
+    //?}
 
 
     //? if >=1.21.11 {
-    public ExplosiveSpearItem(ToolMaterial tier, float explosionPower, Properties properties) {
-    //?} else {
-    /*public ExplosiveSpearItem(Tier tier, float explosionPower, Properties properties) {
-    *///?}
+    /*public ExplosiveSpearItem(ToolMaterial tier, float explosionPower, Properties properties) {
+    *///?} else {
+    public ExplosiveSpearItem(Tier tier, float explosionPower, Properties properties) {
+    //?}
         super(properties);
         this.tier = tier;
         this.explosionPower = explosionPower;
     }
 
     //? if >=1.21.11 {
-    @Override
+    /*@Override
     public void hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
         // 所有攻击都触发爆炸效果
         triggerExplosion(target.level(), target.position(), attacker);
 
         super.hurtEnemy(stack, target, attacker);
     }
-    //?} else {
-    /*@Override
+    *///?} else {
+    @Override
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
         // 所有攻击都触发爆炸效果
         triggerExplosion(target.level(), target.position(), attacker);
 
         return super.hurtEnemy(stack, target, attacker);
     }
-    *///?}
+    //?}
 
     private void triggerExplosion(Level level, Vec3 position, @Nullable LivingEntity attacker) {
         if (level.isClientSide()) return;
@@ -98,12 +98,12 @@ public class ExplosiveSpearItem extends Item {
 
 
     //? if >=1.21.11 {
-    public ToolMaterial getTier() {
+    /*public ToolMaterial getTier() {
         return tier;
     }
-    //?} else {
-    /*public Tier getTier() {
+    *///?} else {
+    public Tier getTier() {
         return tier;
     }
-    *///?}
+    //?}
 }

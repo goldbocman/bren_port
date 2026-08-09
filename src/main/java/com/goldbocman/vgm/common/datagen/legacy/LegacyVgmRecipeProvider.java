@@ -1,7 +1,8 @@
 package com.goldbocman.vgm.common.datagen.legacy;
 
-//? if <1.21.11 {
-/*import net.minecraft.core.HolderLookup;
+//? if >=1.20.5 {
+/*//? if <1.21.11 {
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -9,7 +10,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
@@ -160,7 +161,8 @@ public class LegacyVgmRecipeProvider extends RecipeProvider {
                         RecipeCategory.COMBAT,
                         result)
                 .unlocks(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT))
-                .save(output, Identifier.fromNamespaceAndPath(Bren.MODID, path));
+                .save(output, com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, path));
     }
 }
+//?}
 *///?}

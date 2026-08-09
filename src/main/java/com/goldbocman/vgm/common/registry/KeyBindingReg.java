@@ -4,10 +4,10 @@ import com.mojang.blaze3d.platform.InputConstants;
 //? if fabric {
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 //? if >=26.1 {
-import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
-//?} else {
-/*import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-*///?}
+/*import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+*///?} else {
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+//?}
 //?}
 import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
@@ -22,18 +22,28 @@ public class KeyBindingReg {
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_R,
             //? if >=1.21.11 {
-            KeyMapping.Category.GAMEPLAY
-            //?} else {
-            /*// Pre-1.21.11 KeyMapping takes the category as a plain translation-key string instead of
+            /*KeyMapping.Category.GAMEPLAY
+            *///?} else {
+            // Pre-1.21.11 KeyMapping takes the category as a plain translation-key string instead of
             // the newer Category enum - "key.categories.gameplay" is vanilla's own gameplay category.
             "key.categories.gameplay"
-            *///?}
+            //?}
     );
 
+    // Hold-to-reload (crossbow-style): press starts the reload, release before it finishes cancels it
+    // (magazine-swap guns only - see NetworkReg.handleCancelReload for the BulletOnlyGun exclusion).
+    // Edge-detected off isDown() rather than consumeClick(), since we need both the press AND the
+    // release transition, not just "was pressed since last tick".
+    private static boolean reloadKeyWasDown = false;
+
     static void consumeReloadClicks() {
-        while (reloadKey.consumeClick()) {
+        boolean isDown = reloadKey.isDown();
+        if (isDown && !reloadKeyWasDown) {
             NetworkUtils.sendToServer(new NetworkReg.ReloadPayload());
+        } else if (!isDown && reloadKeyWasDown) {
+            NetworkUtils.sendToServer(new NetworkReg.CancelReloadPayload());
         }
+        reloadKeyWasDown = isDown;
     }
 
     //? if fabric {
@@ -43,10 +53,10 @@ public class KeyBindingReg {
 
     public static void reg() {
         //? if >=26.1 {
-        reloadKey = KeyMappingHelper.registerKeyMapping(reloadKey);
-        //?} else {
-        /*reloadKey = KeyBindingHelper.registerKeyBinding(reloadKey);
-        *///?}
+        /*reloadKey = KeyMappingHelper.registerKeyMapping(reloadKey);
+        *///?} else {
+        reloadKey = KeyBindingHelper.registerKeyBinding(reloadKey);
+        //?}
         registerKeyInputs();
     }
     //?}
@@ -55,10 +65,10 @@ public class KeyBindingReg {
 
     //? if neoforge {
     /*//? if >=1.21.9 {
-    @net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, value = net.neoforged.api.distmarker.Dist.CLIENT)
-    //?} else {
-    /^@net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, value = net.neoforged.api.distmarker.Dist.CLIENT, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
-    ^///?}
+    /^@net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, value = net.neoforged.api.distmarker.Dist.CLIENT)
+    ^///?} else {
+    @net.neoforged.fml.common.EventBusSubscriber(modid = Bren.MODID, value = net.neoforged.api.distmarker.Dist.CLIENT, bus = net.neoforged.fml.common.EventBusSubscriber.Bus.MOD)
+    //?}
     public static class NeoForgeKeyBindings {
         @net.neoforged.bus.api.SubscribeEvent
         public static void register(net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent event) {

@@ -33,24 +33,17 @@ public abstract class BulletOnlyGun extends GunItem {
     @Override
     public int getContents(ItemStack stack) {
         // 修复：返回int类型而不是Optional<Integer>
-        var nbtComponent = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA);
-
-        if (nbtComponent != null) {
-            return GunApiCompat.getInt(nbtComponent.copyTag(), BULLET_COUNT_KEY);
-        } else {
-            return 0; // 默认值，直接返回int
-        }
+        var nbt = GunApiCompat.getTag(stack);
+        return GunApiCompat.getInt(nbt, BULLET_COUNT_KEY);
     }
 
     public void addContent(ItemStack stack) {
         int currentCount = getContents(stack); // 修复：直接使用int值，不需要.orElse(0)
         int newCount = Math.min(currentCount + 1, getMaxCapacity(stack)); // 修复：直接使用int值，不需要.orElse(0)
 
-        var nbt = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
-                net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
+        var nbt = GunApiCompat.getTag(stack);
         nbt.putInt(BULLET_COUNT_KEY, newCount);
-        stack.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
-                net.minecraft.world.item.component.CustomData.of(nbt));
+        GunApiCompat.setTag(stack, nbt);
     }
 
     @Override
@@ -58,11 +51,9 @@ public abstract class BulletOnlyGun extends GunItem {
         int currentCount = getContents(stack);
         int newCount = Math.max(currentCount - 1, 0);
 
-        var nbt = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
-                net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
+        var nbt = GunApiCompat.getTag(stack);
         nbt.putInt(BULLET_COUNT_KEY, newCount);
-        stack.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
-                net.minecraft.world.item.component.CustomData.of(nbt));
+        GunApiCompat.setTag(stack, nbt);
     }
 
     @Override

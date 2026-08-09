@@ -1,0 +1,52 @@
+{
+  "parent": "vgm:adventure/auto_loader_contraption",
+  "criteria": {
+    "auto_gun": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "vgm:auto_gun"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "auto_gun_netherite": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "vgm:netherite_auto_gun"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.vgm.adventure.auto_gun.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "vgm:auto_gun",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.vgm.adventure.auto_gun.title"
+    }
+  },
+  "requirements": [
+    [
+      "auto_gun",
+      "auto_gun_netherite"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

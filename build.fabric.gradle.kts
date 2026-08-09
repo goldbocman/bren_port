@@ -59,7 +59,10 @@ dependencies {
         "fabric-model-loading-api-v1",
         if (sc.current.parsed >= "26.1") "fabric-key-mapping-api-v1" else "fabric-key-binding-api-v1",
         if (sc.current.parsed >= "26.1") "fabric-creative-tab-api-v1" else "fabric-item-group-api-v1",
-        "fabric-convention-tags-v2",
+        // fabric-convention-tags-v2 doesn't exist yet at 1.20.1 (fabric-api 0.92.11+1.20.1's own
+        // settings.gradle only lists a v1) - confirmed by checking that version's actual module list
+        // on GitHub, not assumed from a version-number pattern.
+        if (sc.current.parsed >= "1.20.5") "fabric-convention-tags-v2" else "fabric-convention-tags-v1",
         "fabric-data-generation-api-v1"
     )
 }
@@ -116,6 +119,23 @@ if (sc.current.parsed < "26.2") {
     }
 }
 
+if (sc.current.parsed < "1.20.5") {
+    // 1.20.1 uses plural data pack folder names (data/vgm/recipes/, data/vgm/advancements/)
+    // instead of >=1.20.5's singular data/vgm/recipe/ and data/vgm/advancement/ - confirmed against
+    // vanilla's own 1.20.1 jar (data/minecraft/recipes/, data/minecraft/advancements/), not assumed
+    // from the >=1.21.11 schema difference above. data/vgm/recipe/*.json is already excluded by the
+    // <1.21.11 block above (1.20.1 < 1.21.11 too); this additionally drops the rest of
+    // data/vgm/advancement/ (only root.json is excluded above) since every advancement file needs
+    // the plural path here, not just the ones with schema differences - the plural-path replacements
+    // are datagen'd via the 1.20.1 VgmAdvancementProvider/Legacy1201VgmRecipeProvider branches and
+    // diff-copied into legacy-resources-1.20.1/.
+    sourceSets.main {
+        resources {
+            exclude("data/vgm/advancement/**")
+        }
+    }
+}
+
 java {
     withSourcesJar()
     targetCompatibility = requiredJava
@@ -148,7 +168,13 @@ tasks {
             register("minecraft", "mod.mc_compat")
             // 1.21.1 predates the render-state rendering rewrite, so its client mixins target
             // entirely different vanilla classes than 1.21.11+/26.2.x - see vgm.legacy.mixins.json.
-            put("mixinsConfig", if (sc.current.parsed >= "1.21.11") "vgm.mixins.json" else "vgm.legacy.mixins.json")
+            // 1.20.1 predates DeltaTracker too (see vgm.legacy1201.mixins.json), a narrower cutoff
+            // nested inside the same "legacy" tier.
+            put("mixinsConfig", when {
+                sc.current.parsed >= "1.21.11" -> "vgm.mixins.json"
+                sc.current.parsed >= "1.20.5" -> "vgm.legacy.mixins.json"
+                else -> "vgm.legacy1201.mixins.json"
+            })
         }
 
         filesMatching("fabric.mod.json") { expand(props) }
@@ -158,12 +184,22 @@ tasks {
 
         exclude("META-INF/neoforge.mods.toml", "META-INF/mods.toml")
 
-        if (sc.current.parsed < "1.21.11") {
+        // legacy-resources/ and legacy-resources-pre-26.2/ are 1.21.1-schema (singular data/vgm/recipe,
+        // data/vgm/advancement paths) - 1.20.1 needs its own plural-path schema instead (see the
+        // <1.20.5 exclude block above), so both are scoped to >=1.20.5 here. Below 1.20.5, everything
+        // needed already comes from legacy-resources-1.20.1/ (self-sufficient, including the warcrimes
+        // bare-"type"-key fix baked into the freshly datagen'd JSON) - pulling in the singular-path
+        // directories too would just add dead files 1.20.1's data pack loader never scans.
+        if (sc.current.parsed < "1.21.11" && sc.current.parsed >= "1.20.5") {
             from(rootProject.file("legacy-resources"))
         }
 
-        if (sc.current.parsed < "26.2") {
+        if (sc.current.parsed < "26.2" && sc.current.parsed >= "1.20.5") {
             from(rootProject.file("legacy-resources-pre-26.2"))
+        }
+
+        if (sc.current.parsed < "1.20.5") {
+            from(rootProject.file("legacy-resources-1.20.1"))
         }
     }
 

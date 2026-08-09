@@ -1,11 +1,11 @@
 package com.goldbocman.vgm.client.renderer.legacy;
 
 //? if <1.21.11 {
-/*import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import com.goldbocman.vgm.common.Bren;
 import com.goldbocman.vgm.common.entity.BulletEntity;
 
@@ -15,14 +15,14 @@ import com.goldbocman.vgm.common.entity.BulletEntity;
 // modern file's unused getTexture() helper.
 public class LegacyBulletRenderer<T extends BulletEntity> extends EntityRenderer<T> {
 
-    public static final Identifier BULLET_TEXTURE = Identifier.fromNamespaceAndPath(Bren.MODID, "textures/entity/bullet.png");
+    public static final ResourceLocation BULLET_TEXTURE = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "textures/entity/bullet.png");
 
     public LegacyBulletRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public Identifier getTextureLocation(T entity) {
+    public ResourceLocation getTextureLocation(T entity) {
         return BULLET_TEXTURE;
     }
 
@@ -31,4 +31,4 @@ public class LegacyBulletRenderer<T extends BulletEntity> extends EntityRenderer
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, light);
     }
 }
-*///?}
+//?}

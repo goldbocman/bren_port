@@ -39,6 +39,11 @@ stonecutter {
         }
 
         // See https://stonecutter.kikugie.dev/wiki/start/#choosing-minecraft-versions
+        // NeoForge has no 1.20.1 builds at all (its earliest published artifact is 20.2.3-beta, MC
+        // 1.20.2 - confirmed via maven.neoforged.net's maven-metadata.xml) - it forked from Forge's
+        // 1.20.1 codebase but only started publishing from 1.20.2 onward, so 1.20.1 is fabric-only
+        // for now. See claude/1.20.1-port.md.
+        match("1.20.1", "fabric")
         match("1.21.1", "fabric", "neoforge", "forge")
 //        match("1.21.11", "fabric", "neoforge")
         // 26.2-forge is intentionally NOT wired up yet: Forge rewrote its event system (EventBus 7,

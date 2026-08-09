@@ -64,7 +64,8 @@ public class ClientNetworkReg {
     }
 
     //? if fabric {
-    public static void shootAnimationPacket() {
+    //? if >=1.20.5 {
+    /*public static void shootAnimationPacket() {
         ClientPlayNetworking.registerReceiver(NetworkReg.SHOOT_ANIMATION_PACKET_ID, (payload, context) -> handleShootAnimation(context.client()));
     }
 
@@ -89,5 +90,48 @@ public class ClientNetworkReg {
             // 射击包处理逻辑可以在这里添加
         });
     }
+    *///?} else {
+    // Legacy pre-1.20.5 registration - receivers get the raw FriendlyByteBuf and must read it
+    // themselves (matching NetworkReg's Payload.read(FriendlyByteBuf) helpers for each type), then
+    // hop onto the client thread since old-API receivers otherwise run on the network thread.
+    public static void shootAnimationPacket() {
+        ClientPlayNetworking.registerGlobalReceiver(NetworkReg.SHOOT_ANIMATION_PACKET_ID, (client, handler, buf, sender) ->
+                client.execute(() -> handleShootAnimation(client)));
+    }
+
+    public static void recoilPacket() {
+        ClientPlayNetworking.registerGlobalReceiver(NetworkReg.RECOIL_CLIENT_PACKET_ID, (client, handler, buf, sender) -> {
+            NetworkReg.RecoilPayload payload = NetworkReg.RecoilPayload.read(buf);
+            client.execute(() -> handleRecoil(client, payload));
+        });
+    }
+
+    public static void gunStatePacket() {
+        ClientPlayNetworking.registerGlobalReceiver(NetworkReg.GUN_STATE_PACKET_ID, (client, handler, buf, sender) -> {
+            NetworkReg.GunStatePayload payload = NetworkReg.GunStatePayload.read(buf);
+            client.execute(() -> handleGunState(client, payload));
+        });
+    }
+
+    public static void clientShootPacket() {
+        ClientPlayNetworking.registerGlobalReceiver(NetworkReg.SHOOT_CLIENT_PACKET_ID, (client, handler, buf, sender) -> {
+            NetworkReg.ShootClientPayload payload = NetworkReg.ShootClientPayload.read(buf);
+            client.execute(() -> handleClientShoot(client, payload));
+        });
+    }
+
+    public static void shootParticlePacket() {
+        ClientPlayNetworking.registerGlobalReceiver(NetworkReg.SHOOT_PARTICLE_PACKET_ID, (client, handler, buf, sender) -> {
+            NetworkReg.ShootParticlePayload payload = NetworkReg.ShootParticlePayload.read(buf);
+            client.execute(() -> handleShootParticle(client, payload));
+        });
+    }
+
+    public static void shootPacket() {
+        ServerPlayNetworking.registerGlobalReceiver(SHOOT_PACKET_ID, (server, player, handler, buf, sender) -> {
+            // 射击包处理逻辑可以在这里添加
+        });
+    }
+    //?}
     //?}
 }

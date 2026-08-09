@@ -11,7 +11,7 @@ public class TemplateModFabric implements ModInitializer {
         new com.goldbocman.vgm.common.Bren().onInitialize();
 
         //? if fapi: <0.100
-        //LOGGER.info("Fabric API is old on this version");
+        LOGGER.info("Fabric API is old on this version");
     }
 }
 //?}
