@@ -1,9 +1,9 @@
 package com.goldbocman.vgm.common.registry;
 
 //? if fabric {
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+/*import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-//?}
+*///?}
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -17,7 +17,7 @@ import com.goldbocman.vgm.common.registry.custom.types.GunItem;
 import com.goldbocman.vgm.common.utils.GunHelper;
 
 //? if fabric
-import static com.goldbocman.vgm.common.registry.NetworkReg.SHOOT_PACKET_ID;
+//import static com.goldbocman.vgm.common.registry.NetworkReg.SHOOT_PACKET_ID;
 
 public class ClientNetworkReg {
 
@@ -64,8 +64,8 @@ public class ClientNetworkReg {
     }
 
     //? if fabric {
-    //? if >=1.20.5 {
-    /*public static void shootAnimationPacket() {
+    /*//? if >=1.20.5 {
+    /^public static void shootAnimationPacket() {
         ClientPlayNetworking.registerReceiver(NetworkReg.SHOOT_ANIMATION_PACKET_ID, (payload, context) -> handleShootAnimation(context.client()));
     }
 
@@ -90,7 +90,7 @@ public class ClientNetworkReg {
             // 射击包处理逻辑可以在这里添加
         });
     }
-    *///?} else {
+    ^///?} else {
     // Legacy pre-1.20.5 registration - receivers get the raw FriendlyByteBuf and must read it
     // themselves (matching NetworkReg's Payload.read(FriendlyByteBuf) helpers for each type), then
     // hop onto the client thread since old-API receivers otherwise run on the network thread.
@@ -133,5 +133,5 @@ public class ClientNetworkReg {
         });
     }
     //?}
-    //?}
+    *///?}
 }

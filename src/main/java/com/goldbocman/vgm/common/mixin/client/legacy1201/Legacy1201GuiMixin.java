@@ -21,6 +21,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 // at 1.20.1 (DeltaTracker itself is a 1.20.5+ class, confirmed via javap); the real vanilla hook
 // there is render(GuiGraphics, float partialTick) instead. Otherwise identical logic to
 // LegacyGuiMixin.
+//
+// Forge-only dead code as of this comment: net.minecraftforge.client.gui.overlay.ForgeGui (what
+// Minecraft.gui actually is on Forge at runtime, confirmed via javap - `extends Gui`) completely
+// overrides render(GuiGraphics, float) without ever calling super.render(...), replacing it with
+// its own RegisterGuiOverlaysEvent-driven dispatch instead. This mixin's injection therefore never
+// fires on Forge (confirmed empirically: zero log output from a temporary diagnostic added to the
+// injected method, even for the unconditional first line) - Forge gets its ammo HUD via
+// ClientBren.ForgeClientModBusEvents.onRegisterGuiOverlays instead, the same mechanism real Forge
+// mods (e.g. MCModderAnchor/TACZ's GunHudOverlay) use. Left in place unchanged for Fabric, which
+// has no such full-override subclass and calls this injection normally.
 @Mixin(Gui.class)
 public class Legacy1201GuiMixin {
     @Unique
@@ -28,7 +38,10 @@ public class Legacy1201GuiMixin {
 
     @Shadow @Final private Minecraft minecraft;
 
-    @Inject(method = "render", at = @At("TAIL"))
+    @Inject(method = "render",
+            //? if forge
+            remap = false,
+            at = @At("TAIL"))
     private void bren$renderHudOverlay(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci) {
         if (minecraft.player == null) {
             return;

@@ -1,8 +1,9 @@
 package com.goldbocman.vgm;
 
 //? if forge {
-/*import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import static com.goldbocman.vgm.TemplateModCommon.*;
@@ -24,10 +25,15 @@ public class TemplateModForge {
 
         new com.goldbocman.vgm.common.Bren().onInitialize();
 
-        // registerAllPackets() is a no-op stub on Forge (see NetworkReg) - this call forces
-        // ForgeNetwork's static CHANNEL field to actually build, which is what really registers the
-        // channel with Forge's NetworkRegistry.
-        com.goldbocman.vgm.common.registry.NetworkReg.ForgeNetwork.init();
+        // Registering ForgeNetwork's SimpleChannel/messages directly from the mod constructor
+        // (too early - before FMLCommonSetupEvent) let the channel negotiate fine at login but
+        // silently broke S2C packet delivery at 1.20.1 (client kept logging "Unknown custom
+        // packet identifier: vgm:main" for every S2C message while C2S ones worked) - confirmed
+        // by cross-checking two real, working 1.20.1-forge gun mods' networking setup
+        // (MCModderAnchor/TACZ's NetworkHandler.init(), Jetug/CreateGunMod's PacketHandler.init())
+        // and finding both defer registration to FMLCommonSetupEvent via event.enqueueWork(...),
+        // never the constructor. Matches the same pattern here for both Forge targets.
+        modEventBus.addListener(TemplateModForge::commonSetup);
 
         // Forge's "data" run target still reports Dist.CLIENT (unlike Fabric/NeoForge, whose datagen
         // entrypoints are separate classes never wired through the main mod constructor at all - see
@@ -44,5 +50,9 @@ public class TemplateModForge {
 
         LOGGER.info("BAM! vgm (Forge) is done loading!");
     }
+
+    private static void commonSetup(FMLCommonSetupEvent event) {
+        event.enqueueWork(com.goldbocman.vgm.common.registry.NetworkReg.ForgeNetwork::init);
+    }
 }
-*///?}
+//?}

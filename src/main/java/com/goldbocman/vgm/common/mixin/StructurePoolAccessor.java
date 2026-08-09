@@ -14,20 +14,20 @@ import java.util.List;
 public interface StructurePoolAccessor {
     @Accessor(value = "rawTemplates"
             //? if forge
-            //, remap = false
+            , remap = false
     )
     List<Pair<StructurePoolElement, Integer>> getRawTemplates();
 
     @Mutable
     @Accessor(value = "rawTemplates"
             //? if forge
-            //, remap = false
+            , remap = false
     )
     void setRawTemplates(List<Pair<StructurePoolElement, Integer>> elementWeights);
 
     @Accessor(value = "templates"
             //? if forge
-            //, remap = false
+            , remap = false
     )
     ObjectArrayList<StructurePoolElement> getTemplates();
 }

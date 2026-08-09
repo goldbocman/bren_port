@@ -98,7 +98,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
     @Inject(method = "isScoping",
             //? if forge
-            //remap = false,
+            remap = false,
             at = @At("HEAD"), cancellable = true)
     public void blackPowder$gunScopes(CallbackInfoReturnable<Boolean> cir) {
         ItemStack itemStack = this.getMainHandItem();
@@ -256,7 +256,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
     @Inject(at = @At("RETURN"), method = "createAttributes"
             //? if forge
-            //, remap = false
+            , remap = false
     )
     private static void createPlayerAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
         var builder = cir.getReturnValue();
@@ -337,7 +337,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
     @Inject(at = @At("TAIL"), method = "tick"
             //? if forge
-            //, remap = false
+            , remap = false
     )
     public void tickMovement(CallbackInfo ci) {
         this.bren_1_21_1$setGunTicks(this.bren_1_21_1$getGunTicks() - 1);
@@ -347,7 +347,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
     @Inject(method = "tick",
             //? if forge
-            //remap = false,
+            remap = false,
             at = @At("HEAD"))
     private void onTick(CallbackInfo ci) {
         // 修复：重新添加属性应用逻辑
@@ -417,7 +417,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
     @Inject(method = "tick",
             //? if forge
-            //remap = false,
+            remap = false,
             at = @At("TAIL"))
     private void reloadTick$bren$(CallbackInfo ci) {
         Player player = (Player) (Object) this;

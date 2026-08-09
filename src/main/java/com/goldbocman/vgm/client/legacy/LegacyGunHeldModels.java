@@ -62,15 +62,16 @@ public class LegacyGunHeldModels {
         boolean magazine = set.withMagazine() != null
                 && stack.getItem() instanceof GunWithMagItem
                 && GunWithMagItem.hasMagazine(stack);
-        return getBakedModel(magazine ? set.withMagazine() : set.base());
+        ResourceLocation wanted = magazine ? set.withMagazine() : set.base();
+        return getBakedModel(wanted);
     }
 
     //? if fabric {
-    private static BakedModel getBakedModel(ResourceLocation id) {
+    /*private static BakedModel getBakedModel(ResourceLocation id) {
         return ((net.fabricmc.fabric.api.client.model.loading.v1.FabricBakedModelManager)
                 Minecraft.getInstance().getModelManager()).getModel(id);
     }
-    //?} elif neoforge {
+    *///?} elif neoforge {
     /*private static BakedModel getBakedModel(ResourceLocation id) {
         // ModelResourceLocation has no standalone() factory (only inventory()/vanilla()) - confirmed
         // via javap on the real 1.21.1 jars. NeoForge's ModelEvent.RegisterAdditional.register(...)
@@ -81,13 +82,26 @@ public class LegacyGunHeldModels {
                 .getModel(new net.minecraft.client.resources.model.ModelResourceLocation(id, "standalone"));
     }
     *///?} elif forge {
-    /*private static BakedModel getBakedModel(ResourceLocation id) {
-        // Same vanilla ModelManager API/"standalone" variant requirement as NeoForge - see
+    private static BakedModel getBakedModel(ResourceLocation id) {
+        //? if >=1.20.5 {
+        /*// Same vanilla ModelManager API/"standalone" variant requirement as NeoForge - see
         // ForgeClientModBusEvents.onRegisterAdditionalModels in ClientBren for the matching
         // registration side of this pairing.
         return Minecraft.getInstance().getModelManager()
                 .getModel(new net.minecraft.client.resources.model.ModelResourceLocation(id, "standalone"));
+        *///?} else {
+        // 1.20.1's ModelBakery.loadModel(ResourceLocation) only takes the "inventory"-suffixed
+        // item-model path for a ModelResourceLocation whose variant literally equals "inventory";
+        // any other variant (e.g. "standalone") falls through to the block-state loader instead -
+        // see ForgeClientModBusEvents.onRegisterAdditionalModels in ClientBren for the full
+        // explanation and the matching registration-side fix. Must retrieve with a plain
+        // ResourceLocation here too (not wrapped in a ModelResourceLocation), matching the exact
+        // object shape that was registered - ModelManager's bakedRegistry is a plain hash map and a
+        // ModelResourceLocation key hashes differently than a same-namespace/path plain
+        // ResourceLocation query.
+        return Minecraft.getInstance().getModelManager().getModel(id);
+        //?}
     }
-    *///?}
+    //?}
 }
 //?}

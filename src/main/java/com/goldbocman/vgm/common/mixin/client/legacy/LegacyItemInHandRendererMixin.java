@@ -3,9 +3,9 @@ package com.goldbocman.vgm.common.mixin.client.legacy;
 //? if <1.21.11 {
 import com.mojang.blaze3d.vertex.PoseStack;
 //? if fabric {
-import net.fabricmc.api.EnvType;
+/*import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-//?}
+*///?}
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -37,13 +37,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 // call straight into this same method
 //
 //? if fabric
-@Environment(value = EnvType.CLIENT)
+//@Environment(value = EnvType.CLIENT)
 @Mixin(ItemInHandRenderer.class)
 public abstract class LegacyItemInHandRendererMixin {
 
     @Inject(method = "renderItem",
             //? if forge
-            //remap = false,
+            remap = false,
             at = @At("HEAD"), cancellable = true)
     private void bren$renderGunAnimation(LivingEntity entity, ItemStack stack, ItemDisplayContext displayContext,
                                           boolean leftHand, PoseStack poseStack, MultiBufferSource buffer,

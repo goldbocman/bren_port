@@ -32,7 +32,7 @@ public class LegacyGuiMixin {
 
     @Inject(method = "render",
             //? if forge
-            //remap = false,
+            remap = false,
             at = @At("TAIL"))
     private void bren$renderHudOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
         if (minecraft.player == null) {

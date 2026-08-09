@@ -1,18 +1,18 @@
 package com.goldbocman.vgm.common.registry;
 
 //? if fabric
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+//import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 
 public class DataPackReg {
     //? if fabric {
-    public static void init() {
+    /*public static void init() {
         // 注册服务器启动事件，确保数据包正确加载
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
         });
     }
-    //?}
+    *///?}
     //? if neoforge
     //public static void init() {} // NeoForge: no equivalent logic needed yet (Fabric's handler is a no-op too).
     //? if forge
-    //public static void init() {} // Forge: same as NeoForge - no equivalent logic needed yet.
+    public static void init() {} // Forge: same as NeoForge - no equivalent logic needed yet.
 }

@@ -2,9 +2,9 @@ package com.goldbocman.vgm.common.mixin.client;
 
 //? if >=1.21.11 {
 /*//? if fabric {
-import net.fabricmc.api.EnvType;
+/^import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-//?}
+^///?}
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HeadedModel;
@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 //? if fabric
-@Environment(value= EnvType.CLIENT)
+//@Environment(value= EnvType.CLIENT)
 @Mixin(HumanoidModel.class)
 public abstract class BipedEntityModelMixin implements ArmedModel, HeadedModel {
 

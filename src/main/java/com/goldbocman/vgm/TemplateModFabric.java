@@ -1,7 +1,7 @@
 package com.goldbocman.vgm;
 
 //? if fabric {
-import net.fabricmc.api.ModInitializer;
+/*import net.fabricmc.api.ModInitializer;
 
 import static com.goldbocman.vgm.TemplateModCommon.*;
 
@@ -14,4 +14,4 @@ public class TemplateModFabric implements ModInitializer {
         LOGGER.info("Fabric API is old on this version");
     }
 }
-//?}
+*///?}

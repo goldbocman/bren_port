@@ -1,11 +1,11 @@
 package com.goldbocman.vgm.common.registry;
 
 //? if fabric {
-//? if >=1.20.5 {
-/*import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-*///?}
+/*//? if >=1.20.5 {
+/^import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+^///?}
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-//?}
+*///?}
 //? if >=1.20.5 {
 /*import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -120,13 +120,13 @@ public class NetworkReg {
     }
 
     //? if fabric {
-    //? if >=1.20.5 {
-    /*public static void registerAllPackets() {
+    /*//? if >=1.20.5 {
+    /^public static void registerAllPackets() {
         LOGGER.info("Registering all network packets");
 
         // 注册所有数据包类型
         //? if >=1.21.11 {
-        /^// 客户端接收的数据包（S2C - Server to Client）
+        /^¹// 客户端接收的数据包（S2C - Server to Client）
         PayloadTypeRegistry.clientboundPlay().register(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC);
         PayloadTypeRegistry.clientboundPlay().register(SHOOT_CLIENT_PACKET_ID, ShootClientPayload.PACKET_CODEC);
         PayloadTypeRegistry.clientboundPlay().register(SHOOT_ANIMATION_PACKET_ID, ShootAnimationPayload.PACKET_CODEC);
@@ -137,7 +137,7 @@ public class NetworkReg {
         PayloadTypeRegistry.serverboundPlay().register(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.serverboundPlay().register(CANCEL_RELOAD_PACKET_ID, CancelReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.serverboundPlay().register(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC);
-        ^///?} else {
+        ¹^///?} else {
         // Pre-1.21.11 fabric-networking-api-v1 names these playS2C()/playC2S() instead of the newer
         // clientboundPlay()/serverboundPlay().
         PayloadTypeRegistry.playS2C().register(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC);
@@ -157,7 +157,7 @@ public class NetworkReg {
 
         LOGGER.info("All network packets registered successfully");
     }
-    *///?} else {
+    ^///?} else {
     // 1.20.1 predates CustomPacketPayload/StreamCodec/the payload-type-registry system entirely -
     // channels are identified by a bare ResourceLocation and receivers get the raw FriendlyByteBuf
     // directly (confirmed via javap against the real fabric-networking-api-v1 1.3.15+0caff8d077 jar,
@@ -173,11 +173,11 @@ public class NetworkReg {
         LOGGER.info("All network packets registered successfully");
     }
     //?}
-    //?}
+    *///?}
     //? if neoforge
     //public static void registerAllPackets() {} // NeoForge registers via NeoForgePayloads (RegisterPayloadHandlersEvent) below instead.
     //? if forge
-    //public static void registerAllPackets() {} // Forge registers via ForgeNetwork's static CHANNEL field below instead.
+    public static void registerAllPackets() {} // Forge registers via ForgeNetwork's static CHANNEL field below instead.
 
     // Every payload record below keeps the same name/fields/constructor across both branches (so the
     // ~7 call sites elsewhere in the mod that do `new NetworkReg.XPayload(...)` compile unchanged
@@ -550,6 +550,7 @@ public class NetworkReg {
     // field built once at class-load time (triggered by TemplateModForge's constructor referencing
     // this class), not an event-driven registration.
     //? if forge {
+    //? if >=1.20.5 {
     /*public static class ForgeNetwork {
         public static final net.minecraftforge.network.Channel<CustomPacketPayload> CHANNEL = net.minecraftforge.network.ChannelBuilder
                 .named(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "main"))
@@ -578,5 +579,111 @@ public class NetworkReg {
         // TemplateModForge's constructor, same call-site role as registerAllPackets() on Fabric.
         public static void init() {}
     }
-    *///?}
+    *///?} else {
+    // 1.20.1 predates ChannelBuilder.payloadChannel()/CustomPacketPayload/StreamCodec entirely -
+    // confirmed via javap against the real forge-1.20.1-47.4.22 jar (only the classic
+    // NetworkRegistry.ChannelBuilder().simpleChannel() -> SimpleChannel.registerMessage(id, class,
+    // encoder, decoder, handler) API exists; net.minecraftforge.network.Channel/ChannelBuilder
+    // (payload-based) don't exist in this version's net.minecraftforge.network package at all).
+    // Each payload's read(buf)/write(buf) methods (see the record definitions above) are reused
+    // directly as the decoder/encoder function references.
+    public static class ForgeNetwork {
+        public static final net.minecraftforge.network.simple.SimpleChannel CHANNEL = net.minecraftforge.network.NetworkRegistry.ChannelBuilder
+                .named(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "main"))
+                .networkProtocolVersion(() -> "1")
+                .clientAcceptedVersions(v -> true)
+                .serverAcceptedVersions(v -> true)
+                .simpleChannel();
+
+        private static int nextId = 0;
+
+        // Forge's classic NetworkRegistry/SimpleChannel delivers every S2C packet on a local
+        // (singleplayer/integrated-server) connection TWICE - confirmed empirically: every single
+        // registered message type, including a trivial diagnostic packet completely unrelated to
+        // guns, was independently observed via logging to reach its handler exactly twice per
+        // send (once on a "Netty Local Client IO" thread, once on the Render thread one tick
+        // later), with a benign "Unknown custom packet identifier" warning as an apparent
+        // third/leftover delivery attempt each time. This is inside Forge's own local-connection
+        // packet plumbing (see e.g. MinecraftForge PR #9157, a related but not identical
+        // buffer-reuse bug in the same area for LAN sends), not something reachable from mod code,
+        // so rather than chase Forge's internals further this de-duplicates by payload identity
+        // (records' generated equals/hashCode compare field values) within a short window - two
+        // genuinely distinct rapid shots have different recoil/particle values and are unaffected,
+        // but the exact-duplicate second delivery of the same shot's effects gets dropped.
+        //
+        // Window must stay well under the fastest weapon's fire interval, not just "short": an
+        // automatic weapon's RecoilPayload/ShootAnimationPayload carry the *same* field values
+        // (or, for ShootAnimationPayload, no fields at all) on every shot, and put() below refreshes
+        // the stored timestamp on every hit - so with a window that's too wide, one held-trigger
+        // burst never lets the entry go stale and every shot after the first gets silently dropped
+        // for the rest of the burst (confirmed in-game: auto_gun's camera-kick recoil only fired
+        // once per trigger-hold; its client-predicted item-cooldown pose animation was unaffected
+        // since that path never touches this network dedup at all). auto_gun's fireRate(4) is the
+        // fastest currently-enabled automatic weapon (4 ticks = 200ms between shots, see
+        // ItemReg.AUTO_GUN) - 100ms comfortably clears the ~1-tick (50ms) real duplicate-delivery
+        // gap above while staying well under that 200ms floor.
+        private static final java.util.Map<Object, Long> recentPayloads = new java.util.concurrent.ConcurrentHashMap<>();
+        private static final long DEDUP_WINDOW_MS = 100;
+
+        private static boolean isDuplicateDelivery(Object payload) {
+            long now = System.currentTimeMillis();
+            recentPayloads.entrySet().removeIf(e -> now - e.getValue() > DEDUP_WINDOW_MS);
+            return recentPayloads.put(payload, now) != null;
+        }
+
+        public static void init() {
+            // Every message MUST declare its NetworkDirection explicitly (the 6-arg
+            // registerMessage overload) - confirmed against a real, working 1.20.1-forge mod's
+            // networking code (MCModderAnchor/TACZ, NetworkHandler.java) after the 5-arg
+            // (direction-less) overload produced client-side-only "Unknown custom packet
+            // identifier" warnings for every S2C message while C2S ones worked fine. SimpleChannel
+            // apparently needs the direction to correctly route/validate incoming packets on the
+            // receiving side; omitting it silently breaks receipt in (at least) one direction
+            // rather than erroring at registration time.
+            CHANNEL.registerMessage(nextId++, ReloadPayload.class, ReloadPayload::write, ReloadPayload::read,
+                    (payload, ctx) -> ctx.get().enqueueWork(() -> handleReload(ctx.get().getSender())),
+                    java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER));
+            CHANNEL.registerMessage(nextId++, CancelReloadPayload.class, CancelReloadPayload::write, CancelReloadPayload::read,
+                    (payload, ctx) -> ctx.get().enqueueWork(() -> handleCancelReload(ctx.get().getSender())),
+                    java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER));
+            CHANNEL.registerMessage(nextId++, ShootPayload.class, ShootPayload::write, ShootPayload::read,
+                    (payload, ctx) -> ctx.get().enqueueWork(() -> handleShoot(ctx.get().getSender())),
+                    java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER));
+            CHANNEL.registerMessage(nextId++, RecoilPayload.class, RecoilPayload::write, RecoilPayload::read,
+                    (payload, ctx) -> {
+                        if (isDuplicateDelivery(payload)) return;
+                        ctx.get().enqueueWork(() -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleRecoil(net.minecraft.client.Minecraft.getInstance(), payload));
+                    },
+                    java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT));
+            CHANNEL.registerMessage(nextId++, ShootClientPayload.class, ShootClientPayload::write, ShootClientPayload::read,
+                    (payload, ctx) -> {
+                        if (isDuplicateDelivery(payload)) return;
+                        ctx.get().enqueueWork(() -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleClientShoot(net.minecraft.client.Minecraft.getInstance(), payload));
+                    },
+                    java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT));
+            CHANNEL.registerMessage(nextId++, ShootAnimationPayload.class, ShootAnimationPayload::write, ShootAnimationPayload::read,
+                    (payload, ctx) -> {
+                        if (isDuplicateDelivery(payload)) return;
+                        ctx.get().enqueueWork(() -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleShootAnimation(net.minecraft.client.Minecraft.getInstance()));
+                    },
+                    java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT));
+            CHANNEL.registerMessage(nextId++, ShootParticlePayload.class, ShootParticlePayload::write, ShootParticlePayload::read,
+                    (payload, ctx) -> {
+                        if (isDuplicateDelivery(payload)) return;
+                        ctx.get().enqueueWork(() -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleShootParticle(net.minecraft.client.Minecraft.getInstance(), payload));
+                    },
+                    java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT));
+            CHANNEL.registerMessage(nextId++, ItemComponentSyncPayload.class, ItemComponentSyncPayload::write, ItemComponentSyncPayload::read,
+                    (payload, ctx) -> {},
+                    java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT));
+            CHANNEL.registerMessage(nextId++, GunStatePayload.class, GunStatePayload::write, GunStatePayload::read,
+                    (payload, ctx) -> {
+                        // Idempotent (just sets state) - no dedup needed, unlike the effect payloads above.
+                        ctx.get().enqueueWork(() -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleGunState(net.minecraft.client.Minecraft.getInstance(), payload));
+                    },
+                    java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT));
+        }
+    }
+    //?}
+    //?}
 }

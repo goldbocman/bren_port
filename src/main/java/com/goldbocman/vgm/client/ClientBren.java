@@ -1,13 +1,13 @@
 package com.goldbocman.vgm.client;
 
 //? if fabric {
-import net.fabricmc.api.ClientModInitializer;
+/*import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 //? if >=1.21.11 {
-/*import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
+/^import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityRenderLayerRegistrationCallback;
-*///?} else {
+^///?} else {
 // 1.21.1-era fabric-particles-v1 still uses the old ParticleFactoryRegistry name (the newer
 // ParticleProviderRegistry didn't exist yet), and fabric-rendering-v1 at this version has no
 // generic per-humanoid render-layer registration callback at all - see the onInitializeClient()
@@ -15,7 +15,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityRenderLayerRegist
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 //?}
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-//?}
+*///?}
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 //? if >=1.21.11 {
@@ -52,17 +52,17 @@ import org.slf4j.LoggerFactory;
 
 public class ClientBren
         //? if fabric
-        implements ClientModInitializer
+        //implements ClientModInitializer
 {
     private static final Logger LOGGER = LoggerFactory.getLogger("Bren/ClientBren");
 
     //? if fabric
-    @Override
+    //@Override
     public void onInitializeClient() {
         //? if fabric {
-        //? if >=1.21.11 {
-        /*var particleRegistry = ParticleProviderRegistry.getInstance();
-        *///?} else {
+        /*//? if >=1.21.11 {
+        /^var particleRegistry = ParticleProviderRegistry.getInstance();
+        ^///?} else {
         var particleRegistry = ParticleFactoryRegistry.getInstance();
         //?}
 
@@ -82,11 +82,11 @@ public class ClientBren
         });
 
         //? if >=1.21.11 {
-        /*EntityRendererRegistry.register(Bren.BULLET, BulletRenderer::new);
-        *///?} else {
+        /^EntityRendererRegistry.register(Bren.BULLET, BulletRenderer::new);
+        ^///?} else {
         EntityRendererRegistry.register(Bren.BULLET, LegacyBulletRenderer::new);
         //?}
-        //?}
+        *///?}
         // NeoForge registers particle providers / entity renderer / layers / tick events via the
         // NeoForgeClientModBusEvents / NeoForgeClientGameBusEvents subscribers below instead, and its
         // network payload handlers register once at load time (see NetworkReg), so it doesn't need the
@@ -98,7 +98,7 @@ public class ClientBren
         registerLegacyMagazineFullnessModelPredicates();
         //? if <1.21.11 {
         //? if fabric
-        registerLegacyGunHeldModels();
+        //registerLegacyGunHeldModels();
         //?}
 
         // 注册后坐力系统渲染回调
@@ -117,8 +117,8 @@ public class ClientBren
         // LivingEntityRenderLayerRegistrationCallback equivalent to register them through at all, so
         // this whole block is skipped for <1.21.11 with no behavior loss.
         //? if fabric {
-        //? if >=1.21.11 {
-        /*LivingEntityRenderLayerRegistrationCallback.EVENT.register((t, r, e, c) -> {
+        /*//? if >=1.21.11 {
+        /^LivingEntityRenderLayerRegistrationCallback.EVENT.register((t, r, e, c) -> {
             // Only register weapon-related renderers for humanoid creatures to avoid type conversion errors
 
             // The t parameter is EntityType; we need to check if it's a humanoid creature type.
@@ -133,13 +133,13 @@ public class ClientBren
                 e.register(new GunHoldingFeatureRenderer(r));
             }
         });
+        ^///?}
         *///?}
-        //?}
 
         //? if fabric {
-        ClientTickEvents.START_CLIENT_TICK.register(WeaponTickHolder::tick);
+        /*ClientTickEvents.START_CLIENT_TICK.register(WeaponTickHolder::tick);
         ClientTickEvents.START_CLIENT_TICK.register(RecoilSys::tick);
-        //?}
+        *///?}
 
         GrenadeClientHandler.register();
     }
@@ -195,20 +195,20 @@ public class ClientBren
     // NeoForgeClientModBusEvents.onRegisterAdditionalModels below.
     //? if <1.21.11 {
     //? if fabric {
-    private static void registerLegacyGunHeldModels() {
+    /*private static void registerLegacyGunHeldModels() {
         net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.register(context ->
                 context.addModels(LegacyGunHeldModels.allModelIds().toArray(new ResourceLocation[0])));
     }
-    //?}
+    *///?}
     //?}
 
     // Check if the entity type is a humanoid creature
     //? if fabric {
-    private static boolean isHumanoidEntityType(net.minecraft.world.entity.EntityType<?> entityType) {
+    /*private static boolean isHumanoidEntityType(net.minecraft.world.entity.EntityType<?> entityType) {
         var key = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
         return key != null && "minecraft".equals(key.getNamespace()) && "player".equals(key.getPath());
     }
-    //?}
+    *///?}
 
     //? if neoforge {
     /*//? if >=1.21.9 {
@@ -290,7 +290,7 @@ public class ClientBren
     // mirrors NeoForge's
     // <1.21.11 branches unconditionally - no >=1.21.11 AddLayers/BulletRenderer split needed here yet.
     //? if forge {
-    /*@net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = Bren.MODID, value = net.minecraftforge.api.distmarker.Dist.CLIENT, bus = net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD)
+    @net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = Bren.MODID, value = net.minecraftforge.api.distmarker.Dist.CLIENT, bus = net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD)
     public static class ForgeClientModBusEvents {
         @net.minecraftforge.eventbus.api.SubscribeEvent
         @SuppressWarnings("unchecked")
@@ -308,13 +308,32 @@ public class ClientBren
 
         // Fabric's equivalent is ClientBren.registerLegacyGunHeldModels() above; NeoForge's is
         // NeoForgeClientModBusEvents.onRegisterAdditionalModels - see LegacyGunHeldModels for what/why.
-        // Must use the "standalone" variant, matching NeoForge's own hard requirement for side-loaded
-        // models (not independently re-verified against Forge specifically - same underlying vanilla
-        // ModelManager mechanism, so treated as equivalent until proven otherwise).
+        //
+        // >=1.20.5 must use the "standalone" variant, matching NeoForge's own hard requirement for
+        // side-loaded models (same underlying vanilla ModelManager mechanism).
+        //
+        // <1.20.5 (1.20.1) must register the PLAIN ResourceLocation instead - confirmed via javap
+        // against the real forge-1.20.1-47.4.22 jar: ModelBakery.loadModel(ResourceLocation) only
+        // takes the "inventory"-suffixed item-model path if the location IS a ModelResourceLocation
+        // AND its variant literally equals "inventory"; any other variant (e.g. "standalone") falls
+        // through to the BLOCK STATE loader instead, which looked for a nonexistent
+        // `blockstates/item/<name>.json` and silently produced the missing-model fallback (a
+        // pink/black checkerboard on the held item) - this is what the reported bug actually was. A
+        // plain (non-MRL) ResourceLocation instead takes loadModel's other branch, which loads
+        // `models/<path>.json` directly - exactly the `assets/vgm/models/item/<name>_held.json` files
+        // these ids already point at. LegacyGunHeldModels.getBakedModel's forge branch must retrieve
+        // with the exact same object shape (plain ResourceLocation, not wrapped in a
+        // ModelResourceLocation) since ModelManager's bakedRegistry is a plain hash map and a
+        // ModelResourceLocation key hashes differently than a same-namespace/path plain
+        // ResourceLocation query.
         @net.minecraftforge.eventbus.api.SubscribeEvent
         public static void onRegisterAdditionalModels(net.minecraftforge.client.event.ModelEvent.RegisterAdditional event) {
             for (ResourceLocation id : LegacyGunHeldModels.allModelIds()) {
-                event.register(new net.minecraft.client.resources.model.ModelResourceLocation(id, "standalone"));
+                //? if >=1.20.5 {
+                /*event.register(new net.minecraft.client.resources.model.ModelResourceLocation(id, "standalone"));
+                *///?} else {
+                event.register(id);
+                //?}
             }
         }
 
@@ -326,16 +345,65 @@ public class ClientBren
         // GunBackFeatureRenderer/GunHoldingFeatureRenderer registration (AddLayers) is >=1.21.11 only
         // on every other loader too - see NeoForgeClientModBusEvents.addLayers above - so there's
         // nothing to add here for the 1.21.1-only Forge target.
+
+        //? if <1.20.5 {
+        // net.minecraftforge.client.gui.overlay.ForgeGui (what Minecraft.gui actually is on Forge
+        // at runtime - confirmed via javap: `class ForgeGui extends Gui`) completely overrides
+        // render(GuiGraphics, float) without ever calling super.render(...), replacing it with its
+        // own overlay dispatch fed by this event instead - confirmed empirically that
+        // Legacy1201GuiMixin's injection into the base Gui.render(...) never fires on Forge (zero
+        // log output from a temporary diagnostic, even its unconditional first line). This is the
+        // same mechanism real Forge gun mods use for their HUD (e.g. MCModderAnchor/TACZ's
+        // GunHudOverlay via RegisterGuiOverlaysEvent) - only needed at 1.20.1 since 1.21.1-forge's
+        // HUD already works fine via the Mixin (confirmed working in-game, see claude/forge-port.md).
+        @net.minecraftforge.eventbus.api.SubscribeEvent
+        public static void onRegisterGuiOverlays(net.minecraftforge.client.event.RegisterGuiOverlaysEvent event) {
+            event.registerAboveAll("vgm_ammo_hud", (gui, guiGraphics, partialTick, screenWidth, screenHeight) -> {
+                net.minecraft.client.Minecraft minecraft = net.minecraft.client.Minecraft.getInstance();
+                if (minecraft.player == null) {
+                    return;
+                }
+
+                net.minecraft.world.entity.player.Player player = minecraft.player;
+                net.minecraft.world.item.ItemStack gun = player.getMainHandItem();
+
+                if (!(gun.getItem() instanceof com.goldbocman.vgm.common.registry.custom.types.GunItem gunItem)) {
+                    return;
+                }
+
+                int i = gunItem.getContents(gun);
+                int max = gunItem.getMaxCapacity(gun);
+
+                if (gunItem instanceof com.goldbocman.vgm.common.registry.custom.types.GunWithMagItem
+                        && !com.goldbocman.vgm.common.registry.custom.types.GunWithMagItem.hasMagazine(gun)) {
+                    return;
+                }
+
+                new com.goldbocman.vgm.client.legacy.LegacyHudOverlay().renderWithTexture(guiGraphics, i, max, gunItem.ammoIconOffset());
+            });
+        }
+        //?}
     }
 
     // Game-bus subscriber (ClientTickEvent) - Bus.FORGE is the default game-side bus on Forge.
     @net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = Bren.MODID, value = net.minecraftforge.api.distmarker.Dist.CLIENT)
     public static class ForgeClientGameBusEvents {
         @net.minecraftforge.eventbus.api.SubscribeEvent
-        public static void onClientTick(net.minecraftforge.event.TickEvent.ClientTickEvent.Pre event) {
+        //? if >=1.20.5 {
+        /*public static void onClientTick(net.minecraftforge.event.TickEvent.ClientTickEvent.Pre event) {
             WeaponTickHolder.tick(net.minecraft.client.Minecraft.getInstance());
             RecoilSys.tick(net.minecraft.client.Minecraft.getInstance());
         }
+        *///?} else {
+        // 1.20.1's Forge has no ClientTickEvent.Pre/Post split yet - just one class with a
+        // Phase field (confirmed via javap against forge-1.20.1-47.4.22) - START mirrors .Pre.
+        public static void onClientTick(net.minecraftforge.event.TickEvent.ClientTickEvent event) {
+            if (event.phase == net.minecraftforge.event.TickEvent.Phase.START) {
+                WeaponTickHolder.tick(net.minecraft.client.Minecraft.getInstance());
+                RecoilSys.tick(net.minecraft.client.Minecraft.getInstance());
+            }
+        }
+        //?}
     }
-    *///?}
+    //?}
 }

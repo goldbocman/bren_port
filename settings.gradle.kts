@@ -44,6 +44,13 @@ stonecutter {
         // 1.20.1 codebase but only started publishing from 1.20.2 onward, so 1.20.1 is fabric-only
         // for now. See claude/1.20.1-port.md.
         match("1.20.1", "fabric")
+        // 1.20.1 Forge needs ForgeGradle 6 (its own MDK pins `[6.0,6.2)`), not the FG7
+        // `[7.0,8.0)` build.forge.gradle.kts uses for 1.21.1/26.2.x - a genuinely different
+        // plugin DSL, not a version bump, so it gets its own buildscript file. The loader half
+        // of the project name is still "forge" (not e.g. "forge1201") so `//? if forge` gates
+        // and `[forge."1.20.1"]` property tags resolve the same as every other Forge variant -
+        // see claude/forge-port.md.
+        version("1.20.1-forge", "1.20.1").buildscript("build.forge1201.gradle.kts")
         match("1.21.1", "fabric", "neoforge", "forge")
 //        match("1.21.11", "fabric", "neoforge")
         // 26.2-forge is intentionally NOT wired up yet: Forge rewrote its event system (EventBus 7,

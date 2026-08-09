@@ -2,9 +2,9 @@ package com.goldbocman.vgm.common.mixin.client.legacy;
 
 //? if <1.21.11 {
 //? if fabric {
-import net.fabricmc.api.EnvType;
+/*import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-//?}
+*///?}
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 // (EntityRenderStateMixin/LivingEntityRendererMixin/IEntityRenderState) that the modern mixin needs
 // is required here.
 //? if fabric
-@Environment(value = EnvType.CLIENT)
+//@Environment(value = EnvType.CLIENT)
 @Mixin(HumanoidModel.class)
 public abstract class LegacyBipedEntityModelMixin implements ArmedModel, HeadedModel {
 
@@ -42,7 +42,7 @@ public abstract class LegacyBipedEntityModelMixin implements ArmedModel, HeadedM
 
     @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V",
             //? if forge
-            //remap = false,
+            remap = false,
             at = @At("TAIL"))
     private void bren$angles(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks,
                               float netHeadYaw, float headPitch, CallbackInfo ci) {

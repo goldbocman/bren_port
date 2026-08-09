@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface LegacyItemPropertiesAccessor {
     @Invoker(value = "register"
             //? if forge
-            //, remap = false
+            , remap = false
     )
     static void invokeRegister(Item item, ResourceLocation id, ClampedItemPropertyFunction function) {
         throw new AssertionError();

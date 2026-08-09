@@ -2,9 +2,9 @@ package com.goldbocman.vgm.common.mixin.client;
 
 //? if >=1.21.11 {
 /*//? if fabric {
-import net.fabricmc.api.EnvType;
+/^import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-//?}
+^///?}
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.state.ArmedEntityRenderState;
 import net.minecraft.client.renderer.item.ItemModelResolver;
@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 // math in GunAnimationSystem - it's already network-synced and handles every look angle correctly for both the
 // local and remote players, which hand-rolled xRot/yRot/zRot formulas kept failing to reproduce.
 //? if fabric
-@Environment(value = EnvType.CLIENT)
+//@Environment(value = EnvType.CLIENT)
 @Mixin(ArmedEntityRenderState.class)
 public abstract class ArmedEntityRenderStateMixin {
 
