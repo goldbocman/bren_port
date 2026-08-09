@@ -286,4 +286,56 @@ public class ClientBren
         }
     }
     *///?}
+
+    // mirrors NeoForge's
+    // <1.21.11 branches unconditionally - no >=1.21.11 AddLayers/BulletRenderer split needed here yet.
+    //? if forge {
+    /*@net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = Bren.MODID, value = net.minecraftforge.api.distmarker.Dist.CLIENT, bus = net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD)
+    public static class ForgeClientModBusEvents {
+        @net.minecraftforge.eventbus.api.SubscribeEvent
+        @SuppressWarnings("unchecked")
+        public static void registerParticleProviders(net.minecraftforge.client.event.RegisterParticleProvidersEvent event) {
+            event.registerSpriteSet((ParticleType<ParticleOptions>) ParticleReg.MUZZLE_SMOKE_PARTICLE, MuzzleSmokeParticle.Factory::new);
+            event.registerSpriteSet((ParticleType<ParticleOptions>) ParticleReg.AIR_RING_PARTICLE, AirRingParticle.Factory::new);
+            event.registerSpriteSet((ParticleType<ParticleOptions>) ParticleReg.CASING_PARTICLE, CasingParticle.Factory::new);
+        }
+
+        @net.minecraftforge.eventbus.api.SubscribeEvent
+        public static void onClientSetup(net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent event) {
+            registerLegacyMagazineModelPredicates();
+            registerLegacyMagazineFullnessModelPredicates();
+        }
+
+        // Fabric's equivalent is ClientBren.registerLegacyGunHeldModels() above; NeoForge's is
+        // NeoForgeClientModBusEvents.onRegisterAdditionalModels - see LegacyGunHeldModels for what/why.
+        // Must use the "standalone" variant, matching NeoForge's own hard requirement for side-loaded
+        // models (not independently re-verified against Forge specifically - same underlying vanilla
+        // ModelManager mechanism, so treated as equivalent until proven otherwise).
+        @net.minecraftforge.eventbus.api.SubscribeEvent
+        public static void onRegisterAdditionalModels(net.minecraftforge.client.event.ModelEvent.RegisterAdditional event) {
+            for (Identifier id : LegacyGunHeldModels.allModelIds()) {
+                event.register(new net.minecraft.client.resources.model.ModelIdentifier(id, "standalone"));
+            }
+        }
+
+        @net.minecraftforge.eventbus.api.SubscribeEvent
+        public static void registerRenderers(net.minecraftforge.client.event.EntityRenderersEvent.RegisterRenderers event) {
+            event.registerEntityRenderer(Bren.BULLET, LegacyBulletRenderer::new);
+        }
+
+        // GunBackFeatureRenderer/GunHoldingFeatureRenderer registration (AddLayers) is >=1.21.11 only
+        // on every other loader too - see NeoForgeClientModBusEvents.addLayers above - so there's
+        // nothing to add here for the 1.21.1-only Forge target.
+    }
+
+    // Game-bus subscriber (ClientTickEvent) - Bus.FORGE is the default game-side bus on Forge.
+    @net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = Bren.MODID, value = net.minecraftforge.api.distmarker.Dist.CLIENT)
+    public static class ForgeClientGameBusEvents {
+        @net.minecraftforge.eventbus.api.SubscribeEvent
+        public static void onClientTick(net.minecraftforge.event.TickEvent.ClientTickEvent.Pre event) {
+            WeaponTickHolder.tick(net.minecraft.client.Minecraft.getInstance());
+            RecoilSys.tick(net.minecraft.client.Minecraft.getInstance());
+        }
+    }
+    *///?}
 }

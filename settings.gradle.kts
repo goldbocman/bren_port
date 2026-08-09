@@ -4,6 +4,7 @@ pluginManagement {
         gradlePluginPortal()
         maven("https://maven.fabricmc.net/") { name = "FabricMC" }
         maven("https://maven.neoforged.net/releases/") { name = "NeoForged" }
+        maven("https://maven.minecraftforge.net/") { name = "MinecraftForge" }
         maven("https://maven.kikugie.dev/releases") { name = "KikuGie Releases" }
         maven("https://maven.kikugie.dev/snapshots") { name = "KikuGie Snapshots" }
     }
@@ -38,8 +39,13 @@ stonecutter {
         }
 
         // See https://stonecutter.kikugie.dev/wiki/start/#choosing-minecraft-versions
-        match("1.21.1", "fabric", "neoforge")
+        match("1.21.1", "fabric", "neoforge", "forge")
 //        match("1.21.11", "fabric", "neoforge")
+        // 26.2-forge is intentionally NOT wired up yet: Forge rewrote its event system (EventBus 7,
+        // static per-event BUS fields instead of @SubscribeEvent/IEventBus) starting ~1.21.6, so the
+        // classic-API forge platform code written for 1.21.1 below does not compile against 26.2's
+        // Forge jar - confirmed via javap against the real 26.2-65.1.0 forge jar. [forge."26.2.x"] in
+        // stonecutter.properties.toml is kept for when that second code path gets written.
         match("26.2.x", "fabric", "neoforge", version = "26.2")
         vcsVersion = "26.2.x-fabric"
     }

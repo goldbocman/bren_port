@@ -156,7 +156,7 @@ tasks {
         val mixinJava = "JAVA_${requiredJava.majorVersion}"
         filesMatching("*.mixins.json") { expand("java" to mixinJava) }
 
-        exclude("META-INF/neoforge.mods.toml")
+        exclude("META-INF/neoforge.mods.toml", "META-INF/mods.toml")
 
         if (sc.current.parsed < "1.21.11") {
             from(rootProject.file("legacy-resources"))

@@ -114,6 +114,8 @@ public class NetworkReg {
     //?}
     //? if neoforge
     //public static void registerAllPackets() {} // NeoForge registers via NeoForgePayloads (RegisterPayloadHandlersEvent) below instead.
+    //? if forge
+    //public static void registerAllPackets() {} // Forge registers via ForgeNetwork's static CHANNEL field below instead.
     
     // 重装包数据类
     public record ReloadPayload() implements CustomPacketPayload {
@@ -335,6 +337,43 @@ public class NetworkReg {
             registrar.playToClient(GUN_STATE_PACKET_ID, GunStatePayload.PACKET_CODEC,
                     (payload, context) -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleGunState(net.minecraft.client.Minecraft.getInstance(), payload));
         }
+    }
+    *///?}
+
+    // Forge 1.21.1 (eventbus 6.2.27) has no NeoForge-style RegisterPayloadHandlersEvent/
+    // PayloadRegistrar - confirmed via javap against the real forge-1.21.1-52.1.0 sources jar, which
+    // has no such class anywhere under net.minecraftforge.network. It kept its own classic
+    // ChannelBuilder/SimpleChannel-family API instead, adapted to accept vanilla's
+    // CustomPacketPayload/StreamCodec records via ChannelBuilder.payloadChannel() - a plain static
+    // field built once at class-load time (triggered by TemplateModForge's constructor referencing
+    // this class), not an event-driven registration.
+    //? if forge {
+    /*public static class ForgeNetwork {
+        public static final net.minecraftforge.network.Channel<CustomPacketPayload> CHANNEL = net.minecraftforge.network.ChannelBuilder
+                .named(Identifier.fromNamespaceAndPath(Bren.MODID, "main"))
+                .networkProtocolVersion(1)
+                .payloadChannel()
+                .play()
+                .serverbound()
+                    .addMain(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC, (payload, ctx) -> handleReload(ctx.getSender()))
+                    .addMain(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC, (payload, ctx) -> handleShoot(ctx.getSender()))
+                .clientbound()
+                    .addMain(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC,
+                            (payload, ctx) -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleRecoil(net.minecraft.client.Minecraft.getInstance(), payload))
+                    .addMain(SHOOT_CLIENT_PACKET_ID, ShootClientPayload.PACKET_CODEC,
+                            (payload, ctx) -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleClientShoot(net.minecraft.client.Minecraft.getInstance(), payload))
+                    .addMain(SHOOT_ANIMATION_PACKET_ID, ShootAnimationPayload.PACKET_CODEC,
+                            (payload, ctx) -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleShootAnimation(net.minecraft.client.Minecraft.getInstance()))
+                    .addMain(SHOOT_PARTICLE_PACKET_ID, ShootParticlePayload.PACKET_CODEC,
+                            (payload, ctx) -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleShootParticle(net.minecraft.client.Minecraft.getInstance(), payload))
+                    .addMain(ITEM_COMPONENT_SYNC_PACKET_ID, ItemComponentSyncPayload.PACKET_CODEC, (payload, ctx) -> {})
+                    .addMain(GUN_STATE_PACKET_ID, GunStatePayload.PACKET_CODEC,
+                            (payload, ctx) -> com.goldbocman.vgm.common.registry.ClientNetworkReg.handleGunState(net.minecraft.client.Minecraft.getInstance(), payload))
+                .build();
+
+        // Forces the static CHANNEL field above to actually initialize - called once from
+        // TemplateModForge's constructor, same call-site role as registerAllPackets() on Fabric.
+        public static void init() {}
     }
     *///?}
 }

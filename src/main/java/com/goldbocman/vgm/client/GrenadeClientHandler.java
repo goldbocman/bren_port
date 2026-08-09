@@ -40,4 +40,17 @@ public class GrenadeClientHandler {
         }
     }
     *///?}
+
+    //? if forge
+    //public static void register() {} // Forge registers via ForgeGrenadeTick below instead.
+
+    //? if forge {
+    /*@net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = com.goldbocman.vgm.common.Bren.MODID, value = net.minecraftforge.api.distmarker.Dist.CLIENT)
+    public static class ForgeGrenadeTick {
+        @net.minecraftforge.eventbus.api.SubscribeEvent
+        public static void onClientTick(net.minecraftforge.event.TickEvent.ClientTickEvent.Post event) {
+            onEndClientTick(net.minecraft.client.Minecraft.getInstance());
+        }
+    }
+    *///?}
 }

@@ -23,6 +23,12 @@ mod.mc_compat = "[1.21, 1.21.1]"
 deps.neo_loader = "21.1.248"
 
 
+[forge."1.21.1"]
+mod.mc_compat = "[1.21,1.22)"
+deps.forge_version = "52.1.0"
+deps.forge_loader_range = "[52,)"
+
+
 ["1.21.11"]
 mod.mc_releases = ["1.21.11"]
 
@@ -48,3 +54,9 @@ deps.fabric_api = "0.156.0+26.2"
 [neoforge."26.2.x"]
 mod.mc_compat = "[26.2, 26.3)"
 deps.neo_loader = "26.2.0.43-beta"
+
+
+[forge."26.2.x"]
+mod.mc_compat = "[26.2,26.3)"
+deps.forge_version = "65.1.0"
+deps.forge_loader_range = "[65,)"

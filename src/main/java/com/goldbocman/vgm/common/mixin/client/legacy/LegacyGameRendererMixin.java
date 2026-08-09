@@ -27,7 +27,10 @@ public class LegacyGameRendererMixin {
     @Unique
     private boolean wasAiming = false;
 
-    @Inject(method = "renderLevel", at = @At("HEAD"))
+    @Inject(method = "renderLevel",
+            //? if forge
+            //remap = false,
+            at = @At("HEAD"))
     private void bren$modifyFov(DeltaTracker deltaTracker, CallbackInfo ci) {
         Minecraft client = Minecraft.getInstance();
         Player player = client.player;

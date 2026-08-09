@@ -1,7 +1,6 @@
 package com.goldbocman.vgm.common.mixin;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -96,7 +95,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
         this.aimProgress = Math.max(0.0f, Math.min(1.0f, progress));
     }
 
-    @Inject(method = "isScoping", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "isScoping",
+            //? if forge
+            //remap = false,
+            at = @At("HEAD"), cancellable = true)
     public void blackPowder$gunScopes(CallbackInfoReturnable<Boolean> cir) {
         ItemStack itemStack = this.getMainHandItem();
         if (itemStack.getItem() instanceof GunItem gunItem) {
@@ -156,18 +158,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
     @Unique
     private void applySpyglassZoomEffect() {
-        // 应用望远镜缩放效果
-        // 这里需要调用Minecraft客户端的缩放功能
-        try {
-            // 使用反射或其他方式调用望远镜缩放
-            // 在Minecraft 1.21.4中，可以通过修改FOV来实现缩放效果
-            if (Minecraft.getInstance() != null) {
-                // 这里可以设置自定义的FOV缩放
-                // 实际实现需要更详细的客户端代码
-            }
-        } catch (Exception e) {
-            LOGGER.warn("Failed to apply spyglass zoom effect: {}", e.getMessage());
-        }
+        // Genuinely unimplemented (no FOV-scaling logic ever existed here) - previously had a dead
+        // `Minecraft.getInstance() != null` check with an empty body, which was a real bug: this is a
+        // common-loaded mixin (applied on both client and server), and Forge's RuntimeDistCleaner
+        // fails class-loading/mixin-preprocessing on a dedicated server the moment ANY common class
+        // references net.minecraft.client.Minecraft, even behind a runtime isClientSide() guard and
+        // even when the reference does nothing - see claude/stonecutter-multiloader.md's
+        // "common-loaded mixin must never directly reference a client-only class" note (first found
+        // during the NeoForge port, hit again here for Forge's dedicated server specifically).
     }
 
     @Override
@@ -255,7 +253,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
         // GunUtils.sendAnimationPacket(player);
     }
 
-    @Inject(at = @At("RETURN"), method = "createAttributes")
+    @Inject(at = @At("RETURN"), method = "createAttributes"
+            //? if forge
+            //, remap = false
+    )
     private static void createPlayerAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
         var builder = cir.getReturnValue();
 
@@ -319,14 +320,20 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
     // 删除重复的getGunState和setGunState方法定义（第185-190行）
 
-    @Inject(at = @At("TAIL"), method = "tick")
+    @Inject(at = @At("TAIL"), method = "tick"
+            //? if forge
+            //, remap = false
+    )
     public void tickMovement(CallbackInfo ci) {
         this.bren_1_21_1$setGunTicks(this.bren_1_21_1$getGunTicks() - 1);
     }
 
     // 删除这个重复的dataTracker方法定义（第216-221行）
 
-    @Inject(method = "tick", at = @At("HEAD"))
+    @Inject(method = "tick",
+            //? if forge
+            //remap = false,
+            at = @At("HEAD"))
     private void onTick(CallbackInfo ci) {
         // 修复：重新添加属性应用逻辑
         this.applyGunAttributes();
@@ -387,7 +394,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
         }
     }
 
-    @Inject(method = "tick", at = @At("TAIL"))
+    @Inject(method = "tick",
+            //? if forge
+            //remap = false,
+            at = @At("TAIL"))
     private void reloadTick$bren$(CallbackInfo ci) {
         Player player = (Player) (Object) this;
         IGunUser gunUser = (IGunUser) player;

@@ -41,7 +41,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ItemInHandRenderer.class)
 public abstract class LegacyItemInHandRendererMixin {
 
-    @Inject(method = "renderItem", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "renderItem",
+            //? if forge
+            //remap = false,
+            at = @At("HEAD"), cancellable = true)
     private void bren$renderGunAnimation(LivingEntity entity, ItemStack stack, ItemDisplayContext displayContext,
                                           boolean leftHand, PoseStack poseStack, MultiBufferSource buffer,
                                           int light, CallbackInfo ci) {

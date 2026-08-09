@@ -15,7 +15,10 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 // only wired into build.fabric.gradle.kts, not NeoForge's - this works identically on both loaders.
 @Mixin(ItemProperties.class)
 public interface LegacyItemPropertiesAccessor {
-    @Invoker("register")
+    @Invoker(value = "register"
+            //? if forge
+            //, remap = false
+    )
     static void invokeRegister(Item item, Identifier id, ClampedItemPropertyFunction function) {
         throw new AssertionError();
     }

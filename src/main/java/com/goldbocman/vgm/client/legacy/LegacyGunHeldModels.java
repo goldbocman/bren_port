@@ -80,6 +80,14 @@ public class LegacyGunHeldModels {
         return Minecraft.getInstance().getModelManager()
                 .getModel(new net.minecraft.client.resources.model.ModelIdentifier(id, "standalone"));
     }
+    ^///?} elif forge {
+    /^private static BakedModel getBakedModel(Identifier id) {
+        // Same vanilla ModelManager API/"standalone" variant requirement as NeoForge - see
+        // ForgeClientModBusEvents.onRegisterAdditionalModels in ClientBren for the matching
+        // registration side of this pairing.
+        return Minecraft.getInstance().getModelManager()
+                .getModel(new net.minecraft.client.resources.model.ModelIdentifier(id, "standalone"));
+    }
     ^///?}
 }
 *///?}

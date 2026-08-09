@@ -12,13 +12,22 @@ import java.util.List;
 
 @Mixin(StructureTemplatePool.class)
 public interface StructurePoolAccessor {
-    @Accessor("rawTemplates")
+    @Accessor(value = "rawTemplates"
+            //? if forge
+            //, remap = false
+    )
     List<Pair<StructurePoolElement, Integer>> getRawTemplates();
 
     @Mutable
-    @Accessor("rawTemplates")
+    @Accessor(value = "rawTemplates"
+            //? if forge
+            //, remap = false
+    )
     void setRawTemplates(List<Pair<StructurePoolElement, Integer>> elementWeights);
 
-    @Accessor("templates")
+    @Accessor(value = "templates"
+            //? if forge
+            //, remap = false
+    )
     ObjectArrayList<StructurePoolElement> getTemplates();
 }

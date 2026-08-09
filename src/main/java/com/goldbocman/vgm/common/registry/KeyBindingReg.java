@@ -75,4 +75,26 @@ public class KeyBindingReg {
         }
     }
     *///?}
+
+    //? if forge
+    //public static void reg() {} // Forge registers via ForgeKeyBindings/ForgeKeyTick below instead.
+
+    //? if forge {
+    /*@net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = Bren.MODID, value = net.minecraftforge.api.distmarker.Dist.CLIENT, bus = net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD)
+    public static class ForgeKeyBindings {
+        @net.minecraftforge.eventbus.api.SubscribeEvent
+        public static void register(net.minecraftforge.client.event.RegisterKeyMappingsEvent event) {
+            event.register(reloadKey);
+        }
+    }
+
+    // Game-bus subscriber (ClientTickEvent) - Bus.FORGE is the default game-side bus on Forge.
+    @net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = Bren.MODID, value = net.minecraftforge.api.distmarker.Dist.CLIENT)
+    public static class ForgeKeyTick {
+        @net.minecraftforge.eventbus.api.SubscribeEvent
+        public static void onClientTick(net.minecraftforge.event.TickEvent.ClientTickEvent.Pre event) {
+            consumeReloadClicks();
+        }
+    }
+    *///?}
 }

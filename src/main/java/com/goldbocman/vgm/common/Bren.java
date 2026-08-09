@@ -53,6 +53,16 @@ public class Bren
 					.displayItems((context, output) -> addTabItems(output))
 					.build());
 	*///?}
+	//? if forge {
+	/*public static final net.minecraftforge.registries.DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS_FORGE =
+			net.minecraftforge.registries.DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
+	public static final net.minecraftforge.registries.RegistryObject<CreativeModeTab> BREN_TAB_FORGE = CREATIVE_MODE_TABS_FORGE.register("bren_tab",
+			() -> CreativeModeTab.builder()
+					.title(Component.translatable("itemGroup." + MODID + ".bren_tab"))
+					.icon(() -> new ItemStack(ItemReg.NETHERITE_AUTO_GUN))
+					.displayItems((context, output) -> addTabItems(output))
+					.build());
+	*///?}
 
 	// EntityType's own constructor touches BuiltInRegistries.ENTITY_TYPE (creates an intrusive holder),
 	// not just the explicit Registry.register() call below - so on NeoForge even *building* it must wait
@@ -72,6 +82,8 @@ public class Bren
 					));
 	//?}
 	//? if neoforge
+	//public static EntityType<@org.jetbrains.annotations.NotNull BulletEntity> BULLET;
+	//? if forge
 	//public static EntityType<@org.jetbrains.annotations.NotNull BulletEntity> BULLET;
 
 	//? if fabric
@@ -194,6 +206,41 @@ public class Bren
 										/^"bullet"
 										^///?}
 								));
+			}
+		}
+	}
+	*///?}
+
+	// Forge inherits the same registry-freeze-outside-RegisterEvent constraint as NeoForge (it
+	// originates here, in classic Forge) - same per-registry dispatch pattern as NeoForgeRegistration
+	// above, just under net.minecraftforge.* instead of net.neoforged.*. Forge 1.21.1 still requires
+	// the explicit bus = Bus.MOD parameter (no >=1.21.9-style bus-inference here).
+	//? if forge {
+	/*@net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = MODID, bus = net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD)
+	public static class ForgeRegistration {
+		@net.minecraftforge.eventbus.api.SubscribeEvent
+		public static void onRegister(net.minecraftforge.registries.RegisterEvent event) {
+			net.minecraft.resources.ResourceKey<? extends Registry<?>> key = event.getRegistryKey();
+			if (key == Registries.ATTRIBUTE) {
+				AttributeReg.reg();
+			} else if (key == Registries.DATA_COMPONENT_TYPE) {
+				DataComponentReg.register();
+			} else if (key == Registries.ITEM) {
+				ItemReg.reg();
+			} else if (key == Registries.SOUND_EVENT) {
+				SoundReg.reg();
+			} else if (key == Registries.PARTICLE_TYPE) {
+				ParticleReg.reg();
+			} else if (key == Registries.FEATURE) {
+				WorldGenReg.init();
+			} else if (key == Registries.ENTITY_TYPE) {
+				// Forge phase 1 only targets 1.21.1 (<1.21.11) so far - see settings.gradle.kts - hence
+				// the plain-string build() overload, not ResourceKey.create(...) (that's >=1.21.11 only,
+				// see NeoForgeRegistration above for the version-gated form once 26.2-forge is added).
+				BULLET = Registry.register(BuiltInRegistries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, "bullet"),
+						EntityType.Builder.<BulletEntity>of((type, level) -> new BulletEntity(type, level), MobCategory.MISC)
+								.clientTrackingRange(10).sized(0.35F, 0.35F).noSave()
+								.build("bullet"));
 			}
 		}
 	}

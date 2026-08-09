@@ -22,8 +22,8 @@ jobs:
         id: tag
         run: |
           TAG="${GITHUB_REF_NAME}"
-          if [[ ! "$TAG" =~ ^([0-9]+\.[0-9]+(\.[0-9]+)?)-(all|fabric|neoforge)\+(.+)$ ]]; then
-            echo "::error::Tag '$TAG' doesn't match <mc>-<all|fabric|neoforge>+<mod_version>, e.g. 26.2-all+0.1.0"
+          if [[ ! "$TAG" =~ ^([0-9]+\.[0-9]+(\.[0-9]+)?)-(all|fabric|neoforge|forge)\+(.+)$ ]]; then
+            echo "::error::Tag '$TAG' doesn't match <mc>-<all|fabric|neoforge|forge>+<mod_version>, e.g. 26.2-all+0.1.0"
             exit 1
           fi
           MC_VERSION="${BASH_REMATCH[1]}"
@@ -44,6 +44,16 @@ jobs:
               exit 1
               ;;
           esac
+
+          # forge is currently only wired up for 1.21.1 (Forge's EventBus 7 rewrite around 1.21.6
+          # means 26.2-forge needs its own platform-code pass - see claude/forge-port.md). "all"
+          # deliberately still means "all loaders actually available for this MC version" - it stays
+          # fabric+neoforge-only for 26.2, not an error - but an explicit forge tag for a version
+          # that doesn't have it wired up is almost certainly a mistake and should fail loudly.
+          if [[ "$OPTION" == "forge" && "$STONECUTTER_VERSION" != "1.21.1" ]]; then
+            echo "::error::forge is only wired up for 1.21.1 so far - got '$TAG'"
+            exit 1
+          fi
 
           echo "mc_version=$MC_VERSION" >> "$GITHUB_OUTPUT"
           echo "stonecutter_version=$STONECUTTER_VERSION" >> "$GITHUB_OUTPUT"
@@ -87,6 +97,16 @@ jobs:
             NEOFORGE_VERSION=$(get_version neoforge)
             if [[ "$NEOFORGE_VERSION" != "$TAG_VERSION" ]]; then
               echo "::error::Tag mod version ($TAG_VERSION) != neoforge mod.version in stonecutter.properties.toml ($NEOFORGE_VERSION)"
+              exit 1
+            fi
+          fi
+
+          # forge is only ever actually built for 1.21.1 (see the Parse tag step) - skip the check
+          # entirely for "all" on other versions rather than validating a loader that won't be built.
+          if [[ "$OPTION" == "forge" || ( "$OPTION" == "all" && "${{ steps.tag.outputs.stonecutter_version }}" == "1.21.1" ) ]]; then
+            FORGE_VERSION=$(get_version forge)
+            if [[ "$FORGE_VERSION" != "$TAG_VERSION" ]]; then
+              echo "::error::Tag mod version ($TAG_VERSION) != forge mod.version in stonecutter.properties.toml ($FORGE_VERSION)"
               exit 1
             fi
           fi
@@ -183,5 +203,31 @@ jobs:
           version: ${{ steps.tag.outputs.mod_version }}
           version-type: release
           loaders: neoforge
+          game-versions: ${{ steps.versions.outputs.game_versions }}
+          changelog-file: release_notes.md
+
+      # forge is only wired up for 1.21.1 so far - see the Parse tag step's validation. The stonecutter_version == '1.21.1' guard (rather than just the option
+      # check) is what makes "all" on 26.2 correctly skip Forge instead of trying to build it.
+      - name: Build Forge jar
+        if: contains(fromJSON('["all","forge"]'), steps.tag.outputs.option) && steps.tag.outputs.stonecutter_version == '1.21.1'
+        run: |
+          ./gradlew :stonecutterSwitchTo${{ steps.tag.outputs.stonecutter_version }}-forge
+          ./gradlew :${{ steps.tag.outputs.stonecutter_version }}-forge:clean
+          ./gradlew :${{ steps.tag.outputs.stonecutter_version }}-forge:build --stacktrace
+
+      - name: Publish Forge
+        if: contains(fromJSON('["all","forge"]'), steps.tag.outputs.option) && steps.tag.outputs.stonecutter_version == '1.21.1'
+        uses: Kira-NT/mc-publish@v3.3.1
+        with:
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-id: ${{ vars.CURSEFORGE_ID }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          files: versions/${{ steps.tag.outputs.stonecutter_version }}-forge/build/libs/!(*-@(sources|dev)).jar
+          name: "Vanilla Gun Mod ${{ steps.tag.outputs.mod_version }} (Forge, MC ${{ steps.tag.outputs.mc_version }})"
+          version: ${{ steps.tag.outputs.mod_version }}
+          version-type: release
+          loaders: forge
           game-versions: ${{ steps.versions.outputs.game_versions }}
           changelog-file: release_notes.md

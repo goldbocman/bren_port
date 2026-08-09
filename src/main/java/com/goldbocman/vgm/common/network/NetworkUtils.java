@@ -20,6 +20,8 @@ public class NetworkUtils {
         //?}
         //? if neoforge
         //net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(serverPlayer, payload);
+        //? if forge
+        //NetworkReg.ForgeNetwork.CHANNEL.send(payload, net.minecraftforge.network.PacketDistributor.PLAYER.with(serverPlayer));
     }
 
     // Client -> server send, used from common-loaded code (e.g. PlayerEntityMixin) that must never
@@ -37,6 +39,8 @@ public class NetworkUtils {
         /^net.neoforged.neoforge.network.PacketDistributor.sendToServer(payload);
         ^///?}
         *///?}
+        //? if forge
+        //NetworkReg.ForgeNetwork.CHANNEL.send(payload, net.minecraftforge.network.PacketDistributor.SERVER.noArg());
     }
 
     public static void sendShotEffect(Player player, Vec3 origin, Vec3 direction, boolean ejectCasing) {

@@ -5,7 +5,8 @@ package com.goldbocman.vgm;
 public sealed interface ModLoaderAccess {
     ModLoaderAccess INSTANCE =
         /*? if fabric{*/new FabricLoaderAccess();
-        /*?} elif neoforge *///new NeoForgeLoaderAccess();
+        /*?} elif neoforge {*//*new NeoForgeLoaderAccess();
+        *//*?} elif forge *///new ForgeLoaderAccess();
 
     boolean isClient();
     boolean isServer();
@@ -53,6 +54,25 @@ public sealed interface ModLoaderAccess {
         @Override
         public boolean isModLoaded(String id) {
             return mods.getModFileById(id) != null;
+        }
+    }
+    *///?} elif forge {
+    /*final class ForgeLoaderAccess implements ModLoaderAccess {
+        private net.minecraftforge.api.distmarker.Dist dist = net.minecraftforge.fml.loading.FMLEnvironment.dist;
+
+        @Override
+        public boolean isClient() {
+            return dist.isClient();
+        }
+
+        @Override
+        public boolean isServer() {
+            return dist.isDedicatedServer();
+        }
+
+        @Override
+        public boolean isModLoaded(String id) {
+            return net.minecraftforge.fml.ModList.get().isLoaded(id);
         }
     }
     *///?}

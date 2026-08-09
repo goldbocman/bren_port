@@ -13,4 +13,6 @@ public class DataPackReg {
     //?}
     //? if neoforge
     //public static void init() {} // NeoForge: no equivalent logic needed yet (Fabric's handler is a no-op too).
+    //? if forge
+    //public static void init() {} // Forge: same as NeoForge - no equivalent logic needed yet.
 }

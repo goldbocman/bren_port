@@ -40,7 +40,10 @@ public abstract class LegacyBipedEntityModelMixin implements ArmedModel, HeadedM
 
     @Shadow @Final public ModelPart hat;
 
-    @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At("TAIL"))
+    @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V",
+            //? if forge
+            //remap = false,
+            at = @At("TAIL"))
     private void bren$angles(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks,
                               float netHeadYaw, float headPitch, CallbackInfo ci) {
         if (!(entity instanceof Player player) || !(player instanceof IGunUser)) return;
