@@ -5,6 +5,7 @@ on:
     tags:
       - '26.2-*\+*'
       - '1.21.1-*\+*'
+      - '1.20.1-*\+*'
 
 permissions:
   contents: write
@@ -39,19 +40,30 @@ jobs:
             1.21.1)
               STONECUTTER_VERSION="1.21.1"
               ;;
+            1.20.1)
+              STONECUTTER_VERSION="1.20.1"
+              ;;
             *)
-              echo "::error::Unsupported MC version '$MC_VERSION' (got from tag '$TAG'). Supported: 26.2, 1.21.1."
+              echo "::error::Unsupported MC version '$MC_VERSION' (got from tag '$TAG'). Supported: 26.2, 1.21.1, 1.20.1."
               exit 1
               ;;
           esac
 
-          # forge is currently only wired up for 1.21.1 (Forge's EventBus 7 rewrite around 1.21.6
-          # means 26.2-forge needs its own platform-code pass - see claude/forge-port.md). "all"
-          # deliberately still means "all loaders actually available for this MC version" - it stays
-          # fabric+neoforge-only for 26.2, not an error - but an explicit forge tag for a version
-          # that doesn't have it wired up is almost certainly a mistake and should fail loudly.
-          if [[ "$OPTION" == "forge" && "$STONECUTTER_VERSION" != "1.21.1" ]]; then
-            echo "::error::forge is only wired up for 1.21.1 so far - got '$TAG'"
+          # forge is currently only wired up for 1.21.1 and 1.20.1 (Forge's EventBus 7 rewrite
+          # around 1.21.6 means 26.2-forge needs its own platform-code pass. "all" deliberately still means "all loaders actually available
+          # for this MC version" - it stays fabric+neoforge-only for 26.2, not an error - but an
+          # explicit forge tag for a version that doesn't have it wired up is almost certainly a
+          # mistake and should fail loudly.
+          if [[ "$OPTION" == "forge" && "$STONECUTTER_VERSION" != "1.21.1" && "$STONECUTTER_VERSION" != "1.20.1" ]]; then
+            echo "::error::forge is only wired up for 1.21.1 and 1.20.1 so far - got '$TAG'"
+            exit 1
+          fi
+
+          # NeoForge has zero 1.20.1 builds - earliest is
+          # 20.2.3-beta for MC 1.20.2. An explicit neoforge tag for 1.20.1 is a mistake;
+          # "all" on 1.20.1 silently skips it.
+          if [[ "$OPTION" == "neoforge" && "$STONECUTTER_VERSION" == "1.20.1" ]]; then
+            echo "::error::neoforge has no 1.20.1 build (NeoForge never shipped for MC 1.20.1) - got '$TAG'"
             exit 1
           fi
 
@@ -101,9 +113,10 @@ jobs:
             fi
           fi
 
-          # forge is only ever actually built for 1.21.1 (see the Parse tag step) - skip the check
-          # entirely for "all" on other versions rather than validating a loader that won't be built.
-          if [[ "$OPTION" == "forge" || ( "$OPTION" == "all" && "${{ steps.tag.outputs.stonecutter_version }}" == "1.21.1" ) ]]; then
+          # forge is only ever actually built for 1.21.1/1.20.1 - skip the
+          # check entirely for "all" on other versions rather than validating a loader that won't
+          # be built.
+          if [[ "$OPTION" == "forge" || ( "$OPTION" == "all" && ( "${{ steps.tag.outputs.stonecutter_version }}" == "1.21.1" || "${{ steps.tag.outputs.stonecutter_version }}" == "1.20.1" ) ) ]]; then
             FORGE_VERSION=$(get_version forge)
             if [[ "$FORGE_VERSION" != "$TAG_VERSION" ]]; then
               echo "::error::Tag mod version ($TAG_VERSION) != forge mod.version in stonecutter.properties.toml ($FORGE_VERSION)"
@@ -154,7 +167,13 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '25'
+          # 17 listed first, 25 last, so JAVA_HOME (which setup-java points at the *last* listed
+          # version) stays 25 - unchanged for every other build step. This also exports
+          # JAVA_HOME_17_X64, used only by the standalone 1.20.1-forge build below: its Gradle
+          # 8.14.5 wrapper's Kotlin-DSL script compiler can't parse Java 25's version string
+          java-version: |
+            17
+            25
 
       - uses: gradle/actions/setup-gradle@v4
 
@@ -182,15 +201,18 @@ jobs:
           game-versions: ${{ steps.versions.outputs.game_versions }}
           changelog-file: release_notes.md
 
+      # 1.20.1 has no NeoForge build at all - the
+      # stonecutter_version != '1.20.1' guard is what makes "all" on 1.20.1 correctly skip
+      # NeoForge instead of trying to build a subproject that doesn't exist.
       - name: Build NeoForge jar
-        if: contains(fromJSON('["all","neoforge"]'), steps.tag.outputs.option)
+        if: contains(fromJSON('["all","neoforge"]'), steps.tag.outputs.option) && steps.tag.outputs.stonecutter_version != '1.20.1'
         run: |
           ./gradlew :stonecutterSwitchTo${{ steps.tag.outputs.stonecutter_version }}-neoforge
           ./gradlew :${{ steps.tag.outputs.stonecutter_version }}-neoforge:clean
           ./gradlew :${{ steps.tag.outputs.stonecutter_version }}-neoforge:build --stacktrace
 
       - name: Publish NeoForge
-        if: contains(fromJSON('["all","neoforge"]'), steps.tag.outputs.option)
+        if: contains(fromJSON('["all","neoforge"]'), steps.tag.outputs.option) && steps.tag.outputs.stonecutter_version != '1.20.1'
         uses: Kira-NT/mc-publish@v3.3.1
         with:
           modrinth-id: ${{ vars.MODRINTH_ID }}
@@ -206,8 +228,9 @@ jobs:
           game-versions: ${{ steps.versions.outputs.game_versions }}
           changelog-file: release_notes.md
 
-      # forge is only wired up for 1.21.1 so far - see the Parse tag step's validation. The stonecutter_version == '1.21.1' guard (rather than just the option
-      # check) is what makes "all" on 26.2 correctly skip Forge instead of trying to build it.
+      # forge is only wired up for 1.21.1 and 1.20.1 so far - see the Parse tag step's validation.
+      # The stonecutter_version == '1.21.1' guard (rather than just the option check) is what makes
+      # "all" on 26.2 correctly skip Forge instead of trying to build it.
       - name: Build Forge jar
         if: contains(fromJSON('["all","forge"]'), steps.tag.outputs.option) && steps.tag.outputs.stonecutter_version == '1.21.1'
         run: |
@@ -225,6 +248,38 @@ jobs:
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           files: versions/${{ steps.tag.outputs.stonecutter_version }}-forge/build/libs/!(*-@(sources|dev)).jar
+          name: "Vanilla Gun Mod ${{ steps.tag.outputs.mod_version }} (Forge, MC ${{ steps.tag.outputs.mc_version }})"
+          version: ${{ steps.tag.outputs.mod_version }}
+          version-type: release
+          loaders: forge
+          game-versions: ${{ steps.versions.outputs.game_versions }}
+          changelog-file: release_notes.md
+
+      # 1.20.1-forge is NOT a real stonecutter subproject - it needs ForgeGradle 6, which hard-fails
+      # under this repo's pinned Gradle 9.6.1, so it lives in forge-1.20.1/ as a standalone project
+      # with its own Gradle 8.14.5 wrapper.
+      # :stonecutterSwitchTo1.20.1-forge still runs first from the main wrapper to toggle the shared
+      # `src/` tree's //? if forge / <1.20.5 comments - only the actual build step moves to the
+      # standalone project's own wrapper. -Dorg.gradle.java.home pins that wrapper's JVM to the JDK 17
+      # install from the setup-java step above (its Kotlin-DSL compiler can't parse Java 25).
+      - name: Build 1.20.1 Forge jar
+        if: contains(fromJSON('["all","forge"]'), steps.tag.outputs.option) && steps.tag.outputs.stonecutter_version == '1.20.1'
+        run: |
+          ./gradlew :stonecutterSwitchTo1.20.1-forge
+          chmod +x forge-1.20.1/gradlew
+          cd forge-1.20.1
+          ./gradlew clean build --stacktrace "-Dorg.gradle.java.home=$JAVA_HOME_17_X64"
+
+      - name: Publish 1.20.1 Forge
+        if: contains(fromJSON('["all","forge"]'), steps.tag.outputs.option) && steps.tag.outputs.stonecutter_version == '1.20.1'
+        uses: Kira-NT/mc-publish@v3.3.1
+        with:
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-id: ${{ vars.CURSEFORGE_ID }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          files: forge-1.20.1/build/libs/!(*-@(sources|dev)).jar
           name: "Vanilla Gun Mod ${{ steps.tag.outputs.mod_version }} (Forge, MC ${{ steps.tag.outputs.mc_version }})"
           version: ${{ steps.tag.outputs.mod_version }}
           version-type: release

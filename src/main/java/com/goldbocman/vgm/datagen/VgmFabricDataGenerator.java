@@ -53,18 +53,17 @@ public class VgmFabricDataGenerator implements DataGeneratorEntrypoint {
         ^///?}
     }
 
+    // VgmEnchantmentBootstrap has zero custom enchantments registered (pure future scaffolding), so
+    // this override - and the FabricDynamicRegistryProvider above - are currently inert either way.
+    // At 1.20.1, fabric-data-generation-api-v1's own vanilla RegistrySetBuilder merge already
+    // supplies an ENCHANTMENT registry entry, and adding a second one here collides
+    // ("Multiple entries with same key: minecraft:enchantment") and crashes runDatagen - confirmed
+    // empirically, not assumed. Since there's nothing to register yet, just skip the override.
     //? if >=1.20.5 {
     /^@Override
     public void buildRegistry(RegistrySetBuilder registryBuilder) {
         registryBuilder.add(Registries.ENCHANTMENT, VgmEnchantmentBootstrap::bootstrap);
     }
-    ^///?} else {
-     VgmEnchantmentBootstrap has zero custom enchantments registered (pure future scaffolding), so
-     this override - and the FabricDynamicRegistryProvider above - are currently inert either way.
-     At 1.20.1, fabric-data-generation-api-v1's own vanilla RegistrySetBuilder merge already
-     supplies an ENCHANTMENT registry entry, and adding a second one here collides
-     ("Multiple entries with same key: minecraft:enchantment") and crashes runDatagen - confirmed
-     empirically, not assumed. Since there's nothing to register yet, just skip the override.
-    //?}
+    ^///?}
 }
 *///?}
