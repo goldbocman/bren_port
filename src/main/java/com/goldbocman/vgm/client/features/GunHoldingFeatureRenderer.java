@@ -3,7 +3,7 @@ package com.goldbocman.vgm.client.features;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 //? if >=1.21.11 {
-/*//? if fabric {
+//? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 //?}
@@ -49,9 +49,9 @@ public class GunHoldingFeatureRenderer<S extends HumanoidRenderState, M extends 
             }
         }
     }
-    /^*
+    /**
      * Securely obtain main hand items via reflection.
-     ^/
+     */
     private ItemStack getMainHandItem(HumanoidRenderState state) {
         try {
             // Try accessing different possible field names
@@ -80,4 +80,4 @@ public class GunHoldingFeatureRenderer<S extends HumanoidRenderState, M extends 
         return ItemStack.EMPTY;
     }
 }
-*///?}
+//?}

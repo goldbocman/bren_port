@@ -1,7 +1,7 @@
 package com.goldbocman.vgm.client.features.legacy;
 
 //? if <1.21.11 {
-import com.mojang.blaze3d.vertex.PoseStack;
+/*import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -33,4 +33,4 @@ public class LegacyGunBackFeatureRenderer<T extends LivingEntity, M extends Huma
                         float ageInTicks, float netHeadYaw, float headPitch) {
     }
 }
-//?}
+*///?}

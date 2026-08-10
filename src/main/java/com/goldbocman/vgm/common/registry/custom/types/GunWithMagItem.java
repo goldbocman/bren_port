@@ -4,11 +4,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 //? if >=1.20.5 {
-/*import net.minecraft.core.component.DataComponentType;
-*///?}
+import net.minecraft.core.component.DataComponentType;
+//?}
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -22,8 +22,8 @@ import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 //? if >=1.21.11 {
-/*import net.minecraft.world.item.component.TooltipDisplay;
-*///?}
+import net.minecraft.world.item.component.TooltipDisplay;
+//?}
 import net.minecraft.world.level.Level;
 import com.goldbocman.vgm.common.Bren;
 import com.goldbocman.vgm.common.entity.IGunUser;
@@ -42,9 +42,9 @@ import java.util.function.Consumer;
 
 public class GunWithMagItem extends GunItem {
     //? if >=1.20.5 {
-    /*public static DataComponentType<Boolean> HAS_MAGAZINE;
+    public static DataComponentType<Boolean> HAS_MAGAZINE;
     public static DataComponentType<Integer> GUN_MODEL_TYPE;
-    *///?}
+    //?}
 
     private static final Logger LOGGER = LoggerFactory.getLogger("Bren/GunWithMagItem");
     private final TagKey<Item> compatibleMagazines;
@@ -53,26 +53,26 @@ public class GunWithMagItem extends GunItem {
 
     // 弹药类型显示方法
     //? if >=1.21.11 {
-    /*@Override
+    @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull TooltipDisplay tooltipComponent, Consumer<Component> tooltipAdder, @NotNull TooltipFlag type) {
         super.appendHoverText(stack, context, tooltipComponent, tooltipAdder, type);
         bren$appendHoverText(stack, tooltipAdder::accept);
     }
-    *///?} else {
-    //? if >=1.20.5 {
-    /*@Override
+    //?} else {
+    /*//? if >=1.20.5 {
+    @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, java.util.@NotNull List<Component> tooltipComponents, @NotNull TooltipFlag type) {
         super.appendHoverText(stack, context, tooltipComponents, type);
         bren$appendHoverText(stack, tooltipComponents::add);
     }
-    *///?} else {
-    @Override
+    //?} else {
+    /^@Override
     public void appendHoverText(@NotNull ItemStack stack, Level level, java.util.@NotNull List<Component> tooltipComponents, @NotNull TooltipFlag type) {
         super.appendHoverText(stack, level, tooltipComponents, type);
         bren$appendHoverText(stack, tooltipComponents::add);
     }
-    //?}
-    //?}
+    ^///?}
+    *///?}
 
     private void bren$appendHoverText(ItemStack stack, Consumer<Component> tooltipAdder) {
         // 显示当前弹匣信息
@@ -80,7 +80,7 @@ public class GunWithMagItem extends GunItem {
             var nbt = GunApiCompat.getTag(stack);
             String magItemId = GunApiCompat.getString(nbt, MAGAZINE_ITEM_KEY);
             if (!magItemId.isEmpty()) {
-                var itemId = ResourceLocation.tryParse(magItemId);
+                var itemId = Identifier.tryParse(magItemId);
                 if (itemId != null) {
                     var item = GunApiCompat.getItem(itemId);
                     if (item != null) {
@@ -294,7 +294,7 @@ public class GunWithMagItem extends GunItem {
         if (nbt.contains("EmptyMagazineItem")) {
             String magItemId = GunApiCompat.getString(nbt, "EmptyMagazineItem");
             if (!magItemId.isEmpty()) {
-                var itemId = ResourceLocation.tryParse(magItemId);
+                var itemId = Identifier.tryParse(magItemId);
                 if (itemId != null) {
                     var item = GunApiCompat.getItem(itemId);
                     if (item instanceof MagazineItem) {
@@ -334,7 +334,7 @@ public class GunWithMagItem extends GunItem {
 
             // 返回空弹匣给玩家（如果有剩余子弹则保留）
             if (!magItemId.isEmpty()) {
-                var itemId = ResourceLocation.tryParse(magItemId);
+                var itemId = Identifier.tryParse(magItemId);
                 if (itemId != null) {
                     var item = GunApiCompat.getItem(itemId);
                     if (item instanceof MagazineItem) {
@@ -389,17 +389,17 @@ public class GunWithMagItem extends GunItem {
     }
 
     //? if >=1.21.11 {
-    /*public void inventoryTick(ItemStack stack, ServerLevel world, Entity entity, EquipmentSlot slot) {
+    public void inventoryTick(ItemStack stack, ServerLevel world, Entity entity, EquipmentSlot slot) {
         bren$inventoryTick(stack, entity);
         super.inventoryTick(stack, world, entity, slot);
     }
-    *///?} else {
-    @Override
+    //?} else {
+    /*@Override
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean selected) {
         bren$inventoryTick(stack, entity);
         super.inventoryTick(stack, world, entity, slot, selected);
     }
-    //?}
+    *///?}
 
     // Old and new inventoryTick overloads report the ticking slot differently (EquipmentSlot enum vs
     // raw index + "selected" boolean) - checking whether stack is actually the held item works
@@ -435,7 +435,7 @@ public class GunWithMagItem extends GunItem {
         // LegacyItemPropertiesAccessor - see claude/gun-rendering.md), so this is a genuine no-op on
         // 1.20.1, not a partial reimplementation.
         //? if >=1.20.5 {
-        /*boolean hasMagazine = GunWithMagItem.hasMagazine(stack);
+        boolean hasMagazine = GunWithMagItem.hasMagazine(stack);
 
         if (hasMagazine) {
             // 有弹匣时设置 GUN_MODEL_TYPE 为 1，显示 ak47 模型
@@ -452,7 +452,7 @@ public class GunWithMagItem extends GunItem {
                 LOGGER.error("Failed to remove GUN_MODEL_TYPE", e);
             }
         }
-        *///?}
+        //?}
     }
 
     // 重载版本，带有玩家信息，用于发送网络同步包

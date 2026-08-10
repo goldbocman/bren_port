@@ -1,7 +1,7 @@
 package com.goldbocman.vgm.common.mixin.client;
 
 //? if >=1.21.11 {
-/*import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.GameRenderer;
@@ -70,4 +70,4 @@ public class MinecraftClientHudMixin {
         }
     }
 }
-*///?}
+//?}

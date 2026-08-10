@@ -1,7 +1,7 @@
 package com.goldbocman.vgm.common.mixin.client;
 
 //? if >=1.21.11 {
-/*//? if fabric {
+//? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 //?}
@@ -18,7 +18,7 @@ public abstract class DrawContextMixin {
 
     // 修复：在 Minecraft 26.1 中，renderItem 方法可能已被移除或重命名
     // 暂时注释掉所有注入点，避免游戏崩溃
-    /^
+    /*
     @Inject(at = @At("HEAD"), method = "renderItem")
     private void editGuiItem(ItemStack stack, int x, int y, CallbackInfo ci) {
         if (!stack.isEmpty()) {
@@ -46,6 +46,6 @@ public abstract class DrawContextMixin {
         }
         return true;
     }
-    ^/
+    */
 }
-*///?}
+//?}

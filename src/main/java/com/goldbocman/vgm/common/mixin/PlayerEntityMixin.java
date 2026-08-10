@@ -3,7 +3,7 @@ package com.goldbocman.vgm.common.mixin;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -68,11 +68,11 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
     public PlayerEntityMixin(Level world, BlockPos ignoredPos, float ignoredYaw, GameProfile ignoredGameProfile) {
         //? if >=1.21.11 {
-        /*super((EntityType<? extends LivingEntity>) BuiltInRegistries.ENTITY_TYPE.get(com.goldbocman.vgm.TemplateModCommon.id("minecraft", "player")).orElseThrow().value(), world);
-        *///?} else {
-        // Registry.get(ResourceLocation) returns T directly pre-1.21.11, not Optional<Holder<T>>.
+        super((EntityType<? extends LivingEntity>) BuiltInRegistries.ENTITY_TYPE.get(com.goldbocman.vgm.TemplateModCommon.id("minecraft", "player")).orElseThrow().value(), world);
+        //?} else {
+        /*// Registry.get(Identifier) returns T directly pre-1.21.11, not Optional<Holder<T>>.
         super((EntityType<? extends LivingEntity>) BuiltInRegistries.ENTITY_TYPE.get(com.goldbocman.vgm.TemplateModCommon.id("minecraft", "player")), world);
-        //?}
+        *///?}
     }
 
     // 新增瞄准相关方法实现
@@ -98,7 +98,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
     @Inject(method = "isScoping",
             //? if forge
-            remap = false,
+            //remap = false,
             at = @At("HEAD"), cancellable = true)
     public void blackPowder$gunScopes(CallbackInfoReturnable<Boolean> cir) {
         ItemStack itemStack = this.getMainHandItem();
@@ -143,7 +143,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
     @Unique
     private boolean isRifle(ItemStack stack) {
         // 检查是否为Rifle类型的枪械
-        ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        Identifier itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         return itemId != null && itemId.getPath().toLowerCase().contains("rifle");
     }
 
@@ -256,7 +256,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
     @Inject(at = @At("RETURN"), method = "createAttributes"
             //? if forge
-            , remap = false
+            //, remap = false
     )
     private static void createPlayerAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
         var builder = cir.getReturnValue();
@@ -266,24 +266,24 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
         // confirmed via javap on the real 1.20.1 merged jar.
         if (AttributeReg.RANGED_DAMAGE != null) {
             //? if >=1.20.5 {
-            /*builder.add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AttributeReg.RANGED_DAMAGE), 5d); // 默认伤害值
-            *///?} else {
-            builder.add(AttributeReg.RANGED_DAMAGE, 5d); // 默认伤害值
-            //?}
+            builder.add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AttributeReg.RANGED_DAMAGE), 5d); // 默认伤害值
+            //?} else {
+            /*builder.add(AttributeReg.RANGED_DAMAGE, 5d); // 默认伤害值
+            *///?}
         }
         if (AttributeReg.FIRE_RATE != null) {
             //? if >=1.20.5 {
-            /*builder.add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AttributeReg.FIRE_RATE), 3d); // 默认射速
-            *///?} else {
-            builder.add(AttributeReg.FIRE_RATE, 3d); // 默认射速
-            //?}
+            builder.add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AttributeReg.FIRE_RATE), 3d); // 默认射速
+            //?} else {
+            /*builder.add(AttributeReg.FIRE_RATE, 3d); // 默认射速
+            *///?}
         }
         if (AttributeReg.RECOIL != null) {
             //? if >=1.20.5 {
-            /*builder.add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AttributeReg.RECOIL), 1d); // 默认后坐力
-            *///?} else {
-            builder.add(AttributeReg.RECOIL, 1d); // 默认后坐力
-            //?}
+            builder.add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AttributeReg.RECOIL), 1d); // 默认后坐力
+            //?} else {
+            /*builder.add(AttributeReg.RECOIL, 1d); // 默认后坐力
+            *///?}
         }
     }
 
@@ -337,7 +337,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
     @Inject(at = @At("TAIL"), method = "tick"
             //? if forge
-            , remap = false
+            //, remap = false
     )
     public void tickMovement(CallbackInfo ci) {
         this.bren_1_21_1$setGunTicks(this.bren_1_21_1$getGunTicks() - 1);
@@ -347,7 +347,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
     @Inject(method = "tick",
             //? if forge
-            remap = false,
+            //remap = false,
             at = @At("HEAD"))
     private void onTick(CallbackInfo ci) {
         // 修复：重新添加属性应用逻辑
@@ -396,10 +396,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
         // LivingEntity.getAttribute takes a plain Attribute pre-1.20.5, not a Holder<Attribute> -
         // confirmed via javap on the real 1.20.1 merged jar.
         //? if >=1.20.5 {
-        /*var attributeEntry = BuiltInRegistries.ATTRIBUTE.wrapAsHolder(attribute);
-        *///?} else {
-        var attributeEntry = attribute;
-        //?}
+        var attributeEntry = BuiltInRegistries.ATTRIBUTE.wrapAsHolder(attribute);
+        //?} else {
+        /*var attributeEntry = attribute;
+        *///?}
         if (attributeEntry != null) {
             // 获取属性实例并设置值
             var attributeInstance = player.getAttribute(attributeEntry);
@@ -417,7 +417,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
 
     @Inject(method = "tick",
             //? if forge
-            remap = false,
+            //remap = false,
             at = @At("TAIL"))
     private void reloadTick$bren$(CallbackInfo ci) {
         Player player = (Player) (Object) this;
@@ -497,7 +497,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
             String magItemId = GunApiCompat.getString(nbt, "MagazineItem");
 
             if (!magItemId.isEmpty()) {
-                var itemId = ResourceLocation.tryParse(magItemId);
+                var itemId = Identifier.tryParse(magItemId);
                 if (itemId != null) {
                     var item = GunApiCompat.getItem(itemId);
                     if (item instanceof com.goldbocman.vgm.common.registry.custom.ColorableMagazineItem) {

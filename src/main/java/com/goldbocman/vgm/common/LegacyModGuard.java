@@ -6,10 +6,10 @@ import java.nio.file.Path;
 import java.util.List;
 
 //? if fabric {
-/*import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModOrigin;
-*///?}
+//?}
 
 // This mod was renamed from "bren" (all versions through 0.7.0) to "vgm" (0.1.0+). Since the mod
 // id itself changed, updating by just dropping the new jar in doesn't replace the old one - both
@@ -24,7 +24,7 @@ public final class LegacyModGuard {
 
 	public static void checkForLegacyMod() {
 		//? if fabric {
-		/*if (!FabricLoader.getInstance().isModLoaded(LEGACY_MODID)) {
+		if (!FabricLoader.getInstance().isModLoaded(LEGACY_MODID)) {
 			return;
 		}
 
@@ -32,7 +32,7 @@ public final class LegacyModGuard {
 		ModOrigin origin = legacy.getOrigin();
 		List<Path> paths = origin.getKind() == ModOrigin.Kind.PATH ? origin.getPaths() : List.of();
 		throw new RuntimeException(buildMessage(paths));
-		*///?}
+		//?}
 		//? if neoforge {
 		/*if (!net.neoforged.fml.ModList.get().isLoaded(LEGACY_MODID)) {
 			return;

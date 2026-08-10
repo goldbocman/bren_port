@@ -1,7 +1,7 @@
 package com.goldbocman.vgm.client.legacy;
 
 //? if <1.21.11 {
-import net.minecraft.client.model.geom.ModelPart;
+/*import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -80,4 +80,4 @@ public class LegacyGunAnimationSystem {
         arm.yRot = yRelative + rotationY;
     }
 }
-//?}
+*///?}

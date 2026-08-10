@@ -1,11 +1,11 @@
 package com.goldbocman.vgm.client.features.legacy;
 
 //? if <1.21.11 {
-import com.mojang.blaze3d.vertex.PoseStack;
+/*import com.mojang.blaze3d.vertex.PoseStack;
 //? if fabric {
-/*import net.fabricmc.api.EnvType;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-*///?}
+//?}
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -19,7 +19,7 @@ import net.minecraft.world.entity.LivingEntity;
 // mixin split), so this layer is a no-op here too - kept only so it exists to register, matching the
 // modern registration call in ClientBren without adding behavior nothing currently exercises.
 //? if fabric
-//@Environment(EnvType.CLIENT)
+@Environment(EnvType.CLIENT)
 public class LegacyGunHoldingFeatureRenderer<S extends LivingEntity, M extends EntityModel<S>> extends RenderLayer<S, M> {
     public LegacyGunHoldingFeatureRenderer(RenderLayerParent<S, M> context) {
         super(context);
@@ -31,4 +31,4 @@ public class LegacyGunHoldingFeatureRenderer<S extends LivingEntity, M extends E
                         float ageInTicks, float netHeadYaw, float headPitch) {
     }
 }
-//?}
+*///?}

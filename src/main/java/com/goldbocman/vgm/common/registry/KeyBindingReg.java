@@ -2,13 +2,13 @@ package com.goldbocman.vgm.common.registry;
 
 import com.mojang.blaze3d.platform.InputConstants;
 //? if fabric {
-/*import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 //? if >=26.1 {
-/^import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
-^///?} else {
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-//?}
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+//?} else {
+/*import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 *///?}
+//?}
 import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
 import com.goldbocman.vgm.common.Bren;
@@ -22,12 +22,12 @@ public class KeyBindingReg {
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_R,
             //? if >=1.21.11 {
-            /*KeyMapping.Category.GAMEPLAY
-            *///?} else {
-            // Pre-1.21.11 KeyMapping takes the category as a plain translation-key string instead of
+            KeyMapping.Category.GAMEPLAY
+            //?} else {
+            /*// Pre-1.21.11 KeyMapping takes the category as a plain translation-key string instead of
             // the newer Category enum - "key.categories.gameplay" is vanilla's own gameplay category.
             "key.categories.gameplay"
-            //?}
+            *///?}
     );
 
     // Hold-to-reload (crossbow-style): press starts the reload, release before it finishes cancels it
@@ -47,19 +47,19 @@ public class KeyBindingReg {
     }
 
     //? if fabric {
-    /*public static void registerKeyInputs() {
+    public static void registerKeyInputs() {
         ClientTickEvents.START_CLIENT_TICK.register(client -> consumeReloadClicks());
     }
 
     public static void reg() {
         //? if >=26.1 {
-        /^reloadKey = KeyMappingHelper.registerKeyMapping(reloadKey);
-        ^///?} else {
-        reloadKey = KeyBindingHelper.registerKeyBinding(reloadKey);
-        //?}
+        reloadKey = KeyMappingHelper.registerKeyMapping(reloadKey);
+        //?} else {
+        /*reloadKey = KeyBindingHelper.registerKeyBinding(reloadKey);
+        *///?}
         registerKeyInputs();
     }
-    *///?}
+    //?}
     //? if neoforge
     //public static void reg() {} // NeoForge registers via NeoForgeKeyBindings/NeoForgeKeyTick below instead.
 
@@ -87,10 +87,10 @@ public class KeyBindingReg {
     *///?}
 
     //? if forge
-    public static void reg() {} // Forge registers via ForgeKeyBindings/ForgeKeyTick below instead.
+    //public static void reg() {} // Forge registers via ForgeKeyBindings/ForgeKeyTick below instead.
 
     //? if forge {
-    @net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = Bren.MODID, value = net.minecraftforge.api.distmarker.Dist.CLIENT, bus = net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD)
+    /*@net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = Bren.MODID, value = net.minecraftforge.api.distmarker.Dist.CLIENT, bus = net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD)
     public static class ForgeKeyBindings {
         @net.minecraftforge.eventbus.api.SubscribeEvent
         public static void register(net.minecraftforge.client.event.RegisterKeyMappingsEvent event) {
@@ -103,18 +103,18 @@ public class KeyBindingReg {
     public static class ForgeKeyTick {
         @net.minecraftforge.eventbus.api.SubscribeEvent
         //? if >=1.20.5 {
-        /*public static void onClientTick(net.minecraftforge.event.TickEvent.ClientTickEvent.Pre event) {
+        public static void onClientTick(net.minecraftforge.event.TickEvent.ClientTickEvent.Pre event) {
             consumeReloadClicks();
         }
-        *///?} else {
-        // 1.20.1's Forge has no ClientTickEvent.Pre/Post split yet - just one class with a
+        //?} else {
+        /^// 1.20.1's Forge has no ClientTickEvent.Pre/Post split yet - just one class with a
         // Phase field (confirmed via javap against forge-1.20.1-47.4.22) - START mirrors .Pre.
         public static void onClientTick(net.minecraftforge.event.TickEvent.ClientTickEvent event) {
             if (event.phase == net.minecraftforge.event.TickEvent.Phase.START) {
                 consumeReloadClicks();
             }
         }
-        //?}
+        ^///?}
     }
-    //?}
+    *///?}
 }

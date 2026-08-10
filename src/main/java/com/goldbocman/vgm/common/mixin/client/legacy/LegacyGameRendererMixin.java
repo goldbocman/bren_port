@@ -1,8 +1,8 @@
 package com.goldbocman.vgm.common.mixin.client.legacy;
 
 //? if >=1.20.5 {
-/*//? if <1.21.11 {
-import net.minecraft.client.DeltaTracker;
+//? if <1.21.11 {
+/*import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.renderer.GameRenderer;
@@ -30,7 +30,7 @@ public class LegacyGameRendererMixin {
 
     @Inject(method = "renderLevel",
             //? if forge
-            remap = false,
+            //remap = false,
             at = @At("HEAD"))
     private void bren$modifyFov(DeltaTracker deltaTracker, CallbackInfo ci) {
         Minecraft client = Minecraft.getInstance();
@@ -88,5 +88,5 @@ public class LegacyGameRendererMixin {
         options.fov().set((int) fov);
     }
 }
-//?}
 *///?}
+//?}

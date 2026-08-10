@@ -1,7 +1,7 @@
 package com.goldbocman.vgm.common.mixin.client;
 
 //? if >=1.21.11 {
-/*//? if fabric {
+//? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 //?}
@@ -40,4 +40,4 @@ public abstract class AvatarRendererMixin {
         }
     }
 }
-*///?}
+//?}

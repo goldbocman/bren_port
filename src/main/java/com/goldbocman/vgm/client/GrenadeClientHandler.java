@@ -1,7 +1,7 @@
 package com.goldbocman.vgm.client;
 
 //? if fabric
-//import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.world.entity.player.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +22,12 @@ public class GrenadeClientHandler {
     }
 
     //? if fabric {
-    /*public static void register() {
+    public static void register() {
         ClientTickEvents.END_CLIENT_TICK.register(GrenadeClientHandler::onEndClientTick);
 
         LOGGER.info("GrenadeClientHandler registered successfully");
     }
-    *///?}
+    //?}
     //? if neoforge
     //public static void register() {} // NeoForge registers via NeoForgeGrenadeTick below instead.
 
@@ -42,25 +42,25 @@ public class GrenadeClientHandler {
     *///?}
 
     //? if forge
-    public static void register() {} // Forge registers via ForgeGrenadeTick below instead.
+    //public static void register() {} // Forge registers via ForgeGrenadeTick below instead.
 
     //? if forge {
-    @net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = com.goldbocman.vgm.common.Bren.MODID, value = net.minecraftforge.api.distmarker.Dist.CLIENT)
+    /*@net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = com.goldbocman.vgm.common.Bren.MODID, value = net.minecraftforge.api.distmarker.Dist.CLIENT)
     public static class ForgeGrenadeTick {
         @net.minecraftforge.eventbus.api.SubscribeEvent
         //? if >=1.20.5 {
-        /*public static void onClientTick(net.minecraftforge.event.TickEvent.ClientTickEvent.Post event) {
+        public static void onClientTick(net.minecraftforge.event.TickEvent.ClientTickEvent.Post event) {
             onEndClientTick(net.minecraft.client.Minecraft.getInstance());
         }
-        *///?} else {
-        // 1.20.1's Forge has no ClientTickEvent.Pre/Post split yet - just one class with a
+        //?} else {
+        /^// 1.20.1's Forge has no ClientTickEvent.Pre/Post split yet - just one class with a
         // Phase field (confirmed via javap against forge-1.20.1-47.4.22) - END mirrors .Post.
         public static void onClientTick(net.minecraftforge.event.TickEvent.ClientTickEvent event) {
             if (event.phase == net.minecraftforge.event.TickEvent.Phase.END) {
                 onEndClientTick(net.minecraft.client.Minecraft.getInstance());
             }
         }
-        //?}
+        ^///?}
     }
-    //?}
+    *///?}
 }

@@ -1,19 +1,19 @@
 package com.goldbocman.vgm.common.registry;
 
 //? if fabric {
-/*//? if >=1.20.5 {
-/^import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-^///?}
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-*///?}
 //? if >=1.20.5 {
-/*import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+//?}
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+//?}
+//? if >=1.20.5 {
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-*///?} else {
-import net.minecraft.network.FriendlyByteBuf;
-//?}
-import net.minecraft.resources.ResourceLocation;
+//?} else {
+/*import net.minecraft.network.FriendlyByteBuf;
+*///?}
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -33,12 +33,12 @@ public class NetworkReg {
     private static final Logger LOGGER = LoggerFactory.getLogger("Bren/NetworkReg");
 
     // CustomPacketPayload.Type doesn't exist before 1.20.5 - old Fabric networking (and the loaders
-    // that only ever targeted <1.20.5) identify channels by a plain ResourceLocation instead. Every
+    // that only ever targeted <1.20.5) identify channels by a plain Identifier instead. Every
     // ID constant below keeps the same name across both branches so every call site elsewhere in the
     // mod (NeoForgePayloads, ForgeNetwork, ClientNetworkReg, this file's own registerAllPackets())
     // compiles unchanged regardless of version - only the constant's own type differs.
     //? if >=1.20.5 {
-    /*public static final CustomPacketPayload.Type<ReloadPayload> RELOAD_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "reload"));
+    public static final CustomPacketPayload.Type<ReloadPayload> RELOAD_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "reload"));
     public static final CustomPacketPayload.Type<CancelReloadPayload> CANCEL_RELOAD_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "cancel_reload"));
     public static final CustomPacketPayload.Type<RecoilPayload> RECOIL_CLIENT_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "recoil_client"));
     public static final CustomPacketPayload.Type<ShootClientPayload> SHOOT_CLIENT_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot_client"));
@@ -47,20 +47,20 @@ public class NetworkReg {
     public static final CustomPacketPayload.Type<ItemComponentSyncPayload> ITEM_COMPONENT_SYNC_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "item_component_sync"));
     public static final CustomPacketPayload.Type<GunStatePayload> GUN_STATE_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "gun_state"));
     public static final CustomPacketPayload.Type<ShootParticlePayload> SHOOT_PARTICLE_PACKET_ID = new CustomPacketPayload.Type<>(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot_particle"));
-    *///?} else {
-    // ResourceLocation.fromNamespaceAndPath doesn't exist before 1.21 either (confirmed via javap -
+    //?} else {
+    /*// Identifier.fromNamespaceAndPath doesn't exist before 1.21 either (confirmed via javap -
     // only the old two-arg constructor does) - TemplateModCommon.id(...) already bridges exactly
     // this gap.
-    public static final ResourceLocation RELOAD_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "reload");
-    public static final ResourceLocation CANCEL_RELOAD_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "cancel_reload");
-    public static final ResourceLocation RECOIL_CLIENT_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "recoil_client");
-    public static final ResourceLocation SHOOT_CLIENT_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot_client");
-    public static final ResourceLocation SHOOT_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot");
-    public static final ResourceLocation SHOOT_ANIMATION_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot_animation");
-    public static final ResourceLocation ITEM_COMPONENT_SYNC_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "item_component_sync");
-    public static final ResourceLocation GUN_STATE_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "gun_state");
-    public static final ResourceLocation SHOOT_PARTICLE_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot_particle");
-    //?}
+    public static final Identifier RELOAD_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "reload");
+    public static final Identifier CANCEL_RELOAD_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "cancel_reload");
+    public static final Identifier RECOIL_CLIENT_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "recoil_client");
+    public static final Identifier SHOOT_CLIENT_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot_client");
+    public static final Identifier SHOOT_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot");
+    public static final Identifier SHOOT_ANIMATION_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot_animation");
+    public static final Identifier ITEM_COMPONENT_SYNC_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "item_component_sync");
+    public static final Identifier GUN_STATE_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "gun_state");
+    public static final Identifier SHOOT_PARTICLE_PACKET_ID = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "shoot_particle");
+    *///?}
 
     private static void handleReload(ServerPlayer player) {
         MinecraftServer server = player.level().getServer();
@@ -120,13 +120,13 @@ public class NetworkReg {
     }
 
     //? if fabric {
-    /*//? if >=1.20.5 {
-    /^public static void registerAllPackets() {
+    //? if >=1.20.5 {
+    public static void registerAllPackets() {
         LOGGER.info("Registering all network packets");
 
         // 注册所有数据包类型
         //? if >=1.21.11 {
-        /^¹// 客户端接收的数据包（S2C - Server to Client）
+        // 客户端接收的数据包（S2C - Server to Client）
         PayloadTypeRegistry.clientboundPlay().register(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC);
         PayloadTypeRegistry.clientboundPlay().register(SHOOT_CLIENT_PACKET_ID, ShootClientPayload.PACKET_CODEC);
         PayloadTypeRegistry.clientboundPlay().register(SHOOT_ANIMATION_PACKET_ID, ShootAnimationPayload.PACKET_CODEC);
@@ -137,8 +137,8 @@ public class NetworkReg {
         PayloadTypeRegistry.serverboundPlay().register(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.serverboundPlay().register(CANCEL_RELOAD_PACKET_ID, CancelReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.serverboundPlay().register(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC);
-        ¹^///?} else {
-        // Pre-1.21.11 fabric-networking-api-v1 names these playS2C()/playC2S() instead of the newer
+        //?} else {
+        /*// Pre-1.21.11 fabric-networking-api-v1 names these playS2C()/playC2S() instead of the newer
         // clientboundPlay()/serverboundPlay().
         PayloadTypeRegistry.playS2C().register(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC);
         PayloadTypeRegistry.playS2C().register(SHOOT_CLIENT_PACKET_ID, ShootClientPayload.PACKET_CODEC);
@@ -149,7 +149,7 @@ public class NetworkReg {
         PayloadTypeRegistry.playC2S().register(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.playC2S().register(CANCEL_RELOAD_PACKET_ID, CancelReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.playC2S().register(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC);
-        //?}
+        *///?}
 
         ServerPlayNetworking.registerGlobalReceiver(RELOAD_PACKET_ID, (payload, context) -> handleReload(context.player()));
         ServerPlayNetworking.registerGlobalReceiver(CANCEL_RELOAD_PACKET_ID, (payload, context) -> handleCancelReload(context.player()));
@@ -157,9 +157,9 @@ public class NetworkReg {
 
         LOGGER.info("All network packets registered successfully");
     }
-    ^///?} else {
-    // 1.20.1 predates CustomPacketPayload/StreamCodec/the payload-type-registry system entirely -
-    // channels are identified by a bare ResourceLocation and receivers get the raw FriendlyByteBuf
+    //?} else {
+    /*// 1.20.1 predates CustomPacketPayload/StreamCodec/the payload-type-registry system entirely -
+    // channels are identified by a bare Identifier and receivers get the raw FriendlyByteBuf
     // directly (confirmed via javap against the real fabric-networking-api-v1 1.3.15+0caff8d077 jar,
     // the exact submodule version fabric-api 0.92.11+1.20.1 pins). Reuses the same
     // handleReload/handleShoot methods as every other version - only the registration mechanics differ.
@@ -172,12 +172,12 @@ public class NetworkReg {
 
         LOGGER.info("All network packets registered successfully");
     }
-    //?}
     *///?}
+    //?}
     //? if neoforge
     //public static void registerAllPackets() {} // NeoForge registers via NeoForgePayloads (RegisterPayloadHandlersEvent) below instead.
     //? if forge
-    public static void registerAllPackets() {} // Forge registers via ForgeNetwork's static CHANNEL field below instead.
+    //public static void registerAllPackets() {} // Forge registers via ForgeNetwork's static CHANNEL field below instead.
 
     // Every payload record below keeps the same name/fields/constructor across both branches (so the
     // ~7 call sites elsewhere in the mod that do `new NetworkReg.XPayload(...)` compile unchanged
@@ -188,7 +188,7 @@ public class NetworkReg {
 
     // 重装包数据类
     //? if >=1.20.5 {
-    /*public record ReloadPayload() implements CustomPacketPayload {
+    public record ReloadPayload() implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, ReloadPayload> PACKET_CODEC = StreamCodec.unit(new ReloadPayload());
 
         @Override
@@ -196,8 +196,8 @@ public class NetworkReg {
             return RELOAD_PACKET_ID;
         }
     }
-    *///?} else {
-    public record ReloadPayload() {
+    //?} else {
+    /*public record ReloadPayload() {
         public static ReloadPayload read(FriendlyByteBuf buf) {
             return new ReloadPayload();
         }
@@ -205,12 +205,12 @@ public class NetworkReg {
         public void write(FriendlyByteBuf buf) {
         }
     }
-    //?}
+    *///?}
 
     // Sent when the reload key is released before the reload cooldown finishes - see
     // KeyBindingReg.consumeReloadClicks / NetworkReg.handleCancelReload.
     //? if >=1.20.5 {
-    /*public record CancelReloadPayload() implements CustomPacketPayload {
+    public record CancelReloadPayload() implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, CancelReloadPayload> PACKET_CODEC = StreamCodec.unit(new CancelReloadPayload());
 
         @Override
@@ -218,8 +218,8 @@ public class NetworkReg {
             return CANCEL_RELOAD_PACKET_ID;
         }
     }
-    *///?} else {
-    public record CancelReloadPayload() {
+    //?} else {
+    /*public record CancelReloadPayload() {
         public static CancelReloadPayload read(FriendlyByteBuf buf) {
             return new CancelReloadPayload();
         }
@@ -227,11 +227,11 @@ public class NetworkReg {
         public void write(FriendlyByteBuf buf) {
         }
     }
-    //?}
+    *///?}
 
     // 后坐力数据包
     //? if >=1.20.5 {
-    /*public record RecoilPayload(float recoil) implements CustomPacketPayload {
+    public record RecoilPayload(float recoil) implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, RecoilPayload> PACKET_CODEC = StreamCodec.ofMember(
             RecoilPayload::write,
             RecoilPayload::read
@@ -250,8 +250,8 @@ public class NetworkReg {
             return RECOIL_CLIENT_PACKET_ID;
         }
     }
-    *///?} else {
-    public record RecoilPayload(float recoil) {
+    //?} else {
+    /*public record RecoilPayload(float recoil) {
         public static RecoilPayload read(FriendlyByteBuf buf) {
             return new RecoilPayload(buf.readFloat());
         }
@@ -260,14 +260,14 @@ public class NetworkReg {
             buf.writeFloat(recoil);
         }
     }
-    //?}
+    *///?}
 
     // Syncs the owning player's GunHelper.GunStates (NORMAL/RELOADING) to their own client - the
     // state itself only ever changes server-side (onReload/reloadTick), and without this the
     // client's IGunUser copy never leaves NORMAL, so applyCustomMatrix's reload-specific animation
     // branch was permanently dead code.
     //? if >=1.20.5 {
-    /*public record GunStatePayload(int state) implements CustomPacketPayload {
+    public record GunStatePayload(int state) implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, GunStatePayload> PACKET_CODEC = StreamCodec.ofMember(
             GunStatePayload::write,
             GunStatePayload::read
@@ -286,8 +286,8 @@ public class NetworkReg {
             return GUN_STATE_PACKET_ID;
         }
     }
-    *///?} else {
-    public record GunStatePayload(int state) {
+    //?} else {
+    /*public record GunStatePayload(int state) {
         public static GunStatePayload read(FriendlyByteBuf buf) {
             return new GunStatePayload(buf.readVarInt());
         }
@@ -296,11 +296,11 @@ public class NetworkReg {
             buf.writeVarInt(state);
         }
     }
-    //?}
+    *///?}
 
     // 客户端射击声音数据包
     //? if >=1.20.5 {
-    /*public record ShootClientPayload(float volume) implements CustomPacketPayload {
+    public record ShootClientPayload(float volume) implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, ShootClientPayload> PACKET_CODEC = StreamCodec.ofMember(
             ShootClientPayload::write,
             ShootClientPayload::read
@@ -319,8 +319,8 @@ public class NetworkReg {
             return SHOOT_CLIENT_PACKET_ID;
         }
     }
-    *///?} else {
-    public record ShootClientPayload(float volume) {
+    //?} else {
+    /*public record ShootClientPayload(float volume) {
         public static ShootClientPayload read(FriendlyByteBuf buf) {
             return new ShootClientPayload(buf.readFloat());
         }
@@ -329,11 +329,11 @@ public class NetworkReg {
             buf.writeFloat(volume);
         }
     }
-    //?}
+    *///?}
 
     // 射击动画数据包（无数据）
     //? if >=1.20.5 {
-    /*public record ShootAnimationPayload() implements CustomPacketPayload {
+    public record ShootAnimationPayload() implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, ShootAnimationPayload> PACKET_CODEC = StreamCodec.unit(new ShootAnimationPayload());
 
         @Override
@@ -341,8 +341,8 @@ public class NetworkReg {
             return SHOOT_ANIMATION_PACKET_ID;
         }
     }
-    *///?} else {
-    public record ShootAnimationPayload() {
+    //?} else {
+    /*public record ShootAnimationPayload() {
         public static ShootAnimationPayload read(FriendlyByteBuf buf) {
             return new ShootAnimationPayload();
         }
@@ -350,11 +350,11 @@ public class NetworkReg {
         public void write(FriendlyByteBuf buf) {
         }
     }
-    //?}
+    *///?}
 
     // 射击粒子效果数据包
     //? if >=1.20.5 {
-    /*public record ShootPayload(float originX, float originY, float originZ,
+    public record ShootPayload(float originX, float originY, float originZ,
                               float directionX, float directionY, float directionZ,
                               boolean casing) implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, ShootPayload> PACKET_CODEC = StreamCodec.ofMember(
@@ -385,8 +385,8 @@ public class NetworkReg {
             return SHOOT_PACKET_ID;
         }
     }
-    *///?} else {
-    public record ShootPayload(float originX, float originY, float originZ,
+    //?} else {
+    /*public record ShootPayload(float originX, float originY, float originZ,
                               float directionX, float directionY, float directionZ,
                               boolean casing) {
         public static ShootPayload read(FriendlyByteBuf buf) {
@@ -407,11 +407,11 @@ public class NetworkReg {
             buf.writeBoolean(casing);
         }
     }
-    //?}
+    *///?}
 
     // 射击粒子效果数据包（S2C）
     //? if >=1.20.5 {
-    /*public record ShootParticlePayload(float originX, float originY, float originZ,
+    public record ShootParticlePayload(float originX, float originY, float originZ,
                                       float directionX, float directionY, float directionZ,
                                       boolean casing) implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, ShootParticlePayload> PACKET_CODEC = StreamCodec.ofMember(
@@ -442,8 +442,8 @@ public class NetworkReg {
             return SHOOT_PARTICLE_PACKET_ID;
         }
     }
-    *///?} else {
-    public record ShootParticlePayload(float originX, float originY, float originZ,
+    //?} else {
+    /*public record ShootParticlePayload(float originX, float originY, float originZ,
                                       float directionX, float directionY, float directionZ,
                                       boolean casing) {
         public static ShootParticlePayload read(FriendlyByteBuf buf) {
@@ -464,10 +464,10 @@ public class NetworkReg {
             buf.writeBoolean(casing);
         }
     }
-    //?}
+    *///?}
 
     //? if >=1.20.5 {
-    /*public record ItemComponentSyncPayload(int slot, boolean hasMagazine) implements CustomPacketPayload {
+    public record ItemComponentSyncPayload(int slot, boolean hasMagazine) implements CustomPacketPayload {
         public static final StreamCodec<RegistryFriendlyByteBuf, ItemComponentSyncPayload> PACKET_CODEC = StreamCodec.ofMember(
                 ItemComponentSyncPayload::write,
                 ItemComponentSyncPayload::read
@@ -489,8 +489,8 @@ public class NetworkReg {
             return ITEM_COMPONENT_SYNC_PACKET_ID;
         }
     }
-    *///?} else {
-    public record ItemComponentSyncPayload(int slot, boolean hasMagazine) {
+    //?} else {
+    /*public record ItemComponentSyncPayload(int slot, boolean hasMagazine) {
         public static ItemComponentSyncPayload read(FriendlyByteBuf buf) {
             int slot = buf.readInt();
             boolean hasMagazine = buf.readBoolean();
@@ -502,7 +502,7 @@ public class NetworkReg {
             buf.writeBoolean(hasMagazine);
         }
     }
-    //?}
+    *///?}
 
     //? if neoforge {
     /*//? if >=1.21.9 {
@@ -550,8 +550,8 @@ public class NetworkReg {
     // field built once at class-load time (triggered by TemplateModForge's constructor referencing
     // this class), not an event-driven registration.
     //? if forge {
-    //? if >=1.20.5 {
-    /*public static class ForgeNetwork {
+    /*//? if >=1.20.5 {
+    public static class ForgeNetwork {
         public static final net.minecraftforge.network.Channel<CustomPacketPayload> CHANNEL = net.minecraftforge.network.ChannelBuilder
                 .named(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, "main"))
                 .networkProtocolVersion(1)
@@ -579,8 +579,8 @@ public class NetworkReg {
         // TemplateModForge's constructor, same call-site role as registerAllPackets() on Fabric.
         public static void init() {}
     }
-    *///?} else {
-    // 1.20.1 predates ChannelBuilder.payloadChannel()/CustomPacketPayload/StreamCodec entirely -
+    //?} else {
+    /^// 1.20.1 predates ChannelBuilder.payloadChannel()/CustomPacketPayload/StreamCodec entirely -
     // confirmed via javap against the real forge-1.20.1-47.4.22 jar (only the classic
     // NetworkRegistry.ChannelBuilder().simpleChannel() -> SimpleChannel.registerMessage(id, class,
     // encoder, decoder, handler) API exists; net.minecraftforge.network.Channel/ChannelBuilder
@@ -684,6 +684,6 @@ public class NetworkReg {
                     java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT));
         }
     }
-    //?}
-    //?}
+    ^///?}
+    *///?}
 }

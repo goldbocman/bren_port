@@ -14,7 +14,7 @@ public class MinecraftClientMixin {
     // 使用正确的render方法签名
     @Inject(method = "runTick(Z)V",
             //? if forge
-            remap = false,
+            //remap = false,
             at = @At("TAIL"))
     private void renderAimOverlay(boolean tick, CallbackInfo ci) {
         // 创建一个矩阵栈用于渲染

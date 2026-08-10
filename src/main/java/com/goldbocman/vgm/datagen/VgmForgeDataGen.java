@@ -1,7 +1,7 @@
 package com.goldbocman.vgm.datagen;
 
 //? if forge {
-import net.minecraft.core.HolderLookup;
+/*import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -16,10 +16,10 @@ import com.goldbocman.vgm.common.Bren;
 import com.goldbocman.vgm.common.datagen.VgmAdvancementProvider;
 import com.goldbocman.vgm.common.datagen.VgmEnchantmentBootstrap;
 //? if >=1.20.5 {
-/*import com.goldbocman.vgm.common.datagen.legacy.LegacyVgmRecipeProvider;
-*///?} else {
-import com.goldbocman.vgm.common.datagen.legacy1201.Legacy1201VgmRecipeProvider;
-//?}
+import com.goldbocman.vgm.common.datagen.legacy.LegacyVgmRecipeProvider;
+//?} else {
+/^import com.goldbocman.vgm.common.datagen.legacy1201.Legacy1201VgmRecipeProvider;
+^///?}
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -44,15 +44,15 @@ public class VgmForgeDataGen {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
         //? if >=1.20.5 {
-        /*generator.addProvider(true, (DataProvider.Factory<LegacyVgmRecipeProvider>)
+        generator.addProvider(true, (DataProvider.Factory<LegacyVgmRecipeProvider>)
                 (PackOutput output) -> new LegacyVgmRecipeProvider(output, lookupProvider));
-        *///?} else {
-        // 1.20.1's RecipeProvider constructor takes only (PackOutput) - no registries param at
+        //?} else {
+        /^// 1.20.1's RecipeProvider constructor takes only (PackOutput) - no registries param at
         // all (RecipeOutput/HolderLookup-aware datagen didn't exist yet) - see
         // Legacy1201VgmRecipeProvider's own doc comment.
         generator.addProvider(true, (DataProvider.Factory<Legacy1201VgmRecipeProvider>)
                 (PackOutput output) -> new Legacy1201VgmRecipeProvider(output));
-        //?}
+        ^///?}
         generator.addProvider(true, (DataProvider.Factory<AdvancementProvider>) (PackOutput output) ->
                 new AdvancementProvider(output, lookupProvider, List.of(new VgmAdvancementProvider())));
 
@@ -64,13 +64,13 @@ public class VgmForgeDataGen {
         // scaffolding) so this provider is currently inert either way - mirrors
         // VgmFabricDataGenerator's own <1.20.5 branch (see that file's doc comment).
         //? if >=1.20.5 {
-        /*CompletableFuture<HolderLookup.Provider> enchantmentRegistries = CompletableFuture.completedFuture(
+        CompletableFuture<HolderLookup.Provider> enchantmentRegistries = CompletableFuture.completedFuture(
                 new RegistrySetBuilder()
                         .add(Registries.ENCHANTMENT, VgmEnchantmentBootstrap::bootstrap)
                         .build(RegistryAccess.EMPTY));
         generator.addProvider(true, (DataProvider.Factory<RegistriesDatapackGenerator>) (PackOutput output) ->
                 new RegistriesDatapackGenerator(output, enchantmentRegistries));
-        *///?}
+        //?}
     }
 }
-//?}
+*///?}

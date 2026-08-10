@@ -1,7 +1,7 @@
 package com.goldbocman.vgm.common.mixin.client.legacy1201;
 
 //? if <1.20.5 {
-import net.minecraft.client.Minecraft;
+/*import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
@@ -40,7 +40,7 @@ public class Legacy1201GuiMixin {
 
     @Inject(method = "render",
             //? if forge
-            remap = false,
+            //remap = false,
             at = @At("TAIL"))
     private void bren$renderHudOverlay(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci) {
         if (minecraft.player == null) {
@@ -64,4 +64,4 @@ public class Legacy1201GuiMixin {
         HUD_OVERLAY.renderWithTexture(guiGraphics, i, max, gunItem.ammoIconOffset());
     }
 }
-//?}
+*///?}

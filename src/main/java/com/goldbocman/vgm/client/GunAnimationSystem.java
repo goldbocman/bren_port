@@ -1,7 +1,7 @@
 package com.goldbocman.vgm.client;
 
 //? if >=1.21.11 {
-/*import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,18 +12,18 @@ import com.goldbocman.vgm.common.entity.IGunUser;
 import com.goldbocman.vgm.common.registry.custom.types.GunItem;
 import com.goldbocman.vgm.common.utils.GunHelper;
 
-/^*
+/**
 
  * Gun animation system adapted for the new rendering system in Minecraft 1.21.6
 
- ^/
+ */
 public class GunAnimationSystem {
 
-    /^*
+    /**
 
      * Apply weapon animation to model parts - compatible with rendering system 1.21.6
 
-     ^/
+     */
     public static void applyGunAnimation(ModelPart leftArm, ModelPart rightArm, ModelPart head,
                                          HumanoidRenderState state, LivingEntity entity) {
         if (entity instanceof IGunUser gunUser && entity instanceof Player player) {
@@ -208,4 +208,4 @@ public class GunAnimationSystem {
         // fixes the jerkiness seen on remote players.
     }
 }
-*///?}
+//?}

@@ -4,9 +4,9 @@ package com.goldbocman.vgm;
 // in a way that works on either mod loader.
 public sealed interface ModLoaderAccess {
     ModLoaderAccess INSTANCE =
-        /*? if fabric{*//*new FabricLoaderAccess();
-        *//*?} elif neoforge {*//*new NeoForgeLoaderAccess();
-        *//*?} elif forge */new ForgeLoaderAccess();
+        /*? if fabric{*/new FabricLoaderAccess();
+        /*?} elif neoforge {*//*new NeoForgeLoaderAccess();
+        *//*?} elif forge *///new ForgeLoaderAccess();
 
     boolean isClient();
     boolean isServer();
@@ -14,7 +14,7 @@ public sealed interface ModLoaderAccess {
     boolean isModLoaded(String id);
 
     //? if fabric {
-    /*final class FabricLoaderAccess implements ModLoaderAccess {
+    final class FabricLoaderAccess implements ModLoaderAccess {
         private net.fabricmc.loader.api.FabricLoader loader = net.fabricmc.loader.api.FabricLoader.getInstance();
 
         @Override
@@ -32,7 +32,7 @@ public sealed interface ModLoaderAccess {
             return loader.isModLoaded(id);
         }
     }
-    *///?} elif neoforge {
+    //?} elif neoforge {
     /*final class NeoForgeLoaderAccess implements ModLoaderAccess {
         private net.neoforged.api.distmarker.Dist dist =
             /^? if >=1.21.9 {^//^net.neoforged.fml.loading.FMLEnvironment.getDist();
@@ -57,7 +57,7 @@ public sealed interface ModLoaderAccess {
         }
     }
     *///?} elif forge {
-    final class ForgeLoaderAccess implements ModLoaderAccess {
+    /*final class ForgeLoaderAccess implements ModLoaderAccess {
         private net.minecraftforge.api.distmarker.Dist dist = net.minecraftforge.fml.loading.FMLEnvironment.dist;
 
         @Override
@@ -75,5 +75,5 @@ public sealed interface ModLoaderAccess {
             return net.minecraftforge.fml.ModList.get().isLoaded(id);
         }
     }
-    //?}
+    *///?}
 }

@@ -17,7 +17,7 @@ public class MagazineItem extends Item {
         this.capacity = capacity;
     }
     //? if >=1.21.11 {
-    /*@Override
+    @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, net.minecraft.world.item.component.TooltipDisplay tooltipComponent, java.util.function.Consumer<Component> tooltipAdder, TooltipFlag type) {
         ChatFormatting formatting = ChatFormatting.GRAY;
 
@@ -26,9 +26,9 @@ public class MagazineItem extends Item {
 
         super.appendHoverText(stack, context, tooltipComponent, tooltipAdder, type);
     }
-    *///?} else {
-    //? if >=1.20.5 {
-    /*@Override
+    //?} else {
+    /*//? if >=1.20.5 {
+    @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, java.util.List<Component> tooltipComponents, TooltipFlag type) {
         ChatFormatting formatting = ChatFormatting.GRAY;
 
@@ -37,8 +37,8 @@ public class MagazineItem extends Item {
 
         super.appendHoverText(stack, context, tooltipComponents, type);
     }
-    *///?} else {
-    @Override
+    //?} else {
+    /^@Override
     public void appendHoverText(ItemStack stack, net.minecraft.world.level.Level level, java.util.List<Component> tooltipComponents, TooltipFlag type) {
         ChatFormatting formatting = ChatFormatting.GRAY;
 
@@ -47,8 +47,8 @@ public class MagazineItem extends Item {
 
         super.appendHoverText(stack, level, tooltipComponents, type);
     }
-    //?}
-    //?}
+    ^///?}
+    *///?}
 
 
     public static int getMaxCapacity(ItemStack stack) {
@@ -114,12 +114,12 @@ public class MagazineItem extends Item {
             // LegacyItemPropertiesAccessor - see claude/gun-rendering.md), so this is a real no-op on
             // 1.20.1, not a partial reimplementation.
             //? if >=1.20.5 {
-            /*if (newContents > 0) {
+            if (newContents > 0) {
                 mag.set(com.goldbocman.vgm.common.registry.DataComponentReg.HAS_AMMO, true);
             } else {
                 mag.remove(com.goldbocman.vgm.common.registry.DataComponentReg.HAS_AMMO);
             }
-            *///?}
+            //?}
 
             // 返回实际填充的子弹数量
             return newContents - original;

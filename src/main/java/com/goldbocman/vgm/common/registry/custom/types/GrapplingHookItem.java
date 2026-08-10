@@ -49,20 +49,20 @@ public class GrapplingHookItem extends Item {
     }
     
     //? if >=1.21.11 {
-    /*@Override
+    @Override
     public @NotNull InteractionResult use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         return bren$use(level, player, stack, hand) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
     }
-    *///?} else {
-    @Override
+    //?} else {
+    /*@Override
     public net.minecraft.world.@NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         return bren$use(level, player, stack, hand)
                 ? net.minecraft.world.InteractionResultHolder.success(stack)
                 : net.minecraft.world.InteractionResultHolder.fail(stack);
     }
-    //?}
+    *///?}
 
     // Shared by both use() overloads above - old and new Item.use() return different types
     // (InteractionResult vs InteractionResultHolder<ItemStack>), so the actual logic lives here as a
@@ -234,27 +234,27 @@ public class GrapplingHookItem extends Item {
     }
     
     //? if >=1.21.11 {
-    /*@Override
+    @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
                                net.minecraft.world.item.component.@NotNull TooltipDisplay tooltipComponent,
                                java.util.function.Consumer<Component> tooltipAdder, @NotNull TooltipFlag type) {
         bren$appendHoverText(stack, tooltipAdder::accept);
     }
-    *///?} else {
-    //? if >=1.20.5 {
-    /*@Override
+    //?} else {
+    /*//? if >=1.20.5 {
+    @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
                                java.util.@NotNull List<Component> tooltipComponents, @NotNull TooltipFlag type) {
         bren$appendHoverText(stack, tooltipComponents::add);
     }
-    *///?} else {
-    @Override
+    //?} else {
+    /^@Override
     public void appendHoverText(@NotNull ItemStack stack, net.minecraft.world.level.Level level,
                                java.util.@NotNull List<Component> tooltipComponents, @NotNull TooltipFlag type) {
         bren$appendHoverText(stack, tooltipComponents::add);
     }
-    //?}
-    //?}
+    ^///?}
+    *///?}
 
     private void bren$appendHoverText(ItemStack stack, java.util.function.Consumer<Component> tooltipAdder) {
         tooltipAdder.accept(Component.translatable("item.bren.grappling_hook.desc").withStyle(net.minecraft.ChatFormatting.GRAY));
@@ -401,10 +401,10 @@ public class GrapplingHookItem extends Item {
         }
         
         //? if >=1.21.11 {
-        /*player.sendOverlayMessage(message);
-        *///?} else {
-        player.displayClientMessage(message, true);
-        //?}
+        player.sendOverlayMessage(message);
+        //?} else {
+        /*player.displayClientMessage(message, true);
+        *///?}
     }
     
     /**

@@ -1,7 +1,7 @@
 package com.goldbocman.vgm.common.mixin.legacy1201;
 
 //? if <1.20.5 {
-import net.minecraft.world.item.ItemStack;
+/*import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import com.goldbocman.vgm.common.registry.custom.types.GunItem;
@@ -24,7 +24,7 @@ public class GunEnchantmentMixin {
 
     @Inject(method = "canEnchant",
             //? if forge
-            remap = false,
+            //remap = false,
             at = @At("HEAD"), cancellable = true)
     private void bren$allowGunFlamePunch(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         Enchantment self = (Enchantment) (Object) this;
@@ -34,4 +34,4 @@ public class GunEnchantmentMixin {
         }
     }
 }
-//?}
+*///?}

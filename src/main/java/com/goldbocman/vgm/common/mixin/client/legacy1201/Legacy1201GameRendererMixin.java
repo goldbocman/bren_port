@@ -1,7 +1,7 @@
 package com.goldbocman.vgm.common.mixin.client.legacy1201;
 
 //? if <1.20.5 {
-import com.mojang.blaze3d.vertex.PoseStack;
+/*import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.renderer.GameRenderer;
@@ -29,7 +29,7 @@ public class Legacy1201GameRendererMixin {
 
     @Inject(method = "renderLevel",
             //? if forge
-            remap = false,
+            //remap = false,
             at = @At("HEAD"))
     private void bren$modifyFov(float partialTick, long finishTimeNano, PoseStack poseStack, CallbackInfo ci) {
         Minecraft client = Minecraft.getInstance();
@@ -87,4 +87,4 @@ public class Legacy1201GameRendererMixin {
         options.fov().set((int) fov);
     }
 }
-//?}
+*///?}

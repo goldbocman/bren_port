@@ -1,13 +1,13 @@
 package com.goldbocman.vgm.common.datagen.legacy1201;
 
 //? if <1.20.5 {
-import net.minecraft.data.PackOutput;
+/*import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -160,4 +160,4 @@ public class Legacy1201VgmRecipeProvider extends RecipeProvider {
                 .save(output, com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, path));
     }
 }
-//?}
+*///?}

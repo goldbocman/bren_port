@@ -1,10 +1,10 @@
 package com.goldbocman.vgm.common.mixin.client.legacy;
 
 //? if <1.21.11 {
-//? if fabric {
-/*import net.fabricmc.api.EnvType;
+/*//? if fabric {
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-*///?}
+//?}
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
@@ -25,14 +25,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 // covered (not a general ArmedEntityRenderState-style hook for arbitrary mobs) since every gun in
 // this mod is player-held equipment.
 //? if fabric
-//@Environment(value = EnvType.CLIENT)
+@Environment(value = EnvType.CLIENT)
 @Mixin(PlayerRenderer.class)
 public abstract class LegacyPlayerRendererMixin {
 
     @Inject(
         method = "getArmPose(Lnet/minecraft/client/player/AbstractClientPlayer;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/client/model/HumanoidModel$ArmPose;",
         //? if forge
-        remap = false,
+        //remap = false,
         at = @At("HEAD"),
         cancellable = true
     )
@@ -43,4 +43,4 @@ public abstract class LegacyPlayerRendererMixin {
         }
     }
 }
-//?}
+*///?}

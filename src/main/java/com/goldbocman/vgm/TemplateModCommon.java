@@ -1,6 +1,6 @@
 package com.goldbocman.vgm;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,15 +11,15 @@ public class TemplateModCommon {
      */
     public static final Logger LOGGER = LoggerFactory.getLogger("vgm");
     public static final String VERSION = /*$ mod_version*/ "0.1.2";
-    public static final String MINECRAFT = /*$ minecraft*/ "1.20.1";
+    public static final String MINECRAFT = /*$ minecraft*/ "26.2";
 
     /**
-     * Adapts to the {@link ResourceLocation} changes introduced in 1.21.
+     * Adapts to the {@link Identifier} changes introduced in 1.21.
      */
-    public static ResourceLocation id(String namespace, String path) {
+    public static Identifier id(String namespace, String path) {
         //? if <1.21 {
-        return new ResourceLocation(namespace, path);
-         //?} else
-        //return ResourceLocation.fromNamespaceAndPath(namespace, path);
+        /*return new Identifier(namespace, path);
+         *///?} else
+        return Identifier.fromNamespaceAndPath(namespace, path);
     }
 }

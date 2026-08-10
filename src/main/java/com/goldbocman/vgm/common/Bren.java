@@ -1,22 +1,22 @@
 package com.goldbocman.vgm.common;
 
 //? if fabric {
-/*import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.ModInitializer;
 //? if >=26.1 {
-/^import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
-^///?} else {
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-//?}
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+//?} else {
+/*import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+*///?}
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-*///?}
+//?}
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 
 public class Bren
 		//? if fabric
-		//implements ModInitializer
+		implements ModInitializer
 {
 	public static final String MODID = "vgm";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
@@ -54,7 +54,7 @@ public class Bren
 					.build());
 	*///?}
 	//? if forge {
-	public static final net.minecraftforge.registries.DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS_FORGE =
+	/*public static final net.minecraftforge.registries.DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS_FORGE =
 			net.minecraftforge.registries.DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 	public static final net.minecraftforge.registries.RegistryObject<CreativeModeTab> BREN_TAB_FORGE = CREATIVE_MODE_TABS_FORGE.register("bren_tab",
 			() -> CreativeModeTab.builder()
@@ -62,7 +62,7 @@ public class Bren
 					.icon(() -> new ItemStack(ItemReg.NETHERITE_AUTO_GUN))
 					.displayItems((context, output) -> addTabItems(output))
 					.build());
-	//?}
+	*///?}
 
 	// EntityType's own constructor touches BuiltInRegistries.ENTITY_TYPE (creates an intrusive holder),
 	// not just the explicit Registry.register() call below - so on NeoForge even *building* it must wait
@@ -70,24 +70,24 @@ public class Bren
 	// and register eagerly here as a `final` field; NeoForge builds+registers it lazily in
 	// onRegister() below, so BULLET can't be `final` on that branch.
 	//? if fabric {
-	/*public static final EntityType<@org.jetbrains.annotations.NotNull BulletEntity> BULLET = Registry.register(BuiltInRegistries.ENTITY_TYPE, com.goldbocman.vgm.TemplateModCommon.id(MODID,
+	public static final EntityType<@org.jetbrains.annotations.NotNull BulletEntity> BULLET = Registry.register(BuiltInRegistries.ENTITY_TYPE, com.goldbocman.vgm.TemplateModCommon.id(MODID,
 			"bullet"), EntityType.Builder.<BulletEntity>of(
 					(type, level) -> new BulletEntity(type, level), MobCategory.MISC).clientTrackingRange(10)
 					.sized(0.35F, 0.35F).noSave().build(
 							//? if >=1.21.11 {
-							/^ResourceKey.create(Registries.ENTITY_TYPE, com.goldbocman.vgm.TemplateModCommon.id(MODID, "bullet"))
-							^///?} else {
-							"bullet"
-							//?}
+							ResourceKey.create(Registries.ENTITY_TYPE, com.goldbocman.vgm.TemplateModCommon.id(MODID, "bullet"))
+							//?} else {
+							/*"bullet"
+							*///?}
 					));
-	*///?}
+	//?}
 	//? if neoforge
 	//public static EntityType<@org.jetbrains.annotations.NotNull BulletEntity> BULLET;
 	//? if forge
-	public static EntityType<@org.jetbrains.annotations.NotNull BulletEntity> BULLET;
+	//public static EntityType<@org.jetbrains.annotations.NotNull BulletEntity> BULLET;
 
 	//? if fabric
-	//@Override
+	@Override
 	public void onInitialize() {
 		LegacyModGuard.checkForLegacyMod();
 
@@ -95,7 +95,7 @@ public class Bren
 		// 属性注册必须在物品注册之前
 
 		//? if fabric {
-		/*ModContainer container = FabricLoader.getInstance().getModContainer(MODID)
+		ModContainer container = FabricLoader.getInstance().getModContainer(MODID)
 				.orElseThrow(RuntimeException::new);
 
 		// 注册内置资源包
@@ -107,7 +107,7 @@ public class Bren
 				container,
 				ResourcePackActivationType.NORMAL  // 玩家可以手动关闭
 		);
-		*///?}
+		//?}
 		// TODO NeoForge: builtin resource pack (bren_3d_resources_2) not yet ported — no NeoForge
 		// AddPackFindersEvent equivalent implemented here yet; the pack's assets are still bundled in
 		// resources/resourcepacks/bren_3d_resources_2 but won't be offered to NeoForge players.
@@ -115,7 +115,7 @@ public class Bren
 		// RegisterEvent window) - it runs the same calls from onRegister() below instead, one per
 		// registry, as each one's RegisterEvent fires.
 		//? if fabric {
-		/*AttributeReg.reg();
+		AttributeReg.reg();
 		// 注册数据组件类型（必须在物品注册之前）
 		DataComponentReg.register();
 
@@ -123,7 +123,7 @@ public class Bren
 		ItemReg.reg();
 		SoundReg.reg();
 		ParticleReg.reg();
-		*///?}
+		//?}
 
 		MConfig.init();
 
@@ -131,7 +131,7 @@ public class Bren
 
 		// 初始化世界生成
 		//? if fabric
-		//WorldGenReg.init();
+		WorldGenReg.init();
 
 		// 移除CommonLifecycleEvents中的属性注册调用
 
@@ -148,19 +148,19 @@ public class Bren
 
 		// 注册自定义创意标签页
 		//? if fabric {
-		/*Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, BREN_TAB,
+		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, BREN_TAB,
 			//? if >=26.1 {
-			/^FabricCreativeModeTab
-			^///?} else {
-			FabricItemGroup
-			//?}
+			FabricCreativeModeTab
+			//?} else {
+			/*FabricItemGroup
+			*///?}
 			.builder()
 			.title(Component.translatable("itemGroup." + MODID + ".bren_tab"))
 			.icon(() -> new ItemStack(ItemReg.NETHERITE_AUTO_GUN))
 			.displayItems((context, output) -> addTabItems(output))
 			.build()
 		);
-		*///?}
+		//?}
 		// NeoForge registers CREATIVE_MODE_TABS (declared above) via DeferredRegister at mod-bus setup
 		// time instead — see TemplateModNeoForge.
 
@@ -216,7 +216,7 @@ public class Bren
 	// above, just under net.minecraftforge.* instead of net.neoforged.*. Forge 1.21.1 still requires
 	// the explicit bus = Bus.MOD parameter (no >=1.21.9-style bus-inference here).
 	//? if forge {
-	@net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = MODID, bus = net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD)
+	/*@net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = MODID, bus = net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD)
 	public static class ForgeRegistration {
 		@net.minecraftforge.eventbus.api.SubscribeEvent
 		public static void onRegister(net.minecraftforge.registries.RegisterEvent event) {
@@ -231,11 +231,11 @@ public class Bren
 			// to a no-op; there's no RegisterEvent fired for a registry that doesn't exist yet.
 			// DataComponentReg.register() is already a no-op there regardless (see that class).
 			//? if >=1.20.5 {
-			/*if (key == Registries.DATA_COMPONENT_TYPE) {
+			if (key == Registries.DATA_COMPONENT_TYPE) {
 				DataComponentReg.register();
 				return;
 			}
-			*///?}
+			//?}
 			if (key == Registries.ITEM) {
 				ItemReg.reg();
 			} else if (key == Registries.SOUND_EVENT) {
@@ -255,7 +255,7 @@ public class Bren
 			}
 		}
 	}
-	//?}
+	*///?}
 
 	private static void addTabItems(CreativeModeTab.Output output) {
 		// output.accept(ItemReg.MACHINE_GUN);

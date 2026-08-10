@@ -1,15 +1,15 @@
 package com.goldbocman.vgm.client.legacy;
 
 //? if <1.21.11 {
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+/*import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.Identifier;
 import com.goldbocman.vgm.common.Bren;
 
 // Legacy counterpart of HudOverlay. GuiGraphics is the un-split pre-rewrite class (no
 // GuiGraphicsExtractor wrapper, no separate GuiRenderState parameter needed), and blit() takes
 // pixel-based u/v + explicit texture dimensions rather of the newer two-corner float-UV overload.
 public class LegacyHudOverlay {
-    private static final ResourceLocation BULLET_ICONS = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID,
+    private static final Identifier BULLET_ICONS = com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID,
             "textures/gui/bullet_icons.png");
 
     public void renderWithTexture(GuiGraphics graphics, int currentAmmo, int maxAmmo, int uOffset) {
@@ -32,4 +32,4 @@ public class LegacyHudOverlay {
         }
     }
 }
-//?}
+*///?}

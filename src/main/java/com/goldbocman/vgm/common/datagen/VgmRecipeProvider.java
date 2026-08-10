@@ -1,7 +1,7 @@
 package com.goldbocman.vgm.common.datagen;
 
 //? if >=1.21.11 {
-/*import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -10,7 +10,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
@@ -158,7 +158,7 @@ public class VgmRecipeProvider extends RecipeProvider {
                 .save(output, ResourceKey.create(Registries.RECIPE, com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, path)));
     }
 
-    /^* Vanilla-only {@link RecipeProvider.Runner} glue, reusable from both loaders' datagen entrypoints. ^/
+    /** Vanilla-only {@link RecipeProvider.Runner} glue, reusable from both loaders' datagen entrypoints. */
     public static class Runner extends RecipeProvider.Runner {
         public Runner(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
             super(output, registries);
@@ -175,4 +175,4 @@ public class VgmRecipeProvider extends RecipeProvider {
         }
     }
 }
-*///?}
+//?}

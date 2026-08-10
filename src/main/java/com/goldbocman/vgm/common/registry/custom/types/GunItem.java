@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -39,46 +39,46 @@ public class GunItem extends Item {
     private static final Logger LOGGER = LoggerFactory.getLogger(GunItem.class);
 
     // 使用静态映射来存储枪械属性，避免在构造函数中访问注册表
-    private static final Map<ResourceLocation, GunProperties> GUN_PROPERTIES_MAP = new HashMap<>();
+    private static final Map<Identifier, GunProperties> GUN_PROPERTIES_MAP = new HashMap<>();
 
     // 修改构造函数，接收Item.Settings参数
     public GunItem(Properties settings) {
         //? if >=1.20.5 {
-        /*super(settings.stacksTo(1));
-        *///?} else {
-        // Pre-1.20.5, Properties.stacksTo(int) throws if durability(...) was already called (it sets
+        super(settings.stacksTo(1));
+        //?} else {
+        /*// Pre-1.20.5, Properties.stacksTo(int) throws if durability(...) was already called (it sets
         // maxDamage, and stacksTo refuses to run once maxDamage > 0) - confirmed via javap on the real
         // 1.20.1 merged jar. Every caller that reaches this constructor already went through
         // ItemReg.registerGunItem's .durability(...), which itself forces maxStackSize to 1, so the
         // stacksTo(1) call here is both redundant and (pre-1.20.5) fatal - just pass settings through.
         super(settings);
-        //?}
+        *///?}
     }
 
     //? if >=1.21.11 {
-    /*@Override
+    @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, net.minecraft.world.item.component.@NotNull TooltipDisplay tooltipComponent, java.util.function.Consumer<Component> tooltipAdder, @NotNull TooltipFlag type) {
         bren$appendHoverText(stack, tooltipAdder::accept);
         super.appendHoverText(stack, context, tooltipComponent, tooltipAdder, type);
     }
-    *///?} else {
-    // TooltipContext doesn't exist yet at 1.20.1 (confirmed via javap) - appendHoverText there takes
+    //?} else {
+    /*// TooltipContext doesn't exist yet at 1.20.1 (confirmed via javap) - appendHoverText there takes
     // a plain Level instead, one tier below where TooltipContext was introduced (matches the same
     // 1.20.5 threshold as the DataComponents/SynchedEntityData.Builder splits elsewhere).
     //? if >=1.20.5 {
-    /*@Override
+    @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, java.util.@NotNull List<Component> tooltipComponents, @NotNull TooltipFlag type) {
         bren$appendHoverText(stack, tooltipComponents::add);
         super.appendHoverText(stack, context, tooltipComponents, type);
     }
-    *///?} else {
-    @Override
+    //?} else {
+    /^@Override
     public void appendHoverText(@NotNull ItemStack stack, Level level, java.util.@NotNull List<Component> tooltipComponents, @NotNull TooltipFlag type) {
         bren$appendHoverText(stack, tooltipComponents::add);
         super.appendHoverText(stack, level, tooltipComponents, type);
     }
-    //?}
-    //?}
+    ^///?}
+    *///?}
 
     private void bren$appendHoverText(ItemStack stack, java.util.function.Consumer<Component> tooltipAdder) {
         ChatFormatting formatting = ChatFormatting.AQUA;
@@ -104,14 +104,14 @@ public class GunItem extends Item {
     }
 
     // 静态方法用于注册枪械属性
-    public static void registerGunProperties(ResourceLocation gunId, GunProperties properties) {
+    public static void registerGunProperties(Identifier gunId, GunProperties properties) {
         LOGGER.info("Registering gun properties for: {}", gunId);
         GUN_PROPERTIES_MAP.put(gunId, properties);
     }
 
     // 通过物品ID获取枪械属性
     public GunProperties getGunProperties(ItemStack stack) {
-        ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        Identifier itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         return GUN_PROPERTIES_MAP.get(itemId);
     }
 
@@ -182,11 +182,11 @@ public class GunItem extends Item {
     // stacksTo(1)+durability, but EnchantmentHelper.getEnchantmentCost() returns 0 - hiding every
     // enchanting-table slot - whenever getEnchantmentValue() is <= 0, which is Item's default).
     //? if <1.21.11 {
-    @Override
+    /*@Override
     public int getEnchantmentValue() {
         return 1;
     }
-    //?}
+    *///?}
 
     public boolean hasGUIModel() {
         return true;
@@ -215,15 +215,15 @@ public class GunItem extends Item {
     }
 
     //? if >=1.21.11 {
-    /*@Override
+    @Override
     public InteractionResult use(Level world, Player user, InteractionHand hand) {
         return switch (bren$use(user, hand)) {
             case PASS -> InteractionResult.PASS;
             case FAIL -> InteractionResult.FAIL;
         };
     }
-    *///?} else {
-    @Override
+    //?} else {
+    /*@Override
     public net.minecraft.world.InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
         ItemStack stack = user.getItemInHand(hand);
         return switch (bren$use(user, hand)) {
@@ -231,7 +231,7 @@ public class GunItem extends Item {
             case FAIL -> net.minecraft.world.InteractionResultHolder.fail(stack);
         };
     }
-    //?}
+    *///?}
 
     private enum UseResult { PASS, FAIL }
 
@@ -340,7 +340,7 @@ public class GunItem extends Item {
      */
     public float getAimZoomLevel() {
         // Rifle有更高的缩放倍数
-        ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(this);
+        Identifier itemId = BuiltInRegistries.ITEM.getKey(this);
         if (itemId != null && itemId.getPath().toLowerCase().contains("rifle")) {
             return 4.0f; // 4倍缩放
         }

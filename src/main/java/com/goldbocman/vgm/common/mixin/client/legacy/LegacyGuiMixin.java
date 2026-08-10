@@ -1,8 +1,8 @@
 package com.goldbocman.vgm.common.mixin.client.legacy;
 
 //? if >=1.20.5 {
-/*//? if <1.21.11 {
-import net.minecraft.client.DeltaTracker;
+//? if <1.21.11 {
+/*import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -32,7 +32,7 @@ public class LegacyGuiMixin {
 
     @Inject(method = "render",
             //? if forge
-            remap = false,
+            //remap = false,
             at = @At("TAIL"))
     private void bren$renderHudOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
         if (minecraft.player == null) {
@@ -56,5 +56,5 @@ public class LegacyGuiMixin {
         HUD_OVERLAY.renderWithTexture(guiGraphics, i, max, gunItem.ammoIconOffset());
     }
 }
-//?}
 *///?}
+//?}

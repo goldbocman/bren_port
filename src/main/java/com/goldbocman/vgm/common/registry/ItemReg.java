@@ -3,7 +3,7 @@ package com.goldbocman.vgm.common.registry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import com.goldbocman.vgm.common.Bren;
@@ -98,9 +98,9 @@ public class ItemReg {
     public static Item register(String path, java.util.function.Function<Item.Properties, Item> factory, Item.Properties settings) {
         final ResourceKey<Item> registryKey = ResourceKey.create(Registries.ITEM, com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, path));
         //? if >=1.21.11 {
-        /*// 只设置RegistryKey，不重复设置模型和翻译组件
+        // 只设置RegistryKey，不重复设置模型和翻译组件
         settings = settings.setId(registryKey);
-        *///?}
+        //?}
         // Item.Properties has no setId(...) pre-1.21.11 - the id comes purely from the
         // Registry.register(...) key below, no separate properties step needed.
         return Registry.register(BuiltInRegistries.ITEM, registryKey, factory.apply(settings));
@@ -133,13 +133,13 @@ public class ItemReg {
         try {
             // 直接使用标准注册模式，durability() 需要 stacksTo(1) 才能生效；enchantable() 允许在附魔台/铁砧上附魔
             //? if >=1.21.11 {
-            /*Item registeredItem = register(name, factory, new Item.Properties().stacksTo(1).durability(properties.durability).enchantable(1));
-            *///?} else {
-            // Item.Properties has no enchantable(...) pre-1.21.11 (DataComponents.ENCHANTABLE doesn't
+            Item registeredItem = register(name, factory, new Item.Properties().stacksTo(1).durability(properties.durability).enchantable(1));
+            //?} else {
+            /*// Item.Properties has no enchantable(...) pre-1.21.11 (DataComponents.ENCHANTABLE doesn't
             // exist yet either) - GunItem.getEnchantmentValue() (pre-1.21.11 branch) provides the
             // equivalent enchantability value instead, see that class.
             Item registeredItem = register(name, factory, new Item.Properties().stacksTo(1).durability(properties.durability));
-            //?}
+            *///?}
             
             // 立即注册枪械属性
             GunItem.registerGunProperties(com.goldbocman.vgm.TemplateModCommon.id(Bren.MODID, name), properties);

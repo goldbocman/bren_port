@@ -8,7 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
@@ -86,20 +86,20 @@ public class BulletEntity extends Projectile {
     // this.entityData field instead (the same field get(...)/set(...) above already use on every
     // version), introduced alongside the other 1.20.5-era API reworks.
     //? if >=1.20.5 {
-    /*@Override
+    @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(LIFESPAN, 0);
         builder.define(BULLET_TYPE, TYPE_NORMAL);
         builder.define(PUNCH_LEVEL, 0);
     }
-    *///?} else {
-    @Override
+    //?} else {
+    /*@Override
     protected void defineSynchedData() {
         this.entityData.define(LIFESPAN, 0);
         this.entityData.define(BULLET_TYPE, TYPE_NORMAL);
         this.entityData.define(PUNCH_LEVEL, 0);
     }
-    //?}
+    *///?}
 
     public void tick() {
         float h;
@@ -167,12 +167,12 @@ public class BulletEntity extends Projectile {
         // Flame附魔：子弹着火时点燃命中的实体（与onHitBlock中已有的isOnFire()方块点燃逻辑保持一致）
         if (this.isOnFire()) {
             //? if >=1.20.5 {
-            /*entity.igniteForSeconds(5);
-            *///?} else {
-            // Entity.igniteForSeconds(int) is named setSecondsOnFire(int) pre-1.20.5 - confirmed via
+            entity.igniteForSeconds(5);
+            //?} else {
+            /*// Entity.igniteForSeconds(int) is named setSecondsOnFire(int) pre-1.20.5 - confirmed via
             // javap on the real 1.20.1 merged jar.
             entity.setSecondsOnFire(5);
-            //?}
+            *///?}
         }
 
         int punchLevel = this.getPunchLevel();
@@ -205,10 +205,10 @@ public class BulletEntity extends Projectile {
         // 对所有实体类型应用伤害，包括末影水晶、末影龙等
         if (this.level() instanceof ServerLevel serverWorld) {
             //? if >=1.21.11 {
-            /*entity.hurtServer(serverWorld, damageSource, finalDamage);
-            *///?} else {
-            entity.hurt(damageSource, finalDamage);
-            //?}
+            entity.hurtServer(serverWorld, damageSource, finalDamage);
+            //?} else {
+            /*entity.hurt(damageSource, finalDamage);
+            *///?}
         }
         
         this.discard();

@@ -1,14 +1,14 @@
 package com.goldbocman.vgm.common.registry;
 
 //? if >=1.20.5 {
-/*import net.minecraft.core.Registry;
+import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import com.goldbocman.vgm.common.Bren;
 import com.goldbocman.vgm.common.registry.custom.types.GunWithMagItem;
-*///?}
+//?}
 
 // DataComponentType doesn't exist before 1.20.5. HAS_MAGAZINE/HAS_AMMO/GUN_MODEL_TYPE are display-
 // only conveniences already bypassed on <1.21.11 via ClientBren's LegacyItemPropertiesAccessor-
@@ -17,17 +17,17 @@ import com.goldbocman.vgm.common.registry.custom.types.GunWithMagItem;
 // 1.20.5, not a partial reimplementation.
 public class DataComponentReg {
     //? if <1.20.5
-    public static void register() {}
+    //public static void register() {}
 
     //? if >=1.20.5 {
-    /*// 声明数据组件类型（先不初始化）
+    // 声明数据组件类型（先不初始化）
     public static DataComponentType<Boolean> HAS_MAGAZINE;
     public static DataComponentType<Integer> GUN_MODEL_TYPE;
     public static DataComponentType<Boolean> HAS_AMMO;
 
-    /^*
+    /**
      * 注册所有数据组件类型
-     ^/
+     */
     public static void register() {
         // 注册 HAS_MAGAZINE 组件
         HAS_MAGAZINE = Registry.register(
@@ -63,5 +63,5 @@ public class DataComponentReg {
         GunWithMagItem.HAS_MAGAZINE = HAS_MAGAZINE;
         GunWithMagItem.GUN_MODEL_TYPE = GUN_MODEL_TYPE;
     }
-    *///?}
+    //?}
 }

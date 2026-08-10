@@ -1,7 +1,7 @@
 package com.goldbocman.vgm;
 
 //? if forge {
-import net.minecraftforge.eventbus.api.IEventBus;
+/*import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -55,4 +55,4 @@ public class TemplateModForge {
         event.enqueueWork(com.goldbocman.vgm.common.registry.NetworkReg.ForgeNetwork::init);
     }
 }
-//?}
+*///?}

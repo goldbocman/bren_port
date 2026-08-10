@@ -1,12 +1,12 @@
 package com.goldbocman.vgm.common.datagen;
 
 //? if >=1.20.5 {
-/*import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementType;
 //? if >=1.21.11 {
-/^import net.minecraft.advancements.predicates.DataComponentMatchers;
+import net.minecraft.advancements.predicates.DataComponentMatchers;
 import net.minecraft.advancements.predicates.DamageSourcePredicate;
 import net.minecraft.advancements.predicates.EnchantmentPredicate;
 import net.minecraft.advancements.predicates.ItemPredicate;
@@ -22,8 +22,8 @@ import net.minecraft.advancements.triggers.KilledTrigger;
 import net.minecraft.advancements.triggers.PlayerTrigger;
 import net.minecraft.core.component.predicates.DataComponentPredicates;
 import net.minecraft.core.component.predicates.EnchantmentsPredicate;
-^///?} else {
-// 1.21.1 predates the advancements.predicates/triggers package split - everything here still lives
+//?} else {
+/*// 1.21.1 predates the advancements.predicates/triggers package split - everything here still lives
 // directly under net.minecraft.advancements.critereon (or net.minecraft.advancements itself for
 // CriteriaTriggers/Criterion), and there's no DataComponentMatchers/DataComponentPredicates -
 // enchantment matching goes through ItemPredicate.Builder.withSubPredicate(ItemSubPredicates.ENCHANTMENTS, ...)
@@ -43,7 +43,7 @@ import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.advancements.critereon.PlayerTrigger;
 import net.minecraft.advancements.critereon.TagPredicate;
-//?}
+*///?}
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
@@ -51,18 +51,18 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 //? if >=1.21.11 {
-/^import net.minecraft.world.entity.EntityTypes;
-^///?}
+import net.minecraft.world.entity.EntityTypes;
+//?}
 import net.minecraft.world.item.Item;
 //? if >=1.21.11 {
-/^import net.minecraft.world.item.ItemStackTemplate;
-^///?} else {
-import net.minecraft.world.item.ItemStack;
-//?}
+import net.minecraft.world.item.ItemStackTemplate;
+//?} else {
+/*import net.minecraft.world.item.ItemStack;
+*///?}
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -82,13 +82,13 @@ public class VgmAdvancementProvider implements AdvancementSubProvider {
         HolderGetter<EntityType<?>> entityTypes = registries.lookupOrThrow(Registries.ENTITY_TYPE);
 
         //? if >=1.21.11 {
-        /^ResourceLocation rootBackground = ResourceLocation.withDefaultNamespace("gui/advancements/backgrounds/adventure");
-        ^///?} else {
-        // 1.21.1's client resolves display.background as a literal resource path (no implicit
+        Identifier rootBackground = Identifier.withDefaultNamespace("gui/advancements/backgrounds/adventure");
+        //?} else {
+        /*// 1.21.1's client resolves display.background as a literal resource path (no implicit
         // "textures/" + ".png"), unlike 1.21.11+/26.2.x's bare sprite-style id - confirmed
         // against vanilla's own data/minecraft/advancement/adventure/root.json per version.
-        ResourceLocation rootBackground = ResourceLocation.withDefaultNamespace("textures/gui/advancements/backgrounds/adventure.png");
-        //?}
+        Identifier rootBackground = Identifier.withDefaultNamespace("textures/gui/advancements/backgrounds/adventure.png");
+        *///?}
 
         AdvancementHolder root = Advancement.Builder.advancement()
                 .display(ItemReg.AUTO_PISTOL,
@@ -157,14 +157,14 @@ public class VgmAdvancementProvider implements AdvancementSubProvider {
                 .save(saver, Bren.MODID + ":adventure/a_touch_of_magic");
 
         //? if >=1.21.11 {
-        /^ItemStackTemplate glintShotgunIcon = new ItemStackTemplate(ItemReg.NETHERITE_SHOTGUN,
+        ItemStackTemplate glintShotgunIcon = new ItemStackTemplate(ItemReg.NETHERITE_SHOTGUN,
                 DataComponentPatch.builder().set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true).build());
-        ^///?} else {
-        // ItemStackTemplate doesn't exist pre-1.21.11 - display(ItemStack, ...) takes a plain
+        //?} else {
+        /*// ItemStackTemplate doesn't exist pre-1.21.11 - display(ItemStack, ...) takes a plain
         // ItemStack directly here instead.
         ItemStack glintShotgunIcon = new ItemStack(ItemReg.NETHERITE_SHOTGUN);
         glintShotgunIcon.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
-        //?}
+        *///?}
 
         Advancement.Builder.advancement()
                 .parent(aTouchOfMagic)
@@ -205,21 +205,21 @@ public class VgmAdvancementProvider implements AdvancementSubProvider {
             HolderGetter<Item> items, HolderGetter<Enchantment> enchantments, ResourceKey<Enchantment> enchantment, int minLevel) {
         ItemPredicate predicate = ItemPredicate.Builder.item()
                 //? if >=1.21.11 {
-                /^.of(items, TagReg.WEAPONS)
-                ^///?} else {
-                .of(TagReg.WEAPONS)
-                //?}
+                .of(items, TagReg.WEAPONS)
+                //?} else {
+                /*.of(TagReg.WEAPONS)
+                *///?}
                 //? if >=1.21.11 {
-                /^.withComponents(DataComponentMatchers.Builder.components()
+                .withComponents(DataComponentMatchers.Builder.components()
                         .partial(DataComponentPredicates.ENCHANTMENTS,
                                 EnchantmentsPredicate.enchantments(List.of(
                                         new EnchantmentPredicate(enchantments.getOrThrow(enchantment), MinMaxBounds.Ints.atLeast(minLevel)))))
                         .build())
-                ^///?} else {
-                .withSubPredicate(ItemSubPredicates.ENCHANTMENTS,
+                //?} else {
+                /*.withSubPredicate(ItemSubPredicates.ENCHANTMENTS,
                         ItemEnchantmentsPredicate.enchantments(List.of(
                                 new EnchantmentPredicate(enchantments.getOrThrow(enchantment), MinMaxBounds.Ints.atLeast(minLevel)))))
-                //?}
+                *///?}
                 .build();
         return CriteriaTriggers.ENCHANTED_ITEM.createCriterion(
                 new EnchantedItemTrigger.TriggerInstance(Optional.empty(), Optional.of(predicate), MinMaxBounds.Ints.ANY));
@@ -229,25 +229,25 @@ public class VgmAdvancementProvider implements AdvancementSubProvider {
             HolderGetter<Item> items, HolderGetter<Enchantment> enchantments) {
         ItemPredicate predicate = ItemPredicate.Builder.item()
                 //? if >=1.21.11 {
-                /^.of(items, ItemReg.NETHERITE_AUTO_GUN, ItemReg.NETHERITE_RIFLE, ItemReg.NETHERITE_SHOTGUN, ItemReg.NETHERITE_REVOLVER)
-                ^///?} else {
-                .of(ItemReg.NETHERITE_AUTO_GUN, ItemReg.NETHERITE_RIFLE, ItemReg.NETHERITE_SHOTGUN, ItemReg.NETHERITE_REVOLVER)
-                //?}
+                .of(items, ItemReg.NETHERITE_AUTO_GUN, ItemReg.NETHERITE_RIFLE, ItemReg.NETHERITE_SHOTGUN, ItemReg.NETHERITE_REVOLVER)
+                //?} else {
+                /*.of(ItemReg.NETHERITE_AUTO_GUN, ItemReg.NETHERITE_RIFLE, ItemReg.NETHERITE_SHOTGUN, ItemReg.NETHERITE_REVOLVER)
+                *///?}
                 //? if >=1.21.11 {
-                /^.withComponents(DataComponentMatchers.Builder.components()
+                .withComponents(DataComponentMatchers.Builder.components()
                         .partial(DataComponentPredicates.ENCHANTMENTS,
                                 EnchantmentsPredicate.enchantments(List.of(
                                         new EnchantmentPredicate(enchantments.getOrThrow(Enchantments.FLAME), MinMaxBounds.Ints.atLeast(1)),
                                         new EnchantmentPredicate(enchantments.getOrThrow(Enchantments.PUNCH), MinMaxBounds.Ints.atLeast(2)),
                                         new EnchantmentPredicate(enchantments.getOrThrow(Enchantments.UNBREAKING), MinMaxBounds.Ints.atLeast(3)))))
                         .build())
-                ^///?} else {
-                .withSubPredicate(ItemSubPredicates.ENCHANTMENTS,
+                //?} else {
+                /*.withSubPredicate(ItemSubPredicates.ENCHANTMENTS,
                         ItemEnchantmentsPredicate.enchantments(List.of(
                                 new EnchantmentPredicate(enchantments.getOrThrow(Enchantments.FLAME), MinMaxBounds.Ints.atLeast(1)),
                                 new EnchantmentPredicate(enchantments.getOrThrow(Enchantments.PUNCH), MinMaxBounds.Ints.atLeast(2)),
                                 new EnchantmentPredicate(enchantments.getOrThrow(Enchantments.UNBREAKING), MinMaxBounds.Ints.atLeast(3)))))
-                //?}
+                *///?}
                 .build();
         return InventoryChangeTrigger.TriggerInstance.hasItems(predicate);
     }
@@ -255,15 +255,15 @@ public class VgmAdvancementProvider implements AdvancementSubProvider {
     private static Criterion<KilledTrigger.TriggerInstance> killedVillagerWithBullet(HolderGetter<EntityType<?>> entityTypes) {
         return KilledTrigger.TriggerInstance.playerKilledEntity(
                 //? if >=1.21.11 {
-                /^EntityPredicate.Builder.entity().of(entityTypes, EntityTypes.VILLAGER),
-                ^///?} else {
-                EntityPredicate.Builder.entity().of(EntityType.VILLAGER),
-                //?}
+                EntityPredicate.Builder.entity().of(entityTypes, EntityTypes.VILLAGER),
+                //?} else {
+                /*EntityPredicate.Builder.entity().of(EntityType.VILLAGER),
+                *///?}
                 DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(TagReg.IS_BULLET)));
     }
 }
-*///?} else {
-// 1.20.1 predates the whole Holder-ification of advancements: no AdvancementHolder (Builder.save
+//?} else {
+/*// 1.20.1 predates the whole Holder-ification of advancements: no AdvancementHolder (Builder.save
 // returns a plain Advancement and the saver is Consumer<Advancement>), no Criterion<T> wrapper
 // (addCriterion takes a CriterionTriggerInstance directly), no AdvancementRequirements (plain
 // RequirementsStrategy), no sendsTelemetryEvent() builder method, AdvancementType is named
@@ -289,7 +289,7 @@ import net.minecraft.advancements.critereon.TagPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -308,8 +308,8 @@ public class VgmAdvancementProvider implements AdvancementSubProvider {
         // 1.21.1's client resolves display.background as a literal resource path (no implicit
         // "textures/" + ".png") - same as 1.21.1's own branch above, confirmed against vanilla's
         // own data/minecraft/advancement/adventure/root.json for 1.20.1.
-        // ResourceLocation.withDefaultNamespace doesn't exist pre-1.21 - only the raw constructors do.
-        ResourceLocation rootBackground = new ResourceLocation("textures/gui/advancements/backgrounds/adventure.png");
+        // Identifier.withDefaultNamespace doesn't exist pre-1.21 - only the raw constructors do.
+        Identifier rootBackground = new Identifier("textures/gui/advancements/backgrounds/adventure.png");
 
         Advancement root = Advancement.Builder.advancement()
                 .display(ItemReg.AUTO_PISTOL,
@@ -442,4 +442,4 @@ public class VgmAdvancementProvider implements AdvancementSubProvider {
                 DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(TagReg.IS_BULLET)));
     }
 }
-//?}
+*///?}
