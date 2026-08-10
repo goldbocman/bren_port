@@ -1,5 +1,9 @@
 # Changelog
 
+## 26.2 - 0.1.2
+- Hold to load/unload ammo in auto_gun / rifle
+- Some Reloading bugs fixes 
+
 ## 1.20.1 - 0.1.2
 - Ported to 1.20.1 for Forge/Fabric
 
