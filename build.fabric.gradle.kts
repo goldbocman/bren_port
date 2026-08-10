@@ -136,6 +136,54 @@ if (sc.current.parsed < "1.20.5") {
     }
 }
 
+
+fun registerPlaceDatagenOutput(taskDescription: String, vararg mirrors: Pair<String, String>) {
+    val syncTasks = mirrors.mapIndexed { i, (fromDir, intoDir) ->
+        tasks.register<Sync>("placeDatagenOutputSync$i") {
+            dependsOn("runDatagen")
+            from(fromDir)
+            into(rootProject.file(intoDir))
+        }
+    }
+    val cleanup = tasks.register<Delete>("placeDatagenOutputCleanup") {
+        dependsOn(syncTasks)
+        delete("src/main/generated")
+    }
+    tasks.register("placeDatagenOutput") {
+        group = "vgm"
+        description = taskDescription
+        dependsOn(cleanup)
+    }
+}
+
+if (sc.current.parsed < "1.20.5") {
+    registerPlaceDatagenOutput(
+        "Runs datagen and diff-copies its output into legacy-resources-1.20.1/, then deletes the " +
+            "src/main/generated scratch copy so it can never linger stale.",
+        "src/main/generated/data/vgm/advancements" to "legacy-resources-1.20.1/data/vgm/advancements",
+        "src/main/generated/data/vgm/recipes" to "legacy-resources-1.20.1/data/vgm/recipes",
+    )
+} else if (sc.current.parsed >= "1.21.11") {
+    registerPlaceDatagenOutput(
+        "Runs datagen and diff-copies its output into the canonical src/main/resources/ tree, then " +
+            "deletes the src/main/generated scratch copy so it can never linger stale.",
+        "src/main/generated/data/vgm/advancement" to "src/main/resources/data/vgm/advancement",
+        "src/main/generated/data/vgm/recipe" to "src/main/resources/data/vgm/recipe",
+    )
+} else {
+    // >=1.20.5 <1.21.11 (1.21.1): recipe/ is the complete mirror, advancement/ is NOT (see above) -
+    // only sync the recipe half automatically. root.json/warcrimes.json still need a manual
+    // diff/copy from src/main/generated/data/vgm/advancement/ on the rare occasion either of those
+    // two specific schema differences needs to change.
+    registerPlaceDatagenOutput(
+        "Runs datagen and diff-copies its recipe/ output into legacy-resources/, then deletes the " +
+            "src/main/generated scratch copy so it can never linger stale. Does NOT touch " +
+            "advancement/ - root.json/warcrimes.json are deliberate sparse overrides, not a mirror, " +
+            "and need a manual diff/copy if they ever have to change.",
+        "src/main/generated/data/vgm/recipe" to "legacy-resources/data/vgm/recipe",
+    )
+}
+
 java {
     withSourcesJar()
     targetCompatibility = requiredJava

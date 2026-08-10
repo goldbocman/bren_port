@@ -3,9 +3,9 @@ package com.goldbocman.vgm.common.mixin.client;
 //? if >=1.21.11 {
 /*import com.mojang.blaze3d.vertex.PoseStack;
 //? if fabric {
-/^import net.fabricmc.api.EnvType;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-^///?}
+//?}
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.entity.state.ArmedEntityRenderState;
@@ -33,7 +33,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 // LegacyItemInHandRendererMixin use, instead of reflecting into ItemStackRenderState's private fields.
 @SuppressWarnings("ALL")
 //? if fabric
-//@Environment(value = EnvType.CLIENT)
+@Environment(value = EnvType.CLIENT)
 @Mixin(ItemInHandLayer.class)
 public abstract class ItemInHandLayerMixin {
 

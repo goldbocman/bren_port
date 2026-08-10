@@ -14,10 +14,10 @@ import com.goldbocman.vgm.common.datagen.VgmEnchantmentBootstrap;
 /^import com.goldbocman.vgm.common.datagen.VgmRecipeProvider;
 ^///?} else {
 //? if >=1.20.5 {
-import com.goldbocman.vgm.common.datagen.legacy.LegacyVgmRecipeProvider;
-//?} else {
-/^import com.goldbocman.vgm.common.datagen.legacy1201.Legacy1201VgmRecipeProvider;
-^///?}
+/^import com.goldbocman.vgm.common.datagen.legacy.LegacyVgmRecipeProvider;
+^///?} else {
+import com.goldbocman.vgm.common.datagen.legacy1201.Legacy1201VgmRecipeProvider;
+//?}
 //?}
 
 import java.util.List;
@@ -30,16 +30,16 @@ public class VgmFabricDataGenerator implements DataGeneratorEntrypoint {
         /^pack.addProvider(VgmRecipeProvider.Runner::new);
         ^///?} else {
         //? if >=1.20.5 {
-        pack.addProvider(LegacyVgmRecipeProvider::new);
-        //?} else {
-        /^pack.addProvider((net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator.Pack.Factory<Legacy1201VgmRecipeProvider>)
+        /^pack.addProvider(LegacyVgmRecipeProvider::new);
+        ^///?} else {
+        pack.addProvider((net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator.Pack.Factory<Legacy1201VgmRecipeProvider>)
                 Legacy1201VgmRecipeProvider::new);
-        ^///?}
+        //?}
         //?}
         pack.addProvider((output, registries) ->
                 new AdvancementProvider(output, registries, List.of(new VgmAdvancementProvider())));
         //? if >=1.20.5 {
-        pack.addProvider((output, registries) -> new FabricDynamicRegistryProvider(output, registries) {
+        /^pack.addProvider((output, registries) -> new FabricDynamicRegistryProvider(output, registries) {
             @Override
             protected void configure(HolderLookup.Provider reg, Entries entries) {
                 entries.addAll(reg.lookupOrThrow(Registries.ENCHANTMENT));
@@ -50,7 +50,7 @@ public class VgmFabricDataGenerator implements DataGeneratorEntrypoint {
                 return "VGM Enchantments";
             }
         });
-        //?}
+        ^///?}
     }
 
     // VgmEnchantmentBootstrap has zero custom enchantments registered (pure future scaffolding), so
@@ -60,10 +60,10 @@ public class VgmFabricDataGenerator implements DataGeneratorEntrypoint {
     // ("Multiple entries with same key: minecraft:enchantment") and crashes runDatagen - confirmed
     // empirically, not assumed. Since there's nothing to register yet, just skip the override.
     //? if >=1.20.5 {
-    @Override
+    /^@Override
     public void buildRegistry(RegistrySetBuilder registryBuilder) {
         registryBuilder.add(Registries.ENCHANTMENT, VgmEnchantmentBootstrap::bootstrap);
     }
-    //?}
+    ^///?}
 }
 *///?}

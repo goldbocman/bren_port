@@ -225,7 +225,7 @@ public class VgmAdvancementProvider implements AdvancementSubProvider {
                 new EnchantedItemTrigger.TriggerInstance(Optional.empty(), Optional.of(predicate), MinMaxBounds.Ints.ANY));
     }
 
-    private static Criterion<EnchantedItemTrigger.TriggerInstance> maxedOutNetheriteGun(
+    private static Criterion<InventoryChangeTrigger.TriggerInstance> maxedOutNetheriteGun(
             HolderGetter<Item> items, HolderGetter<Enchantment> enchantments) {
         ItemPredicate predicate = ItemPredicate.Builder.item()
                 //? if >=1.21.11 {
@@ -249,8 +249,7 @@ public class VgmAdvancementProvider implements AdvancementSubProvider {
                                 new EnchantmentPredicate(enchantments.getOrThrow(Enchantments.UNBREAKING), MinMaxBounds.Ints.atLeast(3)))))
                 //?}
                 .build();
-        return CriteriaTriggers.ENCHANTED_ITEM.createCriterion(
-                new EnchantedItemTrigger.TriggerInstance(Optional.empty(), Optional.of(predicate), MinMaxBounds.Ints.ANY));
+        return InventoryChangeTrigger.TriggerInstance.hasItems(predicate);
     }
 
     private static Criterion<KilledTrigger.TriggerInstance> killedVillagerWithBullet(HolderGetter<EntityType<?>> entityTypes) {

@@ -2,9 +2,9 @@ package com.goldbocman.vgm.common.mixin.client;
 
 //? if >=1.21.11 {
 /*//? if fabric {
-/^import net.fabricmc.api.EnvType;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-^///?}
+//?}
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.world.InteractionHand;
@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 // it only recognizes vanilla items (CrossbowItem, bow, trident, ...), falling through to the generic ITEM pose
 // for anything else. ArmedEntityRenderStateMixin's change was getting silently clobbered by this.
 //? if fabric
-//@Environment(value = EnvType.CLIENT)
+@Environment(value = EnvType.CLIENT)
 @Mixin(AvatarRenderer.class)
 public abstract class AvatarRendererMixin {
 
