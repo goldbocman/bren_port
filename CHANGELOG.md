@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.20.1 - 0.1.3
+- Hotfix launch crash for Forge 
+
 ## 26.2 - 0.1.2
 - Hold to load/unload ammo in auto_gun / rifle
 - Some Reloading bugs fixes 

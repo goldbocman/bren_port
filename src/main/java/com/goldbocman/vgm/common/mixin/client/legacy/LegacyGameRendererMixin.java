@@ -29,7 +29,7 @@ public class LegacyGameRendererMixin {
     private boolean wasAiming = false;
 
     @Inject(method = "renderLevel",
-            //? if forge
+            //? if forge && >=1.20.5
             //remap = false,
             at = @At("HEAD"))
     private void bren$modifyFov(DeltaTracker deltaTracker, CallbackInfo ci) {

@@ -28,7 +28,7 @@ public class Legacy1201GameRendererMixin {
     private boolean wasAiming = false;
 
     @Inject(method = "renderLevel",
-            //? if forge
+            //? if forge && >=1.20.5
             //remap = false,
             at = @At("HEAD"))
     private void bren$modifyFov(float partialTick, long finishTimeNano, PoseStack poseStack, CallbackInfo ci) {

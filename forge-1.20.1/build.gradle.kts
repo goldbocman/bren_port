@@ -1,4 +1,5 @@
 import org.gradle.jvm.tasks.Jar
+import org.spongepowered.asm.gradle.plugins.MixinExtension
 
 // Standalone ForgeGradle 6 project for 1.20.1-forge. See build.forge1201.gradle.kts (in the
 // main multiproject) for why this can't live in the main build under Gradle 9.6.1 - this
@@ -8,9 +9,29 @@ import org.gradle.jvm.tasks.Jar
 // Workflow: switch the shared tree first from the main repo, THEN build here:
 //   ./gradlew :stonecutterSwitchTo1.20.1-forge      (run from repo root)
 //   cd forge-1.20.1 && ./gradlew build              (this project)
+//
+// Unlike 1.21.1-forge (ForgeGradle 7, no real reobfuscation ), this
+// project's `jar` task IS `finalizedBy("reobfJar")` below: Forge 1.20.1's production runtime is
+// genuinely SRG-obfuscated, so every `@Inject`/`@Accessor`/`@Invoker` targeting a vanilla class
+// needs real refmap-based remapping (the default `remap = true`), not the `remap = false` used
+// for FG7 - see the `//? if forge && >=1.20.5` guard throughout the shared mixin classes. The
+// SpongePowered MixinGradle plugin below wires up refmap generation against FG6's own SRG data,
+// confirmed against a real, currently-maintained FG6 gun mod's build script
+// (MCModderAnchor/TACZ's 1.20.1 branch) rather than guessed from scratch.
+buildscript {
+    repositories {
+        maven("https://repo.spongepowered.org/repository/maven-public/") { name = "SpongePowered" }
+    }
+    dependencies {
+        classpath("org.spongepowered:mixingradle:0.7.38")
+    }
+}
+
 plugins {
     id("net.minecraftforge.gradle") version "[6.0,6.2)"
 }
+
+apply(plugin = "org.spongepowered.mixin")
 
 fun stonecutterProperty(key: String, section: String): String {
     var currentSection = ""
@@ -107,6 +128,11 @@ sourceSets {
             exclude("data/vgm/advancement/**")
         }
     }
+}
+
+configure<MixinExtension> {
+    add(sourceSets.main.get(), "vgm-1201.refmap.json")
+    config("vgm.legacy1201.mixins.json")
 }
 
 repositories {

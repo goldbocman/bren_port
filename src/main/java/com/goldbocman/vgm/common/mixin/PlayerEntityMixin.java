@@ -97,7 +97,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
     }
 
     @Inject(method = "isScoping",
-            //? if forge
+            //? if forge && >=1.20.5
             //remap = false,
             at = @At("HEAD"), cancellable = true)
     public void blackPowder$gunScopes(CallbackInfoReturnable<Boolean> cir) {
@@ -255,7 +255,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
     }
 
     @Inject(at = @At("RETURN"), method = "createAttributes"
-            //? if forge
+            //? if forge && >=1.20.5
             //, remap = false
     )
     private static void createPlayerAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
@@ -336,7 +336,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
     // 删除重复的getGunState和setGunState方法定义（第185-190行）
 
     @Inject(at = @At("TAIL"), method = "tick"
-            //? if forge
+            //? if forge && >=1.20.5
             //, remap = false
     )
     public void tickMovement(CallbackInfo ci) {
@@ -346,7 +346,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
     // 删除这个重复的dataTracker方法定义（第216-221行）
 
     @Inject(method = "tick",
-            //? if forge
+            //? if forge && >=1.20.5
             //remap = false,
             at = @At("HEAD"))
     private void onTick(CallbackInfo ci) {
@@ -416,7 +416,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IGunUser
     }
 
     @Inject(method = "tick",
-            //? if forge
+            //? if forge && >=1.20.5
             //remap = false,
             at = @At("TAIL"))
     private void reloadTick$bren$(CallbackInfo ci) {

@@ -31,7 +31,7 @@ public abstract class LegacyPlayerRendererMixin {
 
     @Inject(
         method = "getArmPose(Lnet/minecraft/client/player/AbstractClientPlayer;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/client/model/HumanoidModel$ArmPose;",
-        //? if forge
+        //? if forge && >=1.20.5
         //remap = false,
         at = @At("HEAD"),
         cancellable = true

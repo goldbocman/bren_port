@@ -13,7 +13,7 @@ public class MinecraftClientMixin {
     
     // 使用正确的render方法签名
     @Inject(method = "runTick(Z)V",
-            //? if forge
+            //? if forge && >=1.20.5
             //remap = false,
             at = @At("TAIL"))
     private void renderAimOverlay(boolean tick, CallbackInfo ci) {

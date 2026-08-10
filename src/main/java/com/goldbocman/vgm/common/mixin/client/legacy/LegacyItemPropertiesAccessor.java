@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(ItemProperties.class)
 public interface LegacyItemPropertiesAccessor {
     @Invoker(value = "register"
-            //? if forge
+            //? if forge && >=1.20.5
             //, remap = false
     )
     static void invokeRegister(Item item, Identifier id, ClampedItemPropertyFunction function) {

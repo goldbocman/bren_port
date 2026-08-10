@@ -39,7 +39,7 @@ public class Legacy1201GuiMixin {
     @Shadow @Final private Minecraft minecraft;
 
     @Inject(method = "render",
-            //? if forge
+            //? if forge && >=1.20.5
             //remap = false,
             at = @At("TAIL"))
     private void bren$renderHudOverlay(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci) {

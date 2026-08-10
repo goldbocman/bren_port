@@ -42,7 +42,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class LegacyItemInHandRendererMixin {
 
     @Inject(method = "renderItem",
-            //? if forge
+            //? if forge && >=1.20.5
             //remap = false,
             at = @At("HEAD"), cancellable = true)
     private void bren$renderGunAnimation(LivingEntity entity, ItemStack stack, ItemDisplayContext displayContext,

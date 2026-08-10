@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class GunEnchantmentMixin {
 
     @Inject(method = "canEnchant",
-            //? if forge
+            //? if forge && >=1.20.5
             //remap = false,
             at = @At("HEAD"), cancellable = true)
     private void bren$allowGunFlamePunch(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
