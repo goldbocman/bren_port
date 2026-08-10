@@ -418,14 +418,23 @@ public class VgmAdvancementProvider implements AdvancementSubProvider {
         return new EnchantedItemTrigger.TriggerInstance(ContextAwarePredicate.ANY, predicate, MinMaxBounds.Ints.ANY);
     }
 
-    private static EnchantedItemTrigger.TriggerInstance maxedOutNetheriteGun() {
+    private static InventoryChangeTrigger.TriggerInstance maxedOutNetheriteGun() {
+        // Deliberately NOT EnchantedItemTrigger, unlike enchantedWeapon() above - confirmed via
+        // javap on EnchantmentMenu/AnvilMenu/EnchantCommand (1.20.1 merged jar) that
+        // CriteriaTriggers.ENCHANTED_ITEM.trigger(...) is only ever called from EnchantmentMenu
+        // (taking a freshly-enchanted item out of a real enchanting table). Neither anvil
+        // book-combining nor the /enchant command fire it, so a criterion demanding three specific
+        // enchantments at three specific levels simultaneously - realistically only reachable by
+        // combining separately-enchanted books via anvil - could never actually grant. Switched to
+        // InventoryChangeTrigger (fires on any inventory change, including anvil pickup and
+        // /enchant), matching the already-fixed >=1.20.5 shipped JSON for this same advancement.
         ItemPredicate predicate = ItemPredicate.Builder.item()
                 .of(ItemReg.NETHERITE_AUTO_GUN, ItemReg.NETHERITE_RIFLE, ItemReg.NETHERITE_SHOTGUN, ItemReg.NETHERITE_REVOLVER)
                 .hasEnchantment(new EnchantmentPredicate(Enchantments.FLAMING_ARROWS, MinMaxBounds.Ints.atLeast(1)))
                 .hasEnchantment(new EnchantmentPredicate(Enchantments.PUNCH_ARROWS, MinMaxBounds.Ints.atLeast(2)))
                 .hasEnchantment(new EnchantmentPredicate(Enchantments.UNBREAKING, MinMaxBounds.Ints.atLeast(3)))
                 .build();
-        return new EnchantedItemTrigger.TriggerInstance(ContextAwarePredicate.ANY, predicate, MinMaxBounds.Ints.ANY);
+        return InventoryChangeTrigger.TriggerInstance.hasItems(predicate);
     }
 
     private static KilledTrigger.TriggerInstance killedVillagerWithBullet() {

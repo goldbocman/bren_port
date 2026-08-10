@@ -2,8 +2,8 @@ package com.goldbocman.vgm.common.registry;
 
 //? if fabric {
 /*//? if >=1.20.5 {
-/^import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-^///?}
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+//?}
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 *///?}
 //? if >=1.20.5 {
@@ -121,12 +121,12 @@ public class NetworkReg {
 
     //? if fabric {
     /*//? if >=1.20.5 {
-    /^public static void registerAllPackets() {
+    public static void registerAllPackets() {
         LOGGER.info("Registering all network packets");
 
         // 注册所有数据包类型
         //? if >=1.21.11 {
-        /^¹// 客户端接收的数据包（S2C - Server to Client）
+        /^// 客户端接收的数据包（S2C - Server to Client）
         PayloadTypeRegistry.clientboundPlay().register(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC);
         PayloadTypeRegistry.clientboundPlay().register(SHOOT_CLIENT_PACKET_ID, ShootClientPayload.PACKET_CODEC);
         PayloadTypeRegistry.clientboundPlay().register(SHOOT_ANIMATION_PACKET_ID, ShootAnimationPayload.PACKET_CODEC);
@@ -137,7 +137,7 @@ public class NetworkReg {
         PayloadTypeRegistry.serverboundPlay().register(RELOAD_PACKET_ID, ReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.serverboundPlay().register(CANCEL_RELOAD_PACKET_ID, CancelReloadPayload.PACKET_CODEC);
         PayloadTypeRegistry.serverboundPlay().register(SHOOT_PACKET_ID, ShootPayload.PACKET_CODEC);
-        ¹^///?} else {
+        ^///?} else {
         // Pre-1.21.11 fabric-networking-api-v1 names these playS2C()/playC2S() instead of the newer
         // clientboundPlay()/serverboundPlay().
         PayloadTypeRegistry.playS2C().register(RECOIL_CLIENT_PACKET_ID, RecoilPayload.PACKET_CODEC);
@@ -157,8 +157,8 @@ public class NetworkReg {
 
         LOGGER.info("All network packets registered successfully");
     }
-    ^///?} else {
-    // 1.20.1 predates CustomPacketPayload/StreamCodec/the payload-type-registry system entirely -
+    //?} else {
+    /^// 1.20.1 predates CustomPacketPayload/StreamCodec/the payload-type-registry system entirely -
     // channels are identified by a bare ResourceLocation and receivers get the raw FriendlyByteBuf
     // directly (confirmed via javap against the real fabric-networking-api-v1 1.3.15+0caff8d077 jar,
     // the exact submodule version fabric-api 0.92.11+1.20.1 pins). Reuses the same
@@ -172,7 +172,7 @@ public class NetworkReg {
 
         LOGGER.info("All network packets registered successfully");
     }
-    //?}
+    ^///?}
     *///?}
     //? if neoforge
     //public static void registerAllPackets() {} // NeoForge registers via NeoForgePayloads (RegisterPayloadHandlersEvent) below instead.

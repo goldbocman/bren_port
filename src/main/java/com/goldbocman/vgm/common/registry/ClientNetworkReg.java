@@ -65,7 +65,7 @@ public class ClientNetworkReg {
 
     //? if fabric {
     /*//? if >=1.20.5 {
-    /^public static void shootAnimationPacket() {
+    public static void shootAnimationPacket() {
         ClientPlayNetworking.registerReceiver(NetworkReg.SHOOT_ANIMATION_PACKET_ID, (payload, context) -> handleShootAnimation(context.client()));
     }
 
@@ -90,8 +90,8 @@ public class ClientNetworkReg {
             // 射击包处理逻辑可以在这里添加
         });
     }
-    ^///?} else {
-    // Legacy pre-1.20.5 registration - receivers get the raw FriendlyByteBuf and must read it
+    //?} else {
+    /^// Legacy pre-1.20.5 registration - receivers get the raw FriendlyByteBuf and must read it
     // themselves (matching NetworkReg's Payload.read(FriendlyByteBuf) helpers for each type), then
     // hop onto the client thread since old-API receivers otherwise run on the network thread.
     public static void shootAnimationPacket() {
@@ -132,6 +132,6 @@ public class ClientNetworkReg {
             // 射击包处理逻辑可以在这里添加
         });
     }
-    //?}
+    ^///?}
     *///?}
 }

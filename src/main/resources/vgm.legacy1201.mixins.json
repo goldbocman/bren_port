@@ -4,7 +4,8 @@
   "compatibilityLevel": "${java}",
   "mixins": [
     "PlayerEntityMixin",
-    "StructurePoolAccessor"
+    "StructurePoolAccessor",
+    "legacy1201.GunEnchantmentMixin"
   ],
   "injectors": {
     "defaultRequire": 1
